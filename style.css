@@ -1009,6 +1009,25 @@ p {
   pointer-events: none;
 }
 
+.player-lock {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  z-index: 4;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(8, 9, 8, 0.94);
+  color: var(--accent);
+  cursor: not-allowed;
+  font-family: var(--display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(24px);
@@ -1103,6 +1122,7 @@ p {
   .portfolio-watermark { inset: -26%; grid-template-columns: 1fr 1fr; }
   .portfolio-watermark span { font-size: 0.58rem; }
   .protected-view { right: 7px; bottom: 6px; max-width: 62%; font-size: 0.5rem; text-align: right; }
+  .player-lock { top: 8px; right: 8px; width: 40px; height: 40px; font-size: 0.62rem; }
 }
 
 @media (max-width: 440px) {
