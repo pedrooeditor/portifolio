@@ -71,4 +71,9 @@ dialog.addEventListener("cancel", () => {
   dialogFrame.src = "";
 });
 
+// Dificulta o salvamento casual a partir do player incorporado. A proteção
+// principal continua sendo a permissão de download configurada no Google Drive.
+dialog.addEventListener("contextmenu", (event) => event.preventDefault());
+dialog.addEventListener("dragstart", (event) => event.preventDefault());
+
 document.querySelector("[data-year]").textContent = new Date().getFullYear();
