@@ -7,11 +7,13 @@ const dialogFrame = document.querySelector("[data-video-frame]");
 const dialogTitle = document.querySelector("[data-dialog-title]");
 const closeDialogButton = document.querySelector("[data-dialog-close]");
 
-const closeMenu = () => {
+const closeMenu = (restoreFocus = false) => {
   menuButton.setAttribute("aria-expanded", "false");
   menuButton.setAttribute("aria-label", "Abrir menu");
   navigation.classList.remove("is-open");
   document.body.classList.remove("menu-open");
+
+  if (restoreFocus) menuButton.focus();
 };
 
 menuButton.addEventListener("click", () => {
@@ -20,9 +22,26 @@ menuButton.addEventListener("click", () => {
   menuButton.setAttribute("aria-label", isOpen ? "Abrir menu" : "Fechar menu");
   navigation.classList.toggle("is-open", !isOpen);
   document.body.classList.toggle("menu-open", !isOpen);
+
+  if (!isOpen) {
+    requestAnimationFrame(() => navigation.querySelector("a")?.focus());
+  }
 });
 
-navigation.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+navigation.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", () => closeMenu());
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && navigation.classList.contains("is-open")) {
+    closeMenu(true);
+  }
+});
+
+const desktopMedia = window.matchMedia("(min-width: 761px)");
+desktopMedia.addEventListener("change", (event) => {
+  if (event.matches) closeMenu();
+});
 
 const updateScrollUI = () => {
   const scrollable = document.documentElement.scrollHeight - window.innerHeight;
@@ -51,12 +70,16 @@ document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe
 const openVideo = (button) => {
   dialogFrame.src = button.dataset.video;
   dialogTitle.textContent = button.dataset.videoTitle || "Projeto";
+  dialog.classList.toggle("is-vertical", button.dataset.videoFormat === "vertical");
+  document.body.classList.add("video-open");
   dialog.showModal();
 };
 
 const closeVideo = () => {
-  dialog.close();
+  if (dialog.open) dialog.close();
   dialogFrame.src = "";
+  dialog.classList.remove("is-vertical");
+  document.body.classList.remove("video-open");
 };
 
 document.querySelectorAll("[data-video]").forEach((button) => {
@@ -67,8 +90,9 @@ closeDialogButton.addEventListener("click", closeVideo);
 dialog.addEventListener("click", (event) => {
   if (event.target === dialog) closeVideo();
 });
-dialog.addEventListener("cancel", () => {
-  dialogFrame.src = "";
+dialog.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  closeVideo();
 });
 
 // Dificulta o salvamento casual a partir do player incorporado. A proteção
