@@ -166,7 +166,7 @@ p {
 .site-nav {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 22px;
 }
 
 .site-nav a {
@@ -254,7 +254,7 @@ p {
 
 .hero-bottom {
   display: grid;
-  grid-template-columns: 0.55fr 1.45fr;
+  grid-template-columns: 0.72fr 1.28fr;
   gap: 26px;
   padding-top: 28px;
   border-top: 1px solid var(--line);
@@ -701,11 +701,38 @@ p {
   text-transform: uppercase;
 }
 
-.work-content > p {
+.work-content > p,
+.project-brief {
   max-width: 620px;
   margin-bottom: 0;
   color: var(--muted);
   font-size: 1.05rem;
+}
+
+.project-brief {
+  display: grid;
+  gap: 16px;
+  margin-top: 0;
+}
+
+.project-brief div {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr);
+  gap: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.project-brief dt {
+  color: var(--ink);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.project-brief dd {
+  margin: 0;
 }
 
 .tag-list {
@@ -902,6 +929,67 @@ p {
 
 .process-list p { max-width: 500px; margin-bottom: 0; color: var(--muted); }
 
+.faq {
+  padding-block: clamp(100px, 12vw, 180px);
+  border-top: 1px solid var(--line);
+}
+
+.faq-list {
+  margin-left: calc((100% + 56px) * 0.245);
+  border-top: 1px solid var(--line);
+}
+
+.faq-list details {
+  border-bottom: 1px solid var(--line);
+}
+
+.faq-list summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  gap: 24px;
+  min-height: 86px;
+  align-items: center;
+  cursor: pointer;
+  font-family: var(--display);
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  list-style: none;
+  transition: color 180ms ease;
+}
+
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary:hover,
+.faq-list summary:focus-visible { color: var(--accent); }
+
+.faq-list summary span {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  justify-self: end;
+  border: 1px solid var(--line);
+  color: var(--accent);
+  font-family: var(--body);
+  font-size: 1.35rem;
+  font-weight: 400;
+  transition: transform 220ms var(--ease), background 180ms ease, color 180ms ease;
+}
+
+.faq-list details[open] summary span {
+  transform: rotate(45deg);
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.faq-list details p {
+  max-width: 760px;
+  margin: -2px 68px 28px 0;
+  color: var(--muted);
+  font-size: 1.03rem;
+}
+
 .contact {
   background: var(--accent);
   color: var(--bg);
@@ -1048,12 +1136,17 @@ p {
 }
 
 .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+.js .reveal {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 800ms var(--ease), transform 800ms var(--ease);
 }
 
-.reveal.is-visible { opacity: 1; transform: none; }
+.js .reveal.is-visible { opacity: 1; transform: none; }
 
 :focus-visible {
   outline: 2px solid var(--accent);
@@ -1171,7 +1264,8 @@ p {
   .work,
   .about,
   .services,
-  .process { padding-block: 84px; }
+  .process,
+  .faq { padding-block: 84px; }
   .section-heading { display: block; }
   .section-heading .section-kicker { margin-bottom: 22px; }
   .section-heading h2 {
@@ -1186,7 +1280,9 @@ p {
   .watch-button { right: 14px; bottom: 14px; min-height: 48px; }
   .work-content { gap: 22px; padding: 0; }
   .work-content h3 { font-size: clamp(1.9rem, 10vw, 3rem); }
-  .work-content > p { font-size: 1rem; }
+  .work-content > p,
+  .project-brief { font-size: 1rem; }
+  .project-brief div { grid-template-columns: 1fr; gap: 6px; }
   .showreel-inner {
     flex-direction: column;
     align-items: flex-start;
@@ -1203,6 +1299,10 @@ p {
   .service-card > span { margin-bottom: 56px; }
   .process-list li { grid-template-columns: 34px minmax(0, 1fr); gap: 14px; padding-block: 24px; }
   .process-list div { grid-template-columns: 1fr; gap: 8px; }
+  .faq-list { margin-left: 0; }
+  .faq-list summary { min-height: 78px; grid-template-columns: minmax(0, 1fr) 40px; gap: 16px; font-size: 1.08rem; }
+  .faq-list summary span { width: 36px; height: 36px; }
+  .faq-list details p { margin: 0 48px 24px 0; font-size: 1rem; }
   .contact-inner { padding-block: 80px; }
   .contact h2 { font-size: clamp(3.1rem, 16vw, 5.2rem); overflow-wrap: anywhere; }
   .contact-actions { align-items: stretch; }
@@ -1264,10 +1364,11 @@ p {
   .service-card:hover > span,
   .service-card:hover p { color: var(--muted); }
   .button-dark:hover { background: var(--bg); color: var(--ink); }
+  .faq-list summary:hover { color: var(--ink); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .reveal { opacity: 1; transform: none; }
+  .js .reveal { opacity: 1; transform: none; }
 }
