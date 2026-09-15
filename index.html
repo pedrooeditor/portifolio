@@ -32,6 +32,264 @@
     />
     <link rel="stylesheet" href="style.css" />
 
+    <style>
+      .mobile-hero-actions,
+      .mobile-project-summary {
+        display: none;
+      }
+
+      @media (max-width: 760px) {
+        .site-nav a[href="#processo"],
+        .site-nav a[href="#faq"] {
+          display: none;
+        }
+
+        .hero {
+          gap: 0;
+          padding-bottom: 58px;
+        }
+
+        .hero-copy {
+          width: 100%;
+        }
+
+        .hero-title {
+          margin-bottom: 24px;
+        }
+
+        .hero-bottom {
+          gap: 12px;
+          padding-top: 18px;
+        }
+
+        .hero-role {
+          max-width: 24rem;
+          font-size: 0.82rem;
+          line-height: 1.4;
+        }
+
+        .hero-intro > p {
+          max-width: 30rem;
+          margin-bottom: 20px;
+          font-size: 1rem;
+          line-height: 1.48;
+        }
+
+        .hero-actions {
+          display: none;
+        }
+
+        .mobile-hero-actions {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 10px;
+          margin-top: 4px;
+        }
+
+        .mobile-hero-actions .button {
+          width: 100%;
+          min-height: 54px;
+        }
+
+        .mobile-hero-actions .button-whatsapp {
+          border-color: var(--line);
+          background: transparent;
+          color: var(--ink);
+        }
+
+        .edit-console {
+          display: none;
+        }
+
+        .work,
+        .about,
+        .services,
+        .process,
+        .faq {
+          padding-block: 68px;
+        }
+
+        .section-heading {
+          margin-bottom: 34px;
+        }
+
+        .section-heading .section-kicker {
+          margin-bottom: 14px;
+        }
+
+        .section-heading h2 {
+          margin-bottom: 16px;
+          font-size: clamp(2.15rem, 11vw, 3.75rem);
+        }
+
+        .section-summary {
+          max-width: 29rem;
+          font-size: 0.94rem;
+          line-height: 1.48;
+        }
+
+        .work-card {
+          gap: 18px;
+          padding-block: 28px;
+        }
+
+        .work-visual {
+          min-height: min(68vw, 270px);
+        }
+
+        .work-content {
+          gap: 12px;
+        }
+
+        .work-type {
+          margin-bottom: 8px;
+        }
+
+        .work-content h3 {
+          font-size: clamp(1.75rem, 9vw, 2.7rem);
+        }
+
+        .mobile-project-summary {
+          display: block;
+          margin: 0;
+          color: var(--muted);
+          font-size: 0.96rem;
+          line-height: 1.45;
+        }
+
+        .project-brief,
+        .tag-list {
+          display: none;
+        }
+
+        .watch-button {
+          min-height: 46px;
+          padding-inline: 13px;
+        }
+
+        .marquee {
+          display: none;
+        }
+
+        .showreel-inner {
+          gap: 24px;
+          padding-block: 58px;
+        }
+
+        .showreel-inner .section-kicker {
+          margin-bottom: 14px;
+        }
+
+        .showreel-inner h2 {
+          font-size: clamp(2.25rem, 11vw, 3.7rem);
+        }
+
+        .reel-play {
+          width: 110px;
+        }
+
+        .about {
+          gap: 24px;
+        }
+
+        .about .section-kicker {
+          margin-bottom: 14px;
+        }
+
+        .about-lead {
+          margin-bottom: 24px;
+          font-size: clamp(1.42rem, 6.4vw, 2rem);
+          line-height: 1.14;
+        }
+
+        .about-columns p:nth-child(2),
+        .experience-strip {
+          display: none;
+        }
+
+        .about-columns {
+          gap: 0;
+        }
+
+        .about-columns p {
+          margin-bottom: 0;
+          font-size: 0.96rem;
+          line-height: 1.5;
+        }
+
+        .service-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 0;
+        }
+
+        .service-card {
+          min-height: 0;
+          padding: 18px 14px;
+        }
+
+        .service-card > span {
+          margin-bottom: 28px;
+        }
+
+        .service-card h3 {
+          margin-bottom: 7px;
+          font-size: 1rem;
+        }
+
+        .service-card p {
+          font-size: 0.86rem;
+          line-height: 1.4;
+        }
+
+        .process-list li {
+          padding-block: 20px;
+        }
+
+        .process-list p {
+          font-size: 0.94rem;
+        }
+
+        .faq-list summary {
+          min-height: 70px;
+        }
+
+        .contact-inner {
+          padding-block: 68px;
+        }
+
+        .contact-inner > p:not(.section-kicker) {
+          margin: 24px 0;
+          font-size: 1rem;
+        }
+
+        .site-footer {
+          min-height: 150px;
+        }
+      }
+
+      @media (max-width: 430px) {
+        .service-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .service-card {
+          padding: 16px 12px;
+        }
+
+        .service-card > span {
+          margin-bottom: 22px;
+        }
+
+        .service-card h3 {
+          font-size: 0.9rem;
+        }
+
+        .service-card p {
+          font-size: 0.8rem;
+        }
+      }
+    </style>
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -107,14 +365,23 @@
                 <button
                   class="button button-primary"
                   type="button"
-                  data-video="https://drive.google.com/file/d/13dx-6KjRRSsnEJwyv3VLbC-UsOfUzGDB/preview"
+                  data-video="https://drive.google.com/file/d/1jqq9LeAZWSQd_EOV7rcnqeqz5J8E8Ica/preview"
                   data-video-title="Vídeo de apresentação — Pedro Simões"
-                  data-video-format="horizontal"
+                  data-video-format="vertical"
                 >
                   <span class="play-icon" aria-hidden="true">▶</span>
                   Assistir apresentação
                 </button>
                 <a class="button button-ghost" href="#contato">Iniciar projeto</a>
+              </div>
+              <div class="mobile-hero-actions" aria-label="Ações principais">
+                <a class="button button-primary" href="#trabalhos">Ver projetos</a>
+                <a
+                  class="button button-whatsapp"
+                  href="https://wa.me/5511933596263?text=Ol%C3%A1%2C%20Pedro!%20Vi%20seu%20portf%C3%B3lio%20e%20quero%20conversar%20sobre%20um%20projeto."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Falar no WhatsApp</a>
               </div>
             </div>
           </div>
@@ -186,6 +453,7 @@
                 <p class="work-type">Anúncios · Conversão · Social media</p>
                 <h3>Direct Response Ad</h3>
               </div>
+              <p class="mobile-project-summary">Vídeos pensados para vender, apresentar ofertas e transformar atenção em ação.</p>
               <dl class="project-brief">
                 <div>
                   <dt>Objetivo</dt>
@@ -227,6 +495,7 @@
                 <p class="work-type">Storytelling · Sound design · Color · VSL</p>
                 <h3>Cinematic / VSL</h3>
               </div>
+              <p class="mobile-project-summary">Vídeos com narrativa, estética e ritmo para apresentar ideias, histórias e ofertas.</p>
               <dl class="project-brief">
                 <div>
                   <dt>Objetivo</dt>
@@ -267,6 +536,7 @@
                 <p class="work-type">TikTok · Instagram Reels · YouTube Shorts</p>
                 <h3>Motivational Edit</h3>
               </div>
+              <p class="mobile-project-summary">Conteúdo curto feito para prender atenção rápido e manter retenção nas redes sociais.</p>
               <dl class="project-brief">
                 <div>
                   <dt>Objetivo</dt>
@@ -300,9 +570,9 @@
           <button
             class="reel-play"
             type="button"
-            data-video="https://drive.google.com/file/d/13dx-6KjRRSsnEJwyv3VLbC-UsOfUzGDB/preview"
+            data-video="https://drive.google.com/file/d/1jqq9LeAZWSQd_EOV7rcnqeqz5J8E8Ica/preview"
             data-video-title="Vídeo de apresentação — Pedro Simões"
-            data-video-format="horizontal"
+            data-video-format="vertical"
             aria-label="Assistir vídeo de apresentação"
           >
             <span>▶</span>
@@ -452,6 +722,14 @@
           referrerpolicy="strict-origin-when-cross-origin"
           allowfullscreen
         ></iframe>
+        <div class="portfolio-watermark" aria-hidden="true">
+          <span>Pedro Simões · Portfólio</span>
+          <span>Pedro Simões · Portfólio</span>
+          <span>Pedro Simões · Portfólio</span>
+          <span>Pedro Simões · Portfólio</span>
+          <span>Pedro Simões · Portfólio</span>
+          <span>Pedro Simões · Portfólio</span>
+        </div>
         <div class="protected-view" aria-hidden="true">
           Visualização protegida · Uso não autorizado proibido
         </div>
