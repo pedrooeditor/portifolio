@@ -67,8 +67,10 @@ const revealObserver = new IntersectionObserver(
 
 document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
 
+const withAutoplay = (url) => `${url}${url.includes("?") ? "&" : "?"}autoplay=1`;
+
 const openVideo = (button) => {
-  dialogFrame.src = button.dataset.video;
+  dialogFrame.src = withAutoplay(button.dataset.video);
   dialogTitle.textContent = button.dataset.videoTitle || "Projeto";
   dialog.classList.toggle("is-vertical", button.dataset.videoFormat === "vertical");
   document.body.classList.add("video-open");
