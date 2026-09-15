@@ -82,6 +82,81 @@ const closeVideo = () => {
   document.body.classList.remove("video-open");
 };
 
+// Agrupa os três trabalhos de Direct Response no mesmo card do portfólio.
+const directResponseButton = document.querySelector(".visual-direct .watch-button");
+const directResponseLabel = document.querySelector(".visual-direct .visual-label");
+
+if (directResponseButton) {
+  const directResponseVideos = [
+    {
+      label: "Exemplo 1",
+      url: "https://drive.google.com/file/d/148SFeFxIAvX_X8O5AFnuVjlRBqtF28JW/preview",
+    },
+    {
+      label: "Exemplo 2",
+      url: "https://drive.google.com/file/d/13O1-hU_z1ESGwfoZ3IwS5oFvoNVwlmpc/preview",
+    },
+    {
+      label: "Exemplo 3",
+      url: "https://drive.google.com/file/d/1Ij5vQo45FUrQx9N_AJqnzk_bUQlFqJy0/preview",
+    },
+  ];
+
+  const videoGroup = document.createElement("div");
+  videoGroup.className = "direct-response-videos";
+  videoGroup.setAttribute("aria-label", "Exemplos de Direct Response");
+
+  directResponseVideos.forEach((video) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "watch-button";
+    button.dataset.video = video.url;
+    button.dataset.videoTitle = `Direct Response — ${video.label}`;
+    button.dataset.videoFormat = "vertical";
+    button.setAttribute("aria-label", `Assistir Direct Response — ${video.label}`);
+    button.innerHTML = `<span aria-hidden="true">▶</span> ${video.label}`;
+    videoGroup.appendChild(button);
+  });
+
+  directResponseButton.replaceWith(videoGroup);
+  if (directResponseLabel) directResponseLabel.textContent = "Direct response · 3 exemplos";
+
+  const directResponseStyles = document.createElement("style");
+  directResponseStyles.textContent = `
+    .direct-response-videos {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      left: 18px;
+      z-index: 3;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .direct-response-videos .watch-button {
+      position: static;
+      min-height: 40px;
+      padding-inline: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    @media (max-width: 520px) {
+      .direct-response-videos {
+        justify-content: stretch;
+      }
+
+      .direct-response-videos .watch-button {
+        flex: 1 1 calc(50% - 4px);
+        justify-content: center;
+      }
+    }
+  `;
+  document.head.appendChild(directResponseStyles);
+}
+
 document.querySelectorAll("[data-video]").forEach((button) => {
   button.addEventListener("click", () => openVideo(button));
 });
