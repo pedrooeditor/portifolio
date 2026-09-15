@@ -372,6 +372,19 @@ setupProjectGallery({
 });
 
 setupProjectGallery({
+  visualSelector: ".visual-cinematic",
+  categoryName: "Cinematic / VSL",
+  labelText: "Cinematic / VSL · 1 projeto",
+  videos: [
+    {
+      label: "Exemplo 1",
+      url: "https://drive.google.com/file/d/1yeI2Juc4IqeB8twvVGNz6bQYrBRCpWpo/preview",
+      format: "horizontal",
+    },
+  ],
+});
+
+setupProjectGallery({
   visualSelector: ".visual-short",
   categoryName: "Vídeos Virais",
   labelText: "Vídeos virais · 2 projetos",
