@@ -705,11 +705,7 @@ setupProjectGallery({
   categoryName: 'Direct Response',
   labelText: 'Direct response · 3 projetos',
   videos: [
-    {
-      label: 'Exemplo 1',
-      url: 'https://drive.google.com/file/d/148SFeFxIAvX_X8O5AFnuVjlRBqtF28JW/preview',
-      directUrl: 'https://drive.google.com/uc?export=download&id=1jGtOIgtZbFVyRevIs90CDwDamBemVHBj'
-    },
+    { label: 'Exemplo 1', url: 'https://drive.google.com/file/d/148SFeFxIAvX_X8O5AFnuVjlRBqtF28JW/preview' },
     { label: 'Exemplo 2', url: 'https://drive.google.com/file/d/13O1-hU_z1ESGwfoZ3IwS5oFvoNVwlmpc/preview' },
     { label: 'Exemplo 3', url: 'https://drive.google.com/file/d/1Ij5vQo45FUrQx9N_AJqnzk_bUQlFqJy0/preview' }
   ]
