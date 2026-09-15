@@ -6,6 +6,7 @@ const dialog = document.querySelector("[data-dialog]");
 const dialogFrame = document.querySelector("[data-video-frame]");
 const dialogTitle = document.querySelector("[data-dialog-title]");
 const closeDialogButton = document.querySelector("[data-dialog-close]");
+const mobileVideoMedia = window.matchMedia("(max-width: 760px)");
 
 const closeMenu = (restoreFocus = false) => {
   menuButton.setAttribute("aria-expanded", "false");
@@ -67,20 +68,105 @@ const revealObserver = new IntersectionObserver(
 
 document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
 
+const requestMobileFullscreen = () => {
+  if (!mobileVideoMedia.matches) return;
+
+  const requestFullscreen = dialog.requestFullscreen || dialog.webkitRequestFullscreen;
+  if (!requestFullscreen) return;
+
+  try {
+    const result = requestFullscreen.call(dialog);
+    if (result?.catch) result.catch(() => {});
+  } catch (_) {
+    // O layout em 100% da viewport continua funcionando como fallback.
+  }
+};
+
 const openVideo = (button) => {
   dialogFrame.src = button.dataset.video;
   dialogTitle.textContent = button.dataset.videoTitle || "Projeto";
   dialog.classList.toggle("is-vertical", button.dataset.videoFormat === "vertical");
   document.body.classList.add("video-open");
   dialog.showModal();
+  requestMobileFullscreen();
 };
 
 const closeVideo = () => {
+  const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+  if (fullscreenElement === dialog) {
+    const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen;
+    if (exitFullscreen) {
+      try {
+        const result = exitFullscreen.call(document);
+        if (result?.catch) result.catch(() => {});
+      } catch (_) {}
+    }
+  }
+
   if (dialog.open) dialog.close();
   dialogFrame.src = "";
   dialog.classList.remove("is-vertical");
   document.body.classList.remove("video-open");
 };
+
+const mobileVideoStyles = document.createElement("style");
+mobileVideoStyles.textContent = `
+  @media (max-width: 760px) {
+    .video-dialog[open] {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      width: 100vw !important;
+      height: 100dvh;
+      max-width: none;
+      max-height: none;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: #000;
+    }
+
+    .video-dialog.is-vertical {
+      width: 100vw !important;
+    }
+
+    .video-dialog .dialog-bar {
+      flex: 0 0 auto;
+      min-height: calc(52px + env(safe-area-inset-top, 0px));
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-right: max(12px, env(safe-area-inset-right, 0px));
+      padding-left: max(12px, env(safe-area-inset-left, 0px));
+      background: #0b0c0b;
+    }
+
+    .video-dialog .video-frame,
+    .video-dialog.is-vertical .video-frame {
+      flex: 1 1 auto;
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      aspect-ratio: auto;
+      background: #000;
+    }
+
+    .video-dialog .video-frame iframe {
+      width: 100%;
+      height: 100%;
+    }
+
+    .video-dialog:fullscreen,
+    .video-dialog:-webkit-full-screen {
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: none;
+      max-height: none;
+      border: 0;
+      background: #000;
+    }
+  }
+`;
+document.head.appendChild(mobileVideoStyles);
 
 const galleryStyles = document.createElement("style");
 galleryStyles.textContent = `
@@ -328,7 +414,7 @@ const setupProjectGallery = ({
 
     projectButton.addEventListener("click", () => {
       galleryDialog.close();
-      requestAnimationFrame(() => openVideo(projectButton));
+      openVideo(projectButton);
     });
 
     galleryGrid.appendChild(projectButton);
