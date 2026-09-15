@@ -6,6 +6,7 @@ const dialog = document.querySelector("[data-dialog]");
 const dialogFrame = document.querySelector("[data-video-frame]");
 const dialogTitle = document.querySelector("[data-dialog-title]");
 const closeDialogButton = document.querySelector("[data-dialog-close]");
+const videoFrame = dialog.querySelector(".video-frame");
 
 const closeMenu = (restoreFocus = false) => {
   menuButton.setAttribute("aria-expanded", "false");
@@ -69,29 +70,65 @@ document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe
 
 const withAutoplay = (url) => `${url}${url.includes("?") ? "&" : "?"}autoplay=1`;
 
+const getFullscreenElement = () => document.fullscreenElement || document.webkitFullscreenElement;
+
+const exitPortfolioFullscreen = () => {
+  const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen;
+  if (getFullscreenElement() === dialog && exitFullscreen) {
+    try {
+      const result = exitFullscreen.call(document);
+      if (result?.catch) result.catch(() => {});
+    } catch (_) {}
+  }
+  dialog.classList.remove("is-faux-fullscreen");
+};
+
+const togglePortfolioFullscreen = () => {
+  if (getFullscreenElement() === dialog || dialog.classList.contains("is-faux-fullscreen")) {
+    exitPortfolioFullscreen();
+    return;
+  }
+
+  const requestFullscreen = dialog.requestFullscreen || dialog.webkitRequestFullscreen;
+  if (requestFullscreen) {
+    try {
+      const result = requestFullscreen.call(dialog);
+      if (result?.catch) {
+        result.catch(() => dialog.classList.add("is-faux-fullscreen"));
+      }
+      return;
+    } catch (_) {}
+  }
+
+  dialog.classList.add("is-faux-fullscreen");
+};
+
+const mobileFullscreenProxy = document.createElement("button");
+mobileFullscreenProxy.type = "button";
+mobileFullscreenProxy.className = "mobile-fullscreen-proxy";
+mobileFullscreenProxy.setAttribute("aria-label", "Alternar tela cheia do vídeo");
+mobileFullscreenProxy.addEventListener("click", (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  togglePortfolioFullscreen();
+});
+videoFrame.appendChild(mobileFullscreenProxy);
+
 const openVideo = (button) => {
   dialogFrame.src = withAutoplay(button.dataset.video);
   dialogTitle.textContent = button.dataset.videoTitle || "Projeto";
   dialog.classList.toggle("is-vertical", button.dataset.videoFormat === "vertical");
+  dialog.classList.remove("is-faux-fullscreen");
   document.body.classList.add("video-open");
   dialog.showModal();
 };
 
 const closeVideo = () => {
-  const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
-  if (fullscreenElement === dialog) {
-    const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen;
-    if (exitFullscreen) {
-      try {
-        const result = exitFullscreen.call(document);
-        if (result?.catch) result.catch(() => {});
-      } catch (_) {}
-    }
-  }
+  exitPortfolioFullscreen();
 
   if (dialog.open) dialog.close();
   dialogFrame.src = "";
-  dialog.classList.remove("is-vertical");
+  dialog.classList.remove("is-vertical", "is-faux-fullscreen");
   document.body.classList.remove("video-open");
 };
 
@@ -101,58 +138,123 @@ mobileVideoStyles.textContent = `
     display: none !important;
   }
 
+  .mobile-fullscreen-proxy {
+    display: none;
+  }
+
   @media (max-width: 760px) {
-    .video-dialog[open] {
+    .video-dialog[open],
+    .video-dialog.is-faux-fullscreen {
       position: fixed;
       inset: 0;
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
       width: 100vw !important;
-      height: 100dvh;
+      height: 100dvh !important;
       max-width: none;
       max-height: none;
       margin: 0;
       padding: 0;
       border: 0;
       background: #000;
-    }
-
-    .video-dialog.is-vertical {
-      width: 100vw !important;
+      overflow: hidden;
     }
 
     .video-dialog .dialog-bar {
-      flex: 0 0 auto;
-      min-height: calc(52px + env(safe-area-inset-top, 0px));
+      position: relative;
+      z-index: 80;
+      min-height: calc(56px + env(safe-area-inset-top, 0px));
       padding-top: env(safe-area-inset-top, 0px);
       padding-right: max(12px, env(safe-area-inset-right, 0px));
       padding-left: max(12px, env(safe-area-inset-left, 0px));
       background: #0b0c0b;
     }
 
-    .video-dialog .video-frame,
-    .video-dialog.is-vertical .video-frame {
-      flex: 1 1 auto;
+    .video-dialog .video-frame {
+      position: relative;
+      align-self: center;
+      justify-self: center;
       width: 100%;
       height: auto;
-      min-height: 0;
-      aspect-ratio: auto;
+      max-width: 100vw;
+      max-height: calc(100dvh - 56px - env(safe-area-inset-top, 0px));
+      aspect-ratio: 16 / 9;
       background: #000;
+      overflow: hidden;
+    }
+
+    .video-dialog.is-vertical .video-frame {
+      width: min(
+        100vw,
+        calc((100dvh - 56px - env(safe-area-inset-top, 0px)) * 9 / 16)
+      );
+      max-width: 100vw;
+      height: auto;
+      aspect-ratio: 9 / 16;
     }
 
     .video-dialog .video-frame iframe {
+      position: absolute;
+      inset: 0;
+      display: block;
       width: 100%;
       height: 100%;
+      border: 0;
+      background: #000;
+    }
+
+    .mobile-fullscreen-proxy {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 70;
+      display: block;
+      width: 64px;
+      height: 64px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: transparent;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .video-dialog:fullscreen,
-    .video-dialog:-webkit-full-screen {
+    .video-dialog:-webkit-full-screen,
+    .video-dialog.is-faux-fullscreen {
       width: 100vw !important;
       height: 100vh !important;
       max-width: none;
       max-height: none;
       border: 0;
       background: #000;
+    }
+
+    .video-dialog:fullscreen .video-frame,
+    .video-dialog:-webkit-full-screen .video-frame,
+    .video-dialog.is-faux-fullscreen .video-frame {
+      max-height: calc(100vh - 56px - env(safe-area-inset-top, 0px));
+    }
+
+    .video-dialog:fullscreen:not(.is-vertical) .video-frame,
+    .video-dialog:-webkit-full-screen:not(.is-vertical) .video-frame,
+    .video-dialog.is-faux-fullscreen:not(.is-vertical) .video-frame {
+      width: min(
+        100vw,
+        calc((100vh - 56px - env(safe-area-inset-top, 0px)) * 16 / 9)
+      );
+      aspect-ratio: 16 / 9;
+    }
+
+    .video-dialog:fullscreen.is-vertical .video-frame,
+    .video-dialog:-webkit-full-screen.is-vertical .video-frame,
+    .video-dialog.is-faux-fullscreen.is-vertical .video-frame {
+      width: min(
+        100vw,
+        calc((100vh - 56px - env(safe-area-inset-top, 0px)) * 9 / 16)
+      );
+      aspect-ratio: 9 / 16;
     }
   }
 `;
@@ -491,6 +593,13 @@ dialog.addEventListener("click", (event) => {
 dialog.addEventListener("cancel", (event) => {
   event.preventDefault();
   closeVideo();
+});
+
+document.addEventListener("fullscreenchange", () => {
+  if (!getFullscreenElement()) dialog.classList.remove("is-faux-fullscreen");
+});
+document.addEventListener("webkitfullscreenchange", () => {
+  if (!getFullscreenElement()) dialog.classList.remove("is-faux-fullscreen");
 });
 
 // Dificulta o salvamento casual a partir do player incorporado. A proteção
