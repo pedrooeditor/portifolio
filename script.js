@@ -6,7 +6,6 @@ const dialog = document.querySelector("[data-dialog]");
 const dialogFrame = document.querySelector("[data-video-frame]");
 const dialogTitle = document.querySelector("[data-dialog-title]");
 const closeDialogButton = document.querySelector("[data-dialog-close]");
-const mobileVideoMedia = window.matchMedia("(max-width: 760px)");
 
 const closeMenu = (restoreFocus = false) => {
   menuButton.setAttribute("aria-expanded", "false");
@@ -68,27 +67,12 @@ const revealObserver = new IntersectionObserver(
 
 document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
 
-const requestMobileFullscreen = () => {
-  if (!mobileVideoMedia.matches) return;
-
-  const requestFullscreen = dialog.requestFullscreen || dialog.webkitRequestFullscreen;
-  if (!requestFullscreen) return;
-
-  try {
-    const result = requestFullscreen.call(dialog);
-    if (result?.catch) result.catch(() => {});
-  } catch (_) {
-    // O layout em 100% da viewport continua funcionando como fallback.
-  }
-};
-
 const openVideo = (button) => {
   dialogFrame.src = button.dataset.video;
   dialogTitle.textContent = button.dataset.videoTitle || "Projeto";
   dialog.classList.toggle("is-vertical", button.dataset.videoFormat === "vertical");
   document.body.classList.add("video-open");
   dialog.showModal();
-  requestMobileFullscreen();
 };
 
 const closeVideo = () => {
@@ -111,6 +95,10 @@ const closeVideo = () => {
 
 const mobileVideoStyles = document.createElement("style");
 mobileVideoStyles.textContent = `
+  .portfolio-watermark {
+    display: none !important;
+  }
+
   @media (max-width: 760px) {
     .video-dialog[open] {
       position: fixed;
