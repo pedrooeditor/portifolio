@@ -213,4 +213,15 @@
     player.addEventListener('webkitendfullscreen', reset);
   });
   document.body.appendChild(core);
+
+  const analyticsConfig = document.createElement('script');
+  analyticsConfig.src = 'analytics-config.js?v=20260916';
+  analyticsConfig.async = false;
+  analyticsConfig.addEventListener('load', () => {
+    const analytics = document.createElement('script');
+    analytics.src = 'analytics.js?v=20260916';
+    analytics.async = true;
+    document.body.appendChild(analytics);
+  });
+  document.body.appendChild(analyticsConfig);
 })();
