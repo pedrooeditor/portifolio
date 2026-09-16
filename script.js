@@ -15,6 +15,7 @@
 
   const cinematicDirectUrl = 'https://www.dropbox.com/scl/fi/ic49a7r85ud19artfd06r/Cinematic-VSL-Exemplo-1-Web.mp4?rlkey=atxvz8gmehizt38su5uxv6eso&raw=1';
   const viralDirectUrl = 'https://www.dropbox.com/scl/fi/y8ap64v3cre4yjwry1i83/Videos-Virais-Exemplo-1-Web.mp4?rlkey=pktpmp18fpjb6ujke97i0qhnw&raw=1';
+  const viralDirectUrl2 = 'https://www.dropbox.com/scl/fi/8260dz00wbam6s0p8gx3r/Videos-Virais-Exemplo-2-Web.mp4?rlkey=gunb25ajjqf4rk132bd85vc7u&raw=1';
 
   const horizontalStyles = document.createElement('style');
   horizontalStyles.textContent = `
@@ -68,8 +69,9 @@
     if (cinematicButton && cinematicDirectUrl) cinematicButton.dataset.directVideo = cinematicDirectUrl;
 
     const viralDialog = document.querySelector('[aria-labelledby="videos-virais-gallery-title"]');
-    const viralButton = viralDialog?.querySelector('.project-gallery-item');
-    if (viralButton && viralDirectUrl) viralButton.dataset.directVideo = viralDirectUrl;
+    const viralButtons = viralDialog?.querySelectorAll('.project-gallery-item');
+    if (viralButtons?.[0] && viralDirectUrl) viralButtons[0].dataset.directVideo = viralDirectUrl;
+    if (viralButtons?.[1] && viralDirectUrl2) viralButtons[1].dataset.directVideo = viralDirectUrl2;
 
     document.addEventListener('click', (event) => {
       const item = event.target.closest?.('.project-gallery-item');
