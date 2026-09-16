@@ -21,7 +21,7 @@
   }
 
   const client = window.supabase.createClient(cfg.supabaseUrl, cfg.supabasePublishableKey, {
-    auth: { persistSession: true, autoRefreshToken: true }
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
 
   let charts = {};
@@ -137,7 +137,7 @@
       if (dataStatus) dataStatus.textContent = `Atualizado às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}.`;
     } catch (error) {
       const forbidden = /forbidden|42501|permission/i.test(String(error?.message || ''));
-      if (dataStatus) dataStatus.textContent = forbidden ? 'Este usuário ainda não foi autorizado como administrador do analytics.' : `Não foi possível carregar os dados: ${error?.message || 'erro desconhecido'}`;
+      if (dataStatus) dataStatus.textContent = forbidden ? 'Este e-mail ainda não foi autorizado como administrador do analytics.' : `Não foi possível carregar os dados: ${error?.message || 'erro desconhecido'}`;
     } finally {
       if (refreshButton) refreshButton.disabled = false;
     }
@@ -153,12 +153,20 @@
 
   loginForm?.addEventListener('submit', async event => {
     event.preventDefault();
-    if (loginStatus) loginStatus.textContent = 'Entrando…';
     const form = new FormData(loginForm);
-    const { data, error } = await client.auth.signInWithPassword({ email: String(form.get('email') || ''), password: String(form.get('password') || '') });
-    if (error) { if (loginStatus) loginStatus.textContent = 'E-mail ou senha inválidos.'; return; }
-    if (loginStatus) loginStatus.textContent = '';
-    await applySession(data.session);
+    const email = String(form.get('email') || '').trim();
+    if (!email) return;
+    if (loginStatus) loginStatus.textContent = 'Enviando link seguro…';
+    const redirectTo = `${location.origin}${location.pathname}`;
+    const { error } = await client.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: redirectTo, shouldCreateUser: true }
+    });
+    if (error) {
+      if (loginStatus) loginStatus.textContent = `Não foi possível enviar o link: ${error.message}`;
+      return;
+    }
+    if (loginStatus) loginStatus.textContent = 'Link enviado. Abra seu e-mail e toque no acesso da PH Motions.';
   });
 
   logoutButton?.addEventListener('click', async () => { await client.auth.signOut(); await applySession(null); });
@@ -166,7 +174,7 @@
   periodSelect?.addEventListener('change', loadDashboard);
 
   client.auth.onAuthStateChange((_event, session) => {
-    if (!session) applySession(null);
+    applySession(session);
   });
 
   client.auth.getSession().then(({ data }) => applySession(data.session));
