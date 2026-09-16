@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="dashboard.css?v=20260916-3" />
+  <link rel="stylesheet" href="dashboard.css?v=20260916-4" />
 </head>
 <body>
   <main class="shell">
@@ -17,7 +17,7 @@
       <span class="brand-mark">PS</span>
       <p class="eyebrow">PH Motions · Analytics</p>
       <h1>Backend ainda<br><em>não configurado.</em></h1>
-      <p>A interface da dashboard já está pronta. Falta apenas conectar a URL e a chave pública do projeto Supabase.</p>
+      <p>A dashboard não conseguiu carregar a configuração pública do Supabase. Recarregue a página; se persistir, a configuração precisa ser revisada.</p>
     </section>
 
     <section class="auth-card" data-auth hidden>
@@ -98,8 +98,13 @@
     </section>
   </main>
 
-  <script src="../analytics-config.js?v=20260916-3"></script>
+  <script>
+    window.PH_ANALYTICS_CONFIG = Object.freeze({
+      supabaseUrl: 'https://pwbpxhsucidjgmlneksz.supabase.co',
+      supabasePublishableKey: 'sb_publishable_cO1ukxKyw8P9tdb2u8H92w_p-q3k-oy'
+    });
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="dashboard.js?v=20260916-3"></script>
+  <script src="dashboard.js?v=20260916-4"></script>
 </body>
 </html>
