@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="dashboard.css?v=20260916-5" />
+  <link rel="stylesheet" href="dashboard.css?v=20260916-6" />
 </head>
 <body class="login-page" data-page="login">
   <main class="shell login-shell">
@@ -39,7 +39,12 @@
     </section>
   </main>
 
-  <script src="/analytics-config.js?v=20260916-5"></script>
-  <script src="dashboard.js?v=20260916-5"></script>
+  <script>
+    window.PH_ANALYTICS_CONFIG = Object.freeze({
+      supabaseUrl: 'https://pwbpxhsucidjgmlneksz.supabase.co',
+      supabasePublishableKey: 'sb_publishable_cO1ukxKyw8P9tdb2u8H92w_p-q3k-oy'
+    });
+  </script>
+  <script src="dashboard.js?v=20260916-6"></script>
 </body>
 </html>
