@@ -9,9 +9,13 @@
   const periodSelect = document.querySelector('[data-period]');
   const refreshButton = document.querySelector('[data-refresh]');
   const logoutButton = document.querySelector('[data-logout]');
-  const configured = Boolean(cfg.supabaseUrl && cfg.supabasePublishableKey && window.supabase);
+
+  const apiUrl = String(cfg.supabaseUrl || '').replace(/\/$/, '');
+  const apiKey = String(cfg.supabasePublishableKey || '');
+  const configured = Boolean(apiUrl && apiKey);
   const TOKEN_KEY = 'ph_dashboard_token';
   const USER_KEY = 'ph_dashboard_user';
+
   const show = (el, on) => { if (el) el.hidden = !on; };
   const format = value => new Intl.NumberFormat('pt-BR').format(Number(value || 0));
   const formatDuration = value => {
@@ -32,9 +36,38 @@
     return;
   }
 
-  const client = window.supabase.createClient(cfg.supabaseUrl, cfg.supabasePublishableKey, {
-    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
-  });
+  const apiHeaders = {
+    apikey: apiKey,
+    Authorization: `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  };
+
+  const callRpc = async (name, args = {}) => {
+    const response = await fetch(`${apiUrl}/rest/v1/rpc/${encodeURIComponent(name)}`, {
+      method: 'POST',
+      headers: apiHeaders,
+      body: JSON.stringify(args),
+      cache: 'no-store'
+    });
+
+    const raw = await response.text();
+    let data = null;
+    if (raw) {
+      try { data = JSON.parse(raw); }
+      catch (_) { data = raw; }
+    }
+
+    if (!response.ok) {
+      const message = typeof data === 'object' && data?.message
+        ? data.message
+        : `Erro ${response.status}`;
+      const error = new Error(message);
+      error.status = response.status;
+      error.data = data;
+      throw error;
+    }
+    return data;
+  };
 
   let charts = {};
   const destroyChart = key => {
@@ -70,9 +103,7 @@
   const rpc = async (name, days) => {
     const token = readToken();
     if (!token) throw new Error('forbidden');
-    const { data, error } = await client.rpc(name, { p_token: token, p_days: days });
-    if (error) throw error;
-    return data;
+    return callRpc(name, { p_token: token, p_days: days });
   };
 
   const renderKpis = overview => {
@@ -161,6 +192,7 @@
     const days = Math.max(1, Number(periodSelect?.value || 30));
     if (dataStatus) dataStatus.textContent = 'Atualizando dados…';
     if (refreshButton) refreshButton.disabled = true;
+
     try {
       const [overview, daily, videos, funnel, sources] = await Promise.all([
         rpc('analytics_overview_token', days),
@@ -169,6 +201,7 @@
         rpc('analytics_video_funnel_token', days),
         rpc('analytics_sources_token', days)
       ]);
+
       renderKpis(overview || {});
       renderDaily(Array.isArray(daily) ? daily : []);
       renderVideos(Array.isArray(videos) ? videos : []);
@@ -199,29 +232,38 @@
     if (!username || !password) return;
     if (loginStatus) loginStatus.textContent = 'Entrando…';
 
-    const { data, error } = await client.rpc('dashboard_login', {
-      p_username: username,
-      p_password: password
-    });
+    try {
+      const data = await callRpc('dashboard_login', {
+        p_username: username,
+        p_password: password
+      });
 
-    if (error || !data?.token) {
-      if (loginStatus) loginStatus.textContent = 'Usuário ou senha inválidos.';
-      return;
+      if (!data?.token) {
+        if (loginStatus) loginStatus.textContent = data?.locked
+          ? 'Muitas tentativas. Aguarde alguns minutos e tente novamente.'
+          : 'Usuário ou senha inválidos.';
+        return;
+      }
+
+      saveSession(data.token, data.username || username);
+      loginForm.reset();
+      if (loginStatus) loginStatus.textContent = '';
+      setSignedIn(true);
+      await loadDashboard();
+    } catch (error) {
+      if (loginStatus) loginStatus.textContent = `Não foi possível conectar: ${error?.message || 'erro de conexão'}`;
     }
-
-    saveSession(data.token, data.username || username);
-    loginForm.reset();
-    if (loginStatus) loginStatus.textContent = '';
-    setSignedIn(true);
-    await loadDashboard();
   });
 
   logoutButton?.addEventListener('click', async () => {
     const token = readToken();
-    if (token) await client.rpc('dashboard_logout', { p_token: token }).catch?.(() => {});
+    if (token) {
+      try { await callRpc('dashboard_logout', { p_token: token }); } catch (_) {}
+    }
     clearSession();
     setSignedIn(false);
   });
+
   refreshButton?.addEventListener('click', loadDashboard);
   periodSelect?.addEventListener('change', loadDashboard);
 
