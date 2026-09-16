@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="dashboard.css?v=20260916-2" />
 </head>
 <body>
   <main class="shell">
@@ -25,11 +25,12 @@
         <span class="brand-mark">PS</span>
         <p class="eyebrow">Acesso privado</p>
         <h1>PH Motions<br><em>Analytics.</em></h1>
-        <p class="muted">Digite o e-mail autorizado. Você receberá um link seguro para entrar — sem precisar criar senha.</p>
+        <p class="muted">Acesso administrativo privado. Entre com seu usuário e senha para visualizar os dados do portfólio.</p>
       </div>
       <form data-login-form>
-        <label>E-mail<input name="email" type="email" autocomplete="email" required /></label>
-        <button type="submit">Enviar link de acesso <span>↗</span></button>
+        <label>Usuário<input name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required /></label>
+        <label>Senha<input name="password" type="password" autocomplete="current-password" required /></label>
+        <button type="submit">Entrar na dashboard <span>↗</span></button>
         <p class="form-status" data-login-status aria-live="polite"></p>
       </form>
     </section>
@@ -56,15 +57,18 @@
           <p class="eyebrow">Performance do portfólio</p>
           <h1>O que acontece<br><em>depois do clique.</em></h1>
         </div>
-        <p class="hero-copy">Acessos, consumo dos vídeos e ações que aproximam um visitante de virar cliente.</p>
+        <p class="hero-copy">Acessos, tempo de navegação, consumo dos vídeos e ações que aproximam um visitante de virar cliente.</p>
       </section>
 
       <section class="kpis" aria-label="Indicadores principais">
         <article><span>Visitantes</span><strong data-kpi="visitors">—</strong><small>pessoas únicas</small></article>
         <article><span>Sessões</span><strong data-kpi="sessions">—</strong><small>visitas ao site</small></article>
         <article><span>Page views</span><strong data-kpi="page_views">—</strong><small>visualizações</small></article>
+        <article><span>Cliques</span><strong data-kpi="clicks">—</strong><small>ações no site</small></article>
         <article><span>Projetos abertos</span><strong data-kpi="project_opens">—</strong><small>interações</small></article>
         <article><span>Plays</span><strong data-kpi="video_plays">—</strong><small>vídeos iniciados</small></article>
+        <article><span>Tempo médio</span><strong data-kpi="avg_session_seconds" data-time>—</strong><small>no site</small></article>
+        <article><span>Apresentação</span><strong data-kpi="avg_presentation_watch_seconds" data-time>—</strong><small>tempo médio assistido</small></article>
         <article class="accent"><span>WhatsApp</span><strong data-kpi="whatsapp_clicks">—</strong><small>cliques de contato</small></article>
       </section>
 
@@ -94,9 +98,9 @@
     </section>
   </main>
 
-  <script src="../analytics-config.js?v=20260916"></script>
+  <script src="../analytics-config.js?v=20260916-2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="dashboard.js?v=20260916"></script>
+  <script src="dashboard.js?v=20260916-2"></script>
 </body>
 </html>
