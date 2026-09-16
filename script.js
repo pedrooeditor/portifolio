@@ -710,7 +710,11 @@ setupProjectGallery({
       url: 'https://drive.google.com/file/d/148SFeFxIAvX_X8O5AFnuVjlRBqtF28JW/preview',
       directUrl: 'https://www.dropbox.com/scl/fi/sf2043sqqgcw2akk8wg6p/Direct-Response-Exemplo-1-Web.mp4?rlkey=z3i60dr04yi77l6r7egb74p6z&raw=1'
     },
-    { label: 'Exemplo 2', url: 'https://drive.google.com/file/d/13O1-hU_z1ESGwfoZ3IwS5oFvoNVwlmpc/preview' },
+    {
+      label: 'Exemplo 2',
+      url: 'https://drive.google.com/file/d/13O1-hU_z1ESGwfoZ3IwS5oFvoNVwlmpc/preview',
+      directUrl: 'https://www.dropbox.com/scl/fi/23xptelf3enkvrfssn8gi/Direct-Response-Exemplo-2-Web.mp4?rlkey=pl43hn30ljsnf788aqz2chzie&raw=1'
+    },
     { label: 'Exemplo 3', url: 'https://drive.google.com/file/d/1Ij5vQo45FUrQx9N_AJqnzk_bUQlFqJy0/preview' }
   ]
 });
