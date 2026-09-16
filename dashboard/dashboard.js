@@ -10,8 +10,20 @@
   const refreshButton = document.querySelector('[data-refresh]');
   const logoutButton = document.querySelector('[data-logout]');
   const configured = Boolean(cfg.supabaseUrl && cfg.supabasePublishableKey && window.supabase);
+  const TOKEN_KEY = 'ph_dashboard_token';
+  const USER_KEY = 'ph_dashboard_user';
   const show = (el, on) => { if (el) el.hidden = !on; };
   const format = value => new Intl.NumberFormat('pt-BR').format(Number(value || 0));
+  const formatDuration = value => {
+    const seconds = Math.max(0, Math.round(Number(value || 0)));
+    if (seconds < 60) return `${seconds}s`;
+    const minutes = Math.floor(seconds / 60);
+    const rest = seconds % 60;
+    if (minutes < 60) return rest ? `${minutes}m ${rest}s` : `${minutes}m`;
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return mins ? `${hours}h ${mins}m` : `${hours}h`;
+  };
 
   if (!configured) {
     show(setupState, true);
@@ -21,7 +33,7 @@
   }
 
   const client = window.supabase.createClient(cfg.supabaseUrl, cfg.supabasePublishableKey, {
-    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
   });
 
   let charts = {};
@@ -39,8 +51,26 @@
     Chart.defaults.font.family = 'Inter Tight, sans-serif';
   }
 
+  const readToken = () => {
+    try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (_) { return ''; }
+  };
+  const saveSession = (token, username) => {
+    try {
+      localStorage.setItem(TOKEN_KEY, token);
+      localStorage.setItem(USER_KEY, username || 'ph_admin');
+    } catch (_) {}
+  };
+  const clearSession = () => {
+    try {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
+    } catch (_) {}
+  };
+
   const rpc = async (name, days) => {
-    const { data, error } = await client.rpc(name, { p_days: days });
+    const token = readToken();
+    if (!token) throw new Error('forbidden');
+    const { data, error } = await client.rpc(name, { p_token: token, p_days: days });
     if (error) throw error;
     return data;
   };
@@ -48,7 +78,8 @@
   const renderKpis = overview => {
     Object.entries(overview || {}).forEach(([key, value]) => {
       const node = document.querySelector(`[data-kpi="${key}"]`);
-      if (node) node.textContent = format(value);
+      if (!node) return;
+      node.textContent = node.hasAttribute('data-time') ? formatDuration(value) : format(value);
     });
   };
 
@@ -103,7 +134,10 @@
   const renderFunnel = rows => {
     const root = document.querySelector('[data-funnel]');
     if (!root) return;
-    if (!rows.length) { root.innerHTML = '<p class="muted">Os dados de retenção aparecerão depois dos primeiros plays.</p>'; return; }
+    if (!rows.length) {
+      root.innerHTML = '<p class="muted">Os dados de retenção aparecerão depois dos primeiros plays.</p>';
+      return;
+    }
     root.innerHTML = rows.slice(0, 6).map(r => `
       <article class="funnel-item">
         <div class="funnel-top"><strong>${String(r.video_name || 'Vídeo').replace(/[<>&"]/g, '')}</strong><span>${format(r.plays)} plays</span></div>
@@ -117,17 +151,23 @@
       </article>`).join('');
   };
 
+  const setSignedIn = signedIn => {
+    show(setupState, false);
+    show(authState, !signedIn);
+    show(dashboard, signedIn);
+  };
+
   const loadDashboard = async () => {
     const days = Math.max(1, Number(periodSelect?.value || 30));
     if (dataStatus) dataStatus.textContent = 'Atualizando dados…';
     if (refreshButton) refreshButton.disabled = true;
     try {
       const [overview, daily, videos, funnel, sources] = await Promise.all([
-        rpc('analytics_overview', days),
-        rpc('analytics_daily', days),
-        rpc('analytics_top_videos', days),
-        rpc('analytics_video_funnel', days),
-        rpc('analytics_sources', days)
+        rpc('analytics_overview_token', days),
+        rpc('analytics_daily_token', days),
+        rpc('analytics_top_videos_token', days),
+        rpc('analytics_video_funnel_token', days),
+        rpc('analytics_sources_token', days)
       ]);
       renderKpis(overview || {});
       renderDaily(Array.isArray(daily) ? daily : []);
@@ -135,47 +175,60 @@
       renderFunnel(Array.isArray(funnel) ? funnel : []);
       renderSources(Array.isArray(sources) ? sources : []);
       if (dataStatus) dataStatus.textContent = `Atualizado às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}.`;
+      return true;
     } catch (error) {
       const forbidden = /forbidden|42501|permission/i.test(String(error?.message || ''));
-      if (dataStatus) dataStatus.textContent = forbidden ? 'Este e-mail ainda não foi autorizado como administrador do analytics.' : `Não foi possível carregar os dados: ${error?.message || 'erro desconhecido'}`;
+      if (forbidden) {
+        clearSession();
+        setSignedIn(false);
+        if (loginStatus) loginStatus.textContent = 'Sua sessão expirou. Entre novamente.';
+      } else if (dataStatus) {
+        dataStatus.textContent = `Não foi possível carregar os dados: ${error?.message || 'erro desconhecido'}`;
+      }
+      return false;
     } finally {
       if (refreshButton) refreshButton.disabled = false;
     }
   };
 
-  const applySession = async session => {
-    const signedIn = Boolean(session?.user);
-    show(setupState, false);
-    show(authState, !signedIn);
-    show(dashboard, signedIn);
-    if (signedIn) await loadDashboard();
-  };
-
   loginForm?.addEventListener('submit', async event => {
     event.preventDefault();
     const form = new FormData(loginForm);
-    const email = String(form.get('email') || '').trim();
-    if (!email) return;
-    if (loginStatus) loginStatus.textContent = 'Enviando link seguro…';
-    const redirectTo = `${location.origin}${location.pathname}`;
-    const { error } = await client.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: redirectTo, shouldCreateUser: true }
+    const username = String(form.get('username') || '').trim();
+    const password = String(form.get('password') || '');
+    if (!username || !password) return;
+    if (loginStatus) loginStatus.textContent = 'Entrando…';
+
+    const { data, error } = await client.rpc('dashboard_login', {
+      p_username: username,
+      p_password: password
     });
-    if (error) {
-      if (loginStatus) loginStatus.textContent = `Não foi possível enviar o link: ${error.message}`;
+
+    if (error || !data?.token) {
+      if (loginStatus) loginStatus.textContent = 'Usuário ou senha inválidos.';
       return;
     }
-    if (loginStatus) loginStatus.textContent = 'Link enviado. Abra seu e-mail e toque no acesso da PH Motions.';
+
+    saveSession(data.token, data.username || username);
+    loginForm.reset();
+    if (loginStatus) loginStatus.textContent = '';
+    setSignedIn(true);
+    await loadDashboard();
   });
 
-  logoutButton?.addEventListener('click', async () => { await client.auth.signOut(); await applySession(null); });
+  logoutButton?.addEventListener('click', async () => {
+    const token = readToken();
+    if (token) await client.rpc('dashboard_logout', { p_token: token }).catch?.(() => {});
+    clearSession();
+    setSignedIn(false);
+  });
   refreshButton?.addEventListener('click', loadDashboard);
   periodSelect?.addEventListener('change', loadDashboard);
 
-  client.auth.onAuthStateChange((_event, session) => {
-    applySession(session);
-  });
-
-  client.auth.getSession().then(({ data }) => applySession(data.session));
+  if (readToken()) {
+    setSignedIn(true);
+    loadDashboard();
+  } else {
+    setSignedIn(false);
+  }
 })();
