@@ -25,12 +25,11 @@
         <span class="brand-mark">PS</span>
         <p class="eyebrow">Acesso privado</p>
         <h1>PH Motions<br><em>Analytics.</em></h1>
-        <p class="muted">Entre com o usuário autorizado no Supabase para visualizar os dados do portfólio.</p>
+        <p class="muted">Digite o e-mail autorizado. Você receberá um link seguro para entrar — sem precisar criar senha.</p>
       </div>
       <form data-login-form>
-        <label>E-mail<input name="email" type="email" autocomplete="username" required /></label>
-        <label>Senha<input name="password" type="password" autocomplete="current-password" required /></label>
-        <button type="submit">Entrar na dashboard <span>↗</span></button>
+        <label>E-mail<input name="email" type="email" autocomplete="email" required /></label>
+        <button type="submit">Enviar link de acesso <span>↗</span></button>
         <p class="form-status" data-login-status aria-live="polite"></p>
       </form>
     </section>
@@ -95,9 +94,9 @@
     </section>
   </main>
 
-  <script src="../analytics-config.js"></script>
+  <script src="../analytics-config.js?v=20260916"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="dashboard.js"></script>
+  <script src="dashboard.js?v=20260916"></script>
 </body>
 </html>
