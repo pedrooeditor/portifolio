@@ -40,11 +40,21 @@
   </main>
 
   <script>
+    (() => {
+      const tabKey = 'ph_dashboard_tab_session';
+      try {
+        if (!sessionStorage.getItem(tabKey)) {
+          localStorage.removeItem('ph_dashboard_token');
+          localStorage.removeItem('ph_dashboard_user');
+        }
+        sessionStorage.setItem(tabKey, '1');
+      } catch (_) {}
+    })();
     window.PH_ANALYTICS_CONFIG = Object.freeze({
       supabaseUrl: 'https://pwbpxhsucidjgmlneksz.supabase.co',
       supabasePublishableKey: 'sb_publishable_cO1ukxKyw8P9tdb2u8H92w_p-q3k-oy'
     });
   </script>
-  <script src="dashboard.js?v=20260916-6"></script>
+  <script src="dashboard.js?v=20260916-7"></script>
 </body>
 </html>
