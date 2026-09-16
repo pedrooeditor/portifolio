@@ -14,6 +14,7 @@
   }
 
   const cinematicDirectUrl = 'https://www.dropbox.com/scl/fi/ic49a7r85ud19artfd06r/Cinematic-VSL-Exemplo-1-Web.mp4?rlkey=atxvz8gmehizt38su5uxv6eso&raw=1';
+  const viralDirectUrl = 'https://www.dropbox.com/scl/fi/y8ap64v3cre4yjwry1i83/Videos-Virais-Exemplo-1-Web.mp4?rlkey=pktpmp18fpjb6ujke97i0qhnw&raw=1';
 
   const horizontalStyles = document.createElement('style');
   horizontalStyles.textContent = `
@@ -65,6 +66,10 @@
     const cinematicDialog = document.querySelector('[aria-labelledby="cinematic-vsl-gallery-title"]');
     const cinematicButton = cinematicDialog?.querySelector('.project-gallery-item');
     if (cinematicButton && cinematicDirectUrl) cinematicButton.dataset.directVideo = cinematicDirectUrl;
+
+    const viralDialog = document.querySelector('[aria-labelledby="videos-virais-gallery-title"]');
+    const viralButton = viralDialog?.querySelector('.project-gallery-item');
+    if (viralButton && viralDirectUrl) viralButton.dataset.directVideo = viralDirectUrl;
 
     document.addEventListener('click', (event) => {
       const item = event.target.closest?.('.project-gallery-item');
