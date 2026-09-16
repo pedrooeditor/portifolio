@@ -1,5 +1,6 @@
 (() => {
   const cfg = window.PH_ANALYTICS_CONFIG || {};
+  const page = document.body.dataset.page || 'login';
   const setupState = document.querySelector('[data-setup]');
   const authState = document.querySelector('[data-auth]');
   const dashboard = document.querySelector('[data-dashboard]');
@@ -7,6 +8,7 @@
   const loginStatus = document.querySelector('[data-login-status]');
   const dataStatus = document.querySelector('[data-data-status]');
   const periodSelect = document.querySelector('[data-period]');
+  const periodCopy = document.querySelector('[data-period-copy]');
   const refreshButton = document.querySelector('[data-refresh]');
   const logoutButton = document.querySelector('[data-logout]');
 
@@ -27,6 +29,25 @@
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
     return mins ? `${hours}h ${mins}m` : `${hours}h`;
+  };
+  const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+  })[char]);
+
+  const readToken = () => {
+    try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (_) { return ''; }
+  };
+  const saveSession = (token, username) => {
+    try {
+      localStorage.setItem(TOKEN_KEY, token);
+      localStorage.setItem(USER_KEY, username || 'ph_admin');
+    } catch (_) {}
+  };
+  const clearSession = () => {
+    try {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
+    } catch (_) {}
   };
 
   if (!configured) {
@@ -58,9 +79,7 @@
     }
 
     if (!response.ok) {
-      const message = typeof data === 'object' && data?.message
-        ? data.message
-        : `Erro ${response.status}`;
+      const message = typeof data === 'object' && data?.message ? data.message : `Erro ${response.status}`;
       const error = new Error(message);
       error.status = response.status;
       error.data = data;
@@ -68,6 +87,69 @@
     }
     return data;
   };
+
+  const rpc = async (name, days) => {
+    const token = readToken();
+    if (!token) throw new Error('forbidden');
+    return callRpc(name, { p_token: token, p_days: days });
+  };
+
+  if (page === 'login') {
+    show(setupState, false);
+    show(authState, true);
+
+    if (readToken()) {
+      location.replace('painel.html');
+      return;
+    }
+
+    const params = new URLSearchParams(location.search);
+    if (params.get('expired') === '1' && loginStatus) {
+      loginStatus.textContent = 'Sua sessão expirou. Entre novamente.';
+    }
+
+    loginForm?.addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = new FormData(loginForm);
+      const username = String(form.get('username') || '').trim();
+      const password = String(form.get('password') || '');
+      if (!username || !password) return;
+
+      const submit = loginForm.querySelector('button[type="submit"]');
+      if (submit) submit.disabled = true;
+      if (loginStatus) loginStatus.textContent = 'Entrando…';
+
+      try {
+        const data = await callRpc('dashboard_login', {
+          p_username: username,
+          p_password: password
+        });
+
+        if (!data?.token) {
+          if (loginStatus) loginStatus.textContent = data?.locked
+            ? 'Muitas tentativas. Aguarde alguns minutos e tente novamente.'
+            : 'Usuário ou senha inválidos.';
+          return;
+        }
+
+        saveSession(data.token, data.username || username);
+        location.replace('painel.html');
+      } catch (error) {
+        if (loginStatus) loginStatus.textContent = `Não foi possível conectar: ${error?.message || 'erro de conexão'}`;
+      } finally {
+        if (submit) submit.disabled = false;
+      }
+    });
+    return;
+  }
+
+  if (!readToken()) {
+    location.replace('./');
+    return;
+  }
+
+  show(setupState, false);
+  show(dashboard, true);
 
   let charts = {};
   const destroyChart = key => {
@@ -84,33 +166,11 @@
     Chart.defaults.font.family = 'Inter Tight, sans-serif';
   }
 
-  const readToken = () => {
-    try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (_) { return ''; }
-  };
-  const saveSession = (token, username) => {
-    try {
-      localStorage.setItem(TOKEN_KEY, token);
-      localStorage.setItem(USER_KEY, username || 'ph_admin');
-    } catch (_) {}
-  };
-  const clearSession = () => {
-    try {
-      localStorage.removeItem(TOKEN_KEY);
-      localStorage.removeItem(USER_KEY);
-    } catch (_) {}
-  };
-
-  const rpc = async (name, days) => {
-    const token = readToken();
-    if (!token) throw new Error('forbidden');
-    return callRpc(name, { p_token: token, p_days: days });
-  };
-
   const renderKpis = overview => {
     Object.entries(overview || {}).forEach(([key, value]) => {
-      const node = document.querySelector(`[data-kpi="${key}"]`);
-      if (!node) return;
-      node.textContent = node.hasAttribute('data-time') ? formatDuration(value) : format(value);
+      document.querySelectorAll(`[data-kpi="${key}"]`).forEach(node => {
+        node.textContent = node.hasAttribute('data-time') ? formatDuration(value) : format(value);
+      });
     });
   };
 
@@ -131,7 +191,7 @@
         responsive: true,
         maintainAspectRatio: false,
         interaction: { mode: 'index', intersect: false },
-        plugins: { legend: { display: true, labels: { boxWidth: 10, boxHeight: 10 } } },
+        plugins: { legend: { display: true, labels: { boxWidth: 9, boxHeight: 9 } } },
         scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { precision: 0 } } }
       }
     });
@@ -153,13 +213,28 @@
 
   const renderVideos = rows => {
     const canvas = document.querySelector('[data-chart="videos"]');
-    if (!canvas || !window.Chart) return;
-    destroyChart('videos');
-    charts.videos = new Chart(canvas, {
-      type: 'bar',
-      data: { labels: rows.map(r => r.video_name), datasets: [{ label: 'Plays', data: rows.map(r => Number(r.plays || 0)), backgroundColor: accent, borderWidth: 0, borderRadius: 2 }] },
-      options: { responsive: true, maintainAspectRatio: false, indexAxis: rows.length > 4 ? 'y' : 'x', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } }, y: { grid: { display: false } } } }
-    });
+    if (canvas && window.Chart) {
+      destroyChart('videos');
+      charts.videos = new Chart(canvas, {
+        type: 'bar',
+        data: { labels: rows.map(r => r.video_name), datasets: [{ label: 'Plays', data: rows.map(r => Number(r.plays || 0)), backgroundColor: accent, borderWidth: 0, borderRadius: 2 }] },
+        options: { responsive: true, maintainAspectRatio: false, indexAxis: rows.length > 4 ? 'y' : 'x', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } }, y: { grid: { display: false } } } }
+      });
+    }
+
+    const list = document.querySelector('[data-video-list]');
+    if (!list) return;
+    if (!rows.length) {
+      list.innerHTML = '<p class="empty-mobile">Ainda não há reproduções suficientes para montar o ranking.</p>';
+      return;
+    }
+
+    list.innerHTML = rows.slice(0, 5).map((row, index) => `
+      <div class="mobile-video-item">
+        <span>${String(index + 1).padStart(2, '0')}</span>
+        <strong>${escapeHtml(row.video_name || 'Vídeo')}</strong>
+        <b>${format(row.plays)} plays</b>
+      </div>`).join('');
   };
 
   const renderFunnel = rows => {
@@ -171,7 +246,7 @@
     }
     root.innerHTML = rows.slice(0, 6).map(r => `
       <article class="funnel-item">
-        <div class="funnel-top"><strong>${String(r.video_name || 'Vídeo').replace(/[<>&"]/g, '')}</strong><span>${format(r.plays)} plays</span></div>
+        <div class="funnel-top"><strong>${escapeHtml(r.video_name || 'Vídeo')}</strong><span>${format(r.plays)} plays</span></div>
         <div class="funnel-bars">
           <span><b>${format(r.plays)}</b>Play</span>
           <span><b>${format(r.reached_25)}</b>25%</span>
@@ -182,78 +257,54 @@
       </article>`).join('');
   };
 
-  const setSignedIn = signedIn => {
-    show(setupState, false);
-    show(authState, !signedIn);
-    show(dashboard, signedIn);
+  const updatePeriodLabel = days => {
+    if (!periodCopy) return;
+    const labels = { 7: 'Últimos 7 dias', 30: 'Últimos 30 dias', 90: 'Últimos 90 dias', 365: 'Últimos 12 meses' };
+    periodCopy.textContent = labels[days] || `Últimos ${days} dias`;
   };
 
   const loadDashboard = async () => {
     const days = Math.max(1, Number(periodSelect?.value || 30));
-    if (dataStatus) dataStatus.textContent = 'Atualizando dados…';
+    const isMobile = matchMedia('(max-width: 720px)').matches;
+    updatePeriodLabel(days);
+    if (dataStatus) dataStatus.textContent = 'Atualizando…';
     if (refreshButton) refreshButton.disabled = true;
 
     try {
-      const [overview, daily, videos, funnel, sources] = await Promise.all([
+      const coreRequests = [
         rpc('analytics_overview_token', days),
         rpc('analytics_daily_token', days),
-        rpc('analytics_top_videos_token', days),
+        rpc('analytics_top_videos_token', days)
+      ];
+      const detailRequests = isMobile ? [] : [
         rpc('analytics_video_funnel_token', days),
         rpc('analytics_sources_token', days)
-      ]);
+      ];
+      const results = await Promise.all([...coreRequests, ...detailRequests]);
+      const [overview, daily, videos] = results;
+      const funnel = isMobile ? [] : results[3];
+      const sources = isMobile ? [] : results[4];
 
       renderKpis(overview || {});
       renderDaily(Array.isArray(daily) ? daily : []);
       renderVideos(Array.isArray(videos) ? videos : []);
-      renderFunnel(Array.isArray(funnel) ? funnel : []);
-      renderSources(Array.isArray(sources) ? sources : []);
+      if (!isMobile) {
+        renderFunnel(Array.isArray(funnel) ? funnel : []);
+        renderSources(Array.isArray(sources) ? sources : []);
+      }
       if (dataStatus) dataStatus.textContent = `Atualizado às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}.`;
-      return true;
     } catch (error) {
       const forbidden = /forbidden|42501|permission/i.test(String(error?.message || ''));
       if (forbidden) {
         clearSession();
-        setSignedIn(false);
-        if (loginStatus) loginStatus.textContent = 'Sua sessão expirou. Entre novamente.';
-      } else if (dataStatus) {
-        dataStatus.textContent = `Não foi possível carregar os dados: ${error?.message || 'erro desconhecido'}`;
+        location.replace('./?expired=1');
+        return;
       }
-      return false;
+      if (dataStatus) dataStatus.textContent = `Não foi possível carregar os dados: ${error?.message || 'erro desconhecido'}`;
     } finally {
       if (refreshButton) refreshButton.disabled = false;
     }
   };
-
-  loginForm?.addEventListener('submit', async event => {
-    event.preventDefault();
-    const form = new FormData(loginForm);
-    const username = String(form.get('username') || '').trim();
-    const password = String(form.get('password') || '');
-    if (!username || !password) return;
-    if (loginStatus) loginStatus.textContent = 'Entrando…';
-
-    try {
-      const data = await callRpc('dashboard_login', {
-        p_username: username,
-        p_password: password
-      });
-
-      if (!data?.token) {
-        if (loginStatus) loginStatus.textContent = data?.locked
-          ? 'Muitas tentativas. Aguarde alguns minutos e tente novamente.'
-          : 'Usuário ou senha inválidos.';
-        return;
-      }
-
-      saveSession(data.token, data.username || username);
-      loginForm.reset();
-      if (loginStatus) loginStatus.textContent = '';
-      setSignedIn(true);
-      await loadDashboard();
-    } catch (error) {
-      if (loginStatus) loginStatus.textContent = `Não foi possível conectar: ${error?.message || 'erro de conexão'}`;
-    }
-  });
 
   logoutButton?.addEventListener('click', async () => {
     const token = readToken();
@@ -261,16 +312,10 @@
       try { await callRpc('dashboard_logout', { p_token: token }); } catch (_) {}
     }
     clearSession();
-    setSignedIn(false);
+    location.replace('./');
   });
 
   refreshButton?.addEventListener('click', loadDashboard);
   periodSelect?.addEventListener('change', loadDashboard);
-
-  if (readToken()) {
-    setSignedIn(true);
-    loadDashboard();
-  } else {
-    setSignedIn(false);
-  }
+  loadDashboard();
 })();
