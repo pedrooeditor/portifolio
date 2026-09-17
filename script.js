@@ -2,8 +2,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const WA = 'https://wa.me/5511933596263?text=Ol%C3%A1%2C%20Pedro!%20Vi%20seu%20portf%C3%B3lio%20e%20quero%20conversar%20sobre%20um%20projeto.';
-  const PRESENTATION_DRIVE = 'https://drive.google.com/file/d/13dx-6KjRRSsnEJwyv3VLbC-UsOfUzGDB/preview';
-  const PRESENTATION = 'https://www.dropbox.com/scl/fi/bxpshdy2dm7fy2wujvt6v/Video-de-Apresentacao-Web.mp4?rlkey=373id1dogxip0su4wg6zxgp2d&raw=1';
+  const PRESENTATION = 'https://www.dropbox.com/scl/fi/ytdskddlhxg5edqeaqqyc/Video-de-Apresentacao-Novo-Web.mp4?rlkey=c05uyqobm09iqyzb4ail5m89z&raw=1';
   const DIRECT = 'https://www.dropbox.com/scl/fi/sf2043sqqgcw2akk8wg6p/Direct-Response-Exemplo-1-Web.mp4?rlkey=z3i60dr04yi77l6r7egb74p6z&raw=1';
   const CINEMATIC = 'https://www.dropbox.com/scl/fi/ic49a7r85ud19artfd06r/Cinematic-VSL-Exemplo-1-Web.mp4?rlkey=atxvz8gmehizt38su5uxv6eso&raw=1';
   const VIRAL1 = 'https://www.dropbox.com/scl/fi/y8ap64v3cre4yjwry1i83/Videos-Virais-Exemplo-1-Web.mp4?rlkey=pktpmp18fpjb6ujke97i0qhnw&raw=1';
@@ -15,8 +14,9 @@
     b.type = 'button';
     b.className = 'button button-primary';
     b.dataset.mobilePresentation = '';
-    b.dataset.video = PRESENTATION_DRIVE;
-    b.dataset.videoTitle = 'Vídeo de apresentação — Pedro Simões';
+    b.dataset.presentationVideo = '';
+    b.dataset.video = PRESENTATION;
+    b.dataset.videoTitle = 'Vídeo de Apresentação';
     b.dataset.videoFormat = 'horizontal';
     b.innerHTML = '<span class="play-icon" aria-hidden="true">▶</span> Assistir apresentação';
     mobileActions.prepend(b);
@@ -61,7 +61,7 @@
       </div>
       <div class="project-cta-actions">
         <a class="button button-primary" href="${WA}" target="_blank" rel="noopener noreferrer">Falar sobre meu projeto <span aria-hidden="true">↗</span></a>
-        <button class="button button-ghost" type="button" data-video="${PRESENTATION_DRIVE}" data-video-title="Vídeo de apresentação — Pedro Simões" data-video-format="horizontal"><span class="play-icon" aria-hidden="true">▶</span> Ver apresentação</button>
+        <button class="button button-ghost" type="button" data-presentation-video data-video="${PRESENTATION}" data-video-title="Vídeo de Apresentação" data-video-format="horizontal"><span class="play-icon" aria-hidden="true">▶</span> Ver apresentação</button>
       </div>`;
     work.insertAdjacentElement('afterend', cta);
   }
@@ -181,14 +181,16 @@
     if (viralButtons[1]) viralButtons[1].dataset.directVideo = VIRAL2;
 
     document.addEventListener('click', event => {
-      const presentation = event.target.closest?.('[data-mobile-presentation], [data-video*="13dx-6KjRRSsnEJwyv3VLbC-UsOfUzGDB"]');
+      const presentation = event.target.closest?.('[data-mobile-presentation], [data-presentation-video]');
       if (presentation && hub && player) {
         event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
         status?.classList.remove('is-visible'); if (status) status.textContent = '';
         hub.classList.add('is-horizontal'); hub.classList.remove('is-expanded');
         if (expand) { expand.textContent = '⛶'; expand.setAttribute('aria-label', 'Expandir player'); }
-        if (kicker) kicker.textContent = 'Vídeo de apresentação'; if (title) title.textContent = 'Pedro Simões';
-        player.src = PRESENTATION; player.muted = false; document.body.classList.add('ph-hub-open'); hub.showModal();
+        if (kicker) kicker.textContent = 'Pedro Simões'; if (title) title.textContent = 'Vídeo de Apresentação';
+        player.pause(); player.removeAttribute('src'); player.load();
+        player.src = PRESENTATION; player.preload = 'metadata'; player.playsInline = true; player.setAttribute('playsinline', ''); player.setAttribute('webkit-playsinline', '');
+        player.muted = false; document.body.classList.add('ph-hub-open'); hub.showModal();
         player.play().catch(() => { if (centerPlay) centerPlay.hidden = false; });
         return;
       }
