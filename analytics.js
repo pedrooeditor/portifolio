@@ -3,6 +3,8 @@
   const url = String(cfg.supabaseUrl || '').replace(/\/$/, '');
   const key = String(cfg.supabasePublishableKey || '');
   if (!url || !key) return;
+  // Testes locais não entram nas métricas.
+  if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === 'file:') return;
 
   const endpoint = `${url}/rest/v1/analytics_events`;
   const storage = window.localStorage;
@@ -98,17 +100,14 @@
       track('whatsapp_click', { metadata: { label: clean(text(whatsapp)), section: clean(whatsapp.closest('section')?.id || '') } });
     }
 
-    const gallery = event.target.closest?.('.project-gallery-item');
-    if (gallery) track('video_open', { video_name: gallery.dataset.videoTitle || text(gallery) });
-
-    const watch = event.target.closest?.('.watch-button');
-    if (watch) {
-      const card = watch.closest('.work-card');
-      track('project_open', { project_name: text(card?.querySelector('h3')) || watch.dataset.videoTitle || text(watch) });
+    const opener = event.target.closest?.('[data-open-video]');
+    if (opener) {
+      if (opener.dataset.openVideo === 'presentation') {
+        track('presentation_open', { video_name: 'Vídeo de apresentação' });
+      } else {
+        track('project_open', { project_name: opener.dataset.videoTitle || text(opener) || opener.dataset.openVideo });
+      }
     }
-
-    const presentation = event.target.closest?.('[data-mobile-presentation], [data-video-title*="apresenta" i]');
-    if (presentation) track('presentation_open', { video_name: presentation.dataset.videoTitle || 'Vídeo de apresentação' });
   }, true);
 
   let activeSince = document.visibilityState === 'visible' ? Date.now() : null;
