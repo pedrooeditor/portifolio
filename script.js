@@ -1,13 +1,13 @@
-/* PH Motions — interações do portfólio */
+/* Pedro Simões — interações do portfólio */
 (() => {
   'use strict';
-  window.__phBooted = true;
+  window.__psBooted = true;
 
   /* ==========================================================================
      CONFIGURAÇÃO
      Para adicionar um trabalho novo: copie um bloco dentro de PROJETOS e troque
      id, textos e o link do vídeo (Dropbox com &raw=1 no final). O card aparece
-     sozinho na seção Trabalhos e entra na sequência do player.
+     sozinho na grade de trabalhos e entra na sequência do player.
      ========================================================================== */
 
   const WHATSAPP = '5511933596263';
@@ -30,20 +30,20 @@
 
   const PROJETOS = [
     {
-      id: 'd1',
-      categoria: 'Direct Response',
-      titulo: 'Criativo de conversão 01',
-      formato: 'vertical',
-      url: 'https://www.dropbox.com/scl/fi/sf2043sqqgcw2akk8wg6p/Direct-Response-Exemplo-1-Web.mp4?rlkey=z3i60dr04yi77l6r7egb74p6z&raw=1',
-      resumo: RESUMO.direct
-    },
-    {
       id: 'c1',
       categoria: 'Cinematic · VSL',
       titulo: 'VSL cinematográfica',
       formato: 'horizontal',
       url: 'https://www.dropbox.com/scl/fi/ic49a7r85ud19artfd06r/Cinematic-VSL-Exemplo-1-Web.mp4?rlkey=atxvz8gmehizt38su5uxv6eso&raw=1',
       resumo: RESUMO.vsl
+    },
+    {
+      id: 'd1',
+      categoria: 'Direct Response',
+      titulo: 'Criativo de conversão 01',
+      formato: 'vertical',
+      url: 'https://www.dropbox.com/scl/fi/sf2043sqqgcw2akk8wg6p/Direct-Response-Exemplo-1-Web.mp4?rlkey=z3i60dr04yi77l6r7egb74p6z&raw=1',
+      resumo: RESUMO.direct
     },
     {
       id: 'v1',
@@ -91,7 +91,6 @@
   const finePointer = media('(hover: hover) and (pointer: fine)').matches;
   const saveData = Boolean(navigator.connection && navigator.connection.saveData);
   const canAutoplay = !reduceMotion && !saveData;
-  const isDesktop = () => media('(min-width: 901px)').matches;
   const hasGSAP = Boolean(window.gsap && window.ScrollTrigger);
   const animate = hasGSAP && !reduceMotion;
 
@@ -101,8 +100,6 @@
   const waLink = msg => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
   const track = (name, extra) => { try { if (window.phTrack) window.phTrack(name, extra); } catch (_) {} };
   const safePlay = v => { try { const p = v.play(); if (p && p.catch) p.catch(() => {}); } catch (_) {} };
-  const timecode = (s, fps = 24) => `${pad(s / 3600)}:${pad((s / 60) % 60)}:${pad(s % 60)}:${pad((s % 1) * fps)}`;
-  const shortTC = (s, fps = 24) => `${pad((s / 60) % 60)}:${pad(s % 60)}:${pad((s % 1) * fps)}`;
 
   const VIDEOS = { [APRESENTACAO.id]: APRESENTACAO };
   PROJETOS.forEach(p => { VIDEOS[p.id] = p; });
@@ -130,43 +127,45 @@
   $$('[data-year]').forEach(el => { el.textContent = String(new Date().getFullYear()); });
 
   /* ==========================================================================
-     Cards de trabalhos (gerados a partir de PROJETOS)
+     Grade de trabalhos (gerada a partir de PROJETOS)
      ========================================================================== */
 
-  const workTrack = $('[data-work-track]');
-  if (workTrack) {
+  const grid = $('[data-work-grid]');
+  if (grid) {
     const frag = document.createDocumentFragment();
     PROJETOS.forEach((p, i) => {
-      const card = document.createElement('article');
-      card.className = `clip clip--${p.formato === 'horizontal' ? 'h' : 'v'}`;
+      const wide = p.formato === 'horizontal';
       const nome = `${p.categoria} — ${p.titulo}`;
+      const card = document.createElement('article');
+      card.className = `card${wide ? ' card--wide' : ''}`;
+      card.setAttribute('data-reveal', '');
       card.innerHTML = `
-        <button class="clip-media" type="button" data-open-video="${esc(p.id)}" data-video-title="${esc(nome)}" data-cursor="play" aria-label="Assistir ${esc(nome)}">
-          <span class="clip-fallback" aria-hidden="true">${esc(p.categoria)}</span>
+        <button class="card-media" type="button" data-open-video="${esc(p.id)}" data-video-title="${esc(nome)}" data-cursor="play" aria-label="Assistir ${esc(nome)}">
+          <span class="card-fallback" aria-hidden="true">${esc(p.categoria)}</span>
           <video class="work-preview-video" data-preview="${esc(p.id)}" data-lazy-group="work" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
-          <span class="clip-shade" aria-hidden="true"></span>
-          <span class="clip-label" aria-hidden="true">V${i + 1} · ${p.formato === 'horizontal' ? '16:9' : '9:16'}</span>
-          <span class="clip-tc" aria-hidden="true" data-clip-tc>00:00:00</span>
-          <span class="clip-play" aria-hidden="true"><svg class="i"><use href="#i-play"/></svg></span>
+          <span class="card-tag" aria-hidden="true">${esc(p.categoria)}</span>
+          <span class="card-play" aria-hidden="true"><svg class="i"><use href="#i-play"/></svg></span>
         </button>
-        <div class="clip-meta">
-          <span class="clip-num">${pad(i + 1)}</span>
-          <div><p class="clip-cat">${esc(p.categoria)}</p><h3 class="clip-title">${esc(p.titulo)}</h3></div>
+        <div class="card-meta">
+          <span class="card-num">${pad(i + 1)}</span>
+          <div><h3 class="card-title">${esc(p.titulo)}</h3><p class="card-cat">${esc(p.categoria)} · ${wide ? 'Horizontal' : 'Vertical'}</p></div>
+          <span class="card-arrow" aria-hidden="true"><svg class="i"><use href="#i-arrow"/></svg></span>
         </div>`;
+      card.querySelector('.card-meta').addEventListener('click', () => card.querySelector('.card-media').click());
       frag.appendChild(card);
     });
 
-    const cta = document.createElement('a');
-    cta.className = 'clip clip--cta';
-    cta.href = '#contato';
+    const cta = document.createElement('article');
+    cta.className = 'card card--wide card--cta';
+    cta.setAttribute('data-reveal', '');
     cta.innerHTML = `
-      <span class="clip-cta-box">
+      <a class="card-cta" href="#contato">
         <small>Seu projeto</small>
-        <strong>O próximo pode ser o seu.</strong>
-        <span class="clip-cta-go">Vamos conversar <svg class="i"><use href="#i-arrow"/></svg></span>
-      </span>`;
+        <strong>O próximo trabalho aqui pode ser <em>o seu.</em></strong>
+        <span class="btn btn-dark"><span>Vamos conversar</span><span class="btn-icon"><svg class="i"><use href="#i-arrow"/></svg></span></span>
+      </a>`;
     frag.appendChild(cta);
-    workTrack.appendChild(frag);
+    grid.appendChild(frag);
   }
 
   /* ==========================================================================
@@ -186,8 +185,7 @@
     v.src = `${data.url}#t=${v.hasAttribute('data-poster-only') ? 3 : 0.1}`;
   };
 
-  const shouldAutoplay = v =>
-    canAutoplay && !v.hasAttribute('data-poster-only') && !(v.hasAttribute('data-desktop-play') && !isDesktop());
+  const shouldAutoplay = v => canAutoplay && !v.hasAttribute('data-poster-only');
 
   const suspendPreviews = on => {
     previewsSuspended = on;
@@ -202,9 +200,6 @@
     v.defaultMuted = true;
     v.setAttribute('muted', '');
     if (v.hasAttribute('data-eager')) loadPreview(v);
-
-    const label = v.parentElement && $('[data-clip-tc], [data-phone-tc]', v.parentElement);
-    if (label) v.addEventListener('timeupdate', () => { label.textContent = shortTC(v.currentTime || 0); });
   });
 
   if ('IntersectionObserver' in window) {
@@ -219,10 +214,9 @@
           v.pause();
         }
       });
-    }, { rootMargin: '200px 0px', threshold: 0.01 });
+    }, { rootMargin: '150px 0px', threshold: 0.2 });
     previews.forEach(v => previewIO.observe(v));
 
-    // Quando a seção de trabalhos se aproxima, já busca os metadados de todos os cards.
     const workSection = $('#trabalhos');
     if (workSection) {
       const warm = new IntersectionObserver(([e]) => {
@@ -239,12 +233,12 @@
   document.addEventListener('visibilitychange', () => suspendPreviews(document.hidden || playerOpen));
 
   /* ==========================================================================
-     Scroll suave (Lenis) + abertura
+     Rolagem suave (Lenis) + abertura
      ========================================================================== */
 
   let lenis = null;
   if (window.Lenis && !reduceMotion) {
-    lenis = new window.Lenis({ lerp: 0.1, smoothWheel: true });
+    lenis = new window.Lenis({ lerp: 0.09, smoothWheel: true });
     if (hasGSAP) {
       lenis.on('scroll', ScrollTrigger.update);
       gsap.ticker.add(time => lenis.raf(time * 1000));
@@ -267,14 +261,11 @@
 
   const introActive = Boolean(intro) && !root.classList.contains('no-intro') && getComputedStyle(intro).display !== 'none';
   if (introActive) {
-    try { sessionStorage.setItem('ph_intro_seen', '1'); } catch (_) {}
+    try { sessionStorage.setItem('ps_intro_seen', '1'); } catch (_) {}
     if (lenis) lenis.stop();
-    setTimeout(onReady, 1250);
-    intro.addEventListener('animationend', e => { if (e.animationName === 'introOut') intro.remove(); });
-    intro.addEventListener('click', () => {
-      intro.style.animation = 'introOut .5s cubic-bezier(.65,0,.35,1) forwards';
-      onReady();
-    });
+    setTimeout(onReady, 1150);
+    intro.addEventListener('animationend', e => { if (e.animationName === 'intro-done') intro.remove(); });
+    intro.addEventListener('click', () => { intro.remove(); onReady(); });
   } else {
     if (intro) intro.remove();
     requestAnimationFrame(() => requestAnimationFrame(onReady));
@@ -298,7 +289,7 @@
     requestAnimationFrame(() => requestAnimationFrame(() => menu.classList.add('is-open')));
     root.classList.add('menu-open');
     menuBtn.setAttribute('aria-expanded', 'true');
-    menuBtn.setAttribute('aria-label', 'Fechar menu');
+    $('.menu-btn-label', menuBtn).textContent = 'Fechar';
     if (header) header.classList.remove('is-hidden');
     if (lenis) lenis.stop(); else document.body.style.overflow = 'hidden';
     updateDock();
@@ -310,22 +301,22 @@
     menu.classList.remove('is-open');
     root.classList.remove('menu-open');
     menuBtn.setAttribute('aria-expanded', 'false');
-    menuBtn.setAttribute('aria-label', 'Abrir menu');
+    $('.menu-btn-label', menuBtn).textContent = 'Menu';
     if (lenis) lenis.start(); else document.body.style.overflow = '';
-    menuTimer = setTimeout(() => { if (!menuOpen) menu.hidden = true; }, 800);
+    menuTimer = setTimeout(() => { if (!menuOpen) menu.hidden = true; }, 850);
     updateDock();
   };
 
   if (menuBtn) menuBtn.addEventListener('click', () => (menuOpen ? closeMenu() : openMenu()));
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && menuOpen) { closeMenu(); menuBtn.focus(); } });
-  media('(min-width: 901px)').addEventListener('change', e => { if (e.matches) closeMenu(); });
+  media('(min-width: 1025px)').addEventListener('change', e => { if (e.matches) closeMenu(); });
 
   /* ---------- Links internos com rolagem suave ---------- */
 
   const scrollToHash = hash => {
     const target = hash === '#top' ? 0 : document.getElementById(hash.slice(1));
     if (target === null) return false;
-    if (lenis) lenis.scrollTo(target, { duration: 1.4 });
+    if (lenis) lenis.scrollTo(target, { duration: 1.5 });
     else if (target === 0) window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
     else target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
     return true;
@@ -343,38 +334,31 @@
   });
 
   /* ==========================================================================
-     Header, barra de progresso, timecode e CTA fixo
+     Header e CTA fixo
      ========================================================================== */
 
-  const progressBar = $('[data-progress]');
-  const tcEl = $('[data-timecode]');
   const dock = $('[data-dock]');
-  const PAGE_SECONDS = 150;
   let lastY = window.scrollY;
   let dockBlocked = false;
   let ticking = false;
 
   function updateDock() {
     if (!dock) return;
-    const show = window.scrollY > window.innerHeight * 0.85 && !dockBlocked && !menuOpen;
+    const show = window.scrollY > window.innerHeight * 0.9 && !dockBlocked && !menuOpen;
     dock.classList.toggle('is-on', show);
   }
 
   const onScroll = () => {
     ticking = false;
     const y = window.scrollY;
-    const max = Math.max(1, root.scrollHeight - window.innerHeight);
-    const p = clamp01(y / max);
-    if (progressBar) progressBar.style.transform = `scaleX(${p})`;
-    if (tcEl) tcEl.textContent = timecode(p * PAGE_SECONDS);
     if (header) {
       header.classList.toggle('is-scrolled', y > 24);
       const dy = y - lastY;
       if (Math.abs(dy) > 6) {
-        header.classList.toggle('is-hidden', dy > 0 && y > 480 && !menuOpen);
+        header.classList.toggle('is-hidden', dy > 0 && y > 520 && !menuOpen);
         lastY = y;
       }
-      if (y < 480) header.classList.remove('is-hidden');
+      if (y < 520) header.classList.remove('is-hidden');
     }
     updateDock();
   };
@@ -384,14 +368,13 @@
   }, { passive: true });
 
   if ('IntersectionObserver' in window) {
-    const blockers = $$('#contato, .footer');
     const visible = new Set();
     const dockIO = new IntersectionObserver(entries => {
       entries.forEach(e => (e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)));
       dockBlocked = visible.size > 0;
       updateDock();
     });
-    blockers.forEach(b => dockIO.observe(b));
+    $$('#contato, .footer').forEach(b => dockIO.observe(b));
 
     const navLinks = $$('[data-nav-link]');
     const navIO = new IntersectionObserver(entries => {
@@ -404,6 +387,29 @@
   }
 
   /* ==========================================================================
+     Rodapé: assinatura letra por letra
+     ========================================================================== */
+
+  const wordmark = $('[data-wordmark]');
+  let wordmarkInner = null;
+  if (wordmark) {
+    const text = wordmark.textContent.trim();
+    wordmark.innerHTML = `<span class="wordmark-mask"><span class="wordmark-inner">${Array.from(text)
+      .map((ch, i) => `<span class="wl" style="--i:${i}">${ch === ' ' ? '&nbsp;' : esc(ch)}</span>`)
+      .join('')}</span></span>`;
+    wordmarkInner = $('.wordmark-inner', wordmark);
+    wordmarkInner.style.display = 'inline-block';
+  }
+
+  const fitWordmark = () => {
+    if (!wordmark || !wordmarkInner) return;
+    wordmark.style.fontSize = '';
+    const fs = parseFloat(getComputedStyle(wordmark).fontSize);
+    const ratio = wordmark.clientWidth / Math.max(1, wordmarkInner.offsetWidth);
+    wordmark.style.fontSize = `${(fs * ratio * 0.995).toFixed(2)}px`;
+  };
+
+  /* ==========================================================================
      Revelações ao rolar
      ========================================================================== */
 
@@ -412,7 +418,8 @@
     if (!el.hasAttribute('data-reveal') || !el.parentElement) return;
     const siblings = Array.from(el.parentElement.children).filter(c => c.hasAttribute('data-reveal'));
     const idx = siblings.indexOf(el);
-    if (idx > 0) el.style.setProperty('--rd', `${Math.min(idx, 6) * 0.07}s`);
+    const step = el.classList.contains('card') ? (idx % 3) * 0.12 : Math.min(idx, 6) * 0.08;
+    if (step > 0) el.style.setProperty('--rd', `${step}s`);
   });
 
   if ('IntersectionObserver' in window) {
@@ -424,20 +431,22 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
     revealEls.forEach(el => revealIO.observe(el));
+    if (wordmark) revealIO.observe(wordmark);
   } else {
     revealEls.forEach(el => el.classList.add('is-in'));
+    if (wordmark) wordmark.classList.add('is-in');
   }
 
   /* ==========================================================================
-     Faixas: velocidade e direção acompanham a rolagem
+     Faixa: velocidade e direção acompanham a rolagem
      ========================================================================== */
 
-  const bands = $('.bands');
+  const ticker = $('.ticker');
   const marqueeAnims = $$('[data-marquee]')
     .map(el => (el.getAnimations ? el.getAnimations()[0] : null))
     .filter(Boolean);
 
-  if (bands && marqueeAnims.length && !reduceMotion && 'IntersectionObserver' in window) {
+  if (ticker && marqueeAnims.length && !reduceMotion && 'IntersectionObserver' in window) {
     let prevY = window.scrollY;
     let rate = 1;
     let dir = 1;
@@ -448,8 +457,8 @@
       const v = y - prevY;
       prevY = y;
       if (Math.abs(v) > 0.5) dir = v > 0 ? 1 : -1;
-      const target = dir * (1 + Math.min(Math.abs(v) * 0.14, 6));
-      const next = rate + (target - rate) * 0.08;
+      const target = dir * (1 + Math.min(Math.abs(v) * 0.12, 5));
+      const next = rate + (target - rate) * 0.07;
       if (Math.abs(next - rate) > 0.002) {
         rate = next;
         marqueeAnims.forEach(a => { a.playbackRate = rate; });
@@ -464,129 +473,74 @@
       } else if (!e.isIntersecting) {
         running = false;
       }
-    }).observe(bands);
+    }).observe(ticker);
   }
 
   /* ==========================================================================
-     Hero: profundidade com o mouse e parallax na rolagem
+     Hero: a janela do showreel se expande até ocupar a tela
      ========================================================================== */
 
-  if (animate) {
-    const heroTrigger = () => ({ trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true });
-    gsap.to('.phone--l', { yPercent: -16, ease: 'none', scrollTrigger: heroTrigger() });
-    gsap.to('.phone--r', { yPercent: -30, ease: 'none', scrollTrigger: heroTrigger() });
-    gsap.to('.phone--c', { yPercent: -8, ease: 'none', scrollTrigger: heroTrigger() });
-    gsap.to('.hero-copy', { y: -70, ease: 'none', scrollTrigger: heroTrigger() });
-    gsap.to('.hero-glow', { opacity: 0.25, scale: 0.85, ease: 'none', scrollTrigger: heroTrigger() });
-
-    if (finePointer) {
-      const phones = $$('[data-hero-stage] .phone').map((el, i) => ({
-        depth: [16, 24, 34][i] || 20,
-        x: gsap.quickTo(el, 'x', { duration: 0.9, ease: 'power3' }),
-        y: gsap.quickTo(el, 'y', { duration: 0.9, ease: 'power3' })
-      }));
-      const hero = $('.hero');
-      if (hero) {
-        hero.addEventListener('pointermove', e => {
-          const nx = e.clientX / window.innerWidth - 0.5;
-          const ny = e.clientY / window.innerHeight - 0.5;
-          phones.forEach(p => { p.x(nx * p.depth); p.y(ny * p.depth); });
-        });
-      }
-    }
-  }
-
-  /* ==========================================================================
-     Trabalhos: timeline horizontal (desktop) / carrossel (celular)
-     ========================================================================== */
-
-  const workPin = $('[data-work-pin]');
-  const workViewport = $('[data-work-viewport]');
-  const workFill = $('[data-work-fill]');
-  const workHead = $('[data-work-head]');
-  const workCount = $('[data-work-count]');
-  const workHint = $('.ruler-meta span:last-child');
-  const totalWork = PROJETOS.length;
-  let workST = null;
-
-  const setWorkProgress = p => {
-    p = clamp01(p);
-    if (workFill) workFill.style.transform = `scaleX(${p})`;
-    if (workHead) workHead.style.left = `calc(${(p * 100).toFixed(3)}% - 1px)`;
-    if (workCount) workCount.textContent = `${pad(Math.min(totalWork, Math.round(p * totalWork) + 1))} / ${pad(totalWork)}`;
-  };
-
-  if (!animate) root.classList.add('work-native');
-
-  if (workViewport) {
-    workViewport.addEventListener('scroll', () => {
-      if (workST) return;
-      const max = workViewport.scrollWidth - workViewport.clientWidth;
-      setWorkProgress(max > 0 ? workViewport.scrollLeft / max : 0);
-    }, { passive: true });
-  }
-
-  if (animate && workTrack && workPin && workViewport) {
+  const heroPin = $('[data-hero-pin]');
+  const heroMedia = $('[data-hero-media]');
+  if (animate && heroPin && heroMedia) {
     const mm = gsap.matchMedia();
-    mm.add('(min-width: 901px)', () => {
-      const dist = () => Math.max(0, workTrack.scrollWidth - workViewport.clientWidth);
-      const tween = gsap.to(workTrack, {
-        x: () => -dist(),
-        ease: 'none',
+    mm.add('(min-width: 901px) and (min-height: 600px)', () => {
+      const content = $('[data-hero-content]');
+      const reel = $('[data-hero-reel]');
+      const label = $('[data-hero-label]');
+      gsap.set(heroMedia, { '--shade': 0.15 });
+      const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: workPin,
-          start: () => (workPin.offsetHeight < window.innerHeight ? 'center center' : 'top top'),
-          end: () => `+=${dist()}`,
+          trigger: heroPin,
+          start: 'top top',
+          end: '+=120%',
           pin: true,
-          scrub: 0.6,
-          invalidateOnRefresh: true,
+          scrub: 0.8,
           anticipatePin: 1,
-          onUpdate: self => setWorkProgress(self.progress)
+          invalidateOnRefresh: true
         }
       });
-      workST = tween.scrollTrigger;
-      return () => { workST = null; };
-    });
+      tl.fromTo(heroMedia,
+        { clipPath: 'inset(50% 3.5% 7% 56% round 20px)' },
+        { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'power2.inOut', duration: 1 }, 0)
+        .to(content, { yPercent: -10, autoAlpha: 0, ease: 'power1.in', duration: 0.5 }, 0)
+        .to(label, { autoAlpha: 0, duration: 0.15 }, 0)
+        .to(heroMedia, { '--shade': 0.5, ease: 'none', duration: 1 }, 0)
+        .fromTo(reel, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.3 }, 0.72);
 
-    // Navegação por teclado: leva a rolagem até o card focado.
-    workTrack.addEventListener('focusin', e => {
-      if (!workST) return;
-      workViewport.scrollLeft = 0;
-      const card = e.target.closest('.clip');
-      if (!card) return;
-      const dist = workTrack.scrollWidth - workViewport.clientWidth;
-      if (dist <= 0) return;
-      const p = clamp01((card.offsetLeft - (workViewport.clientWidth - card.offsetWidth) / 2) / dist);
-      const y = workST.start + (workST.end - workST.start) * p;
-      if (lenis) lenis.scrollTo(y, { immediate: true }); else window.scrollTo(0, y);
+      if (finePointer) {
+        const video = $('video', heroMedia);
+        gsap.set(video, { scale: 1.08 });
+        const qx = gsap.quickTo(video, 'x', { duration: 1.2, ease: 'power3' });
+        const qy = gsap.quickTo(video, 'y', { duration: 1.2, ease: 'power3' });
+        const move = e => {
+          qx((e.clientX / window.innerWidth - 0.5) * -24);
+          qy((e.clientY / window.innerHeight - 0.5) * -16);
+        };
+        window.addEventListener('pointermove', move, { passive: true });
+        return () => window.removeEventListener('pointermove', move);
+      }
+      return undefined;
     });
   }
 
-  const setWorkHint = () => {
-    if (!workHint) return;
-    if (!finePointer) workHint.textContent = 'Deslize · toque para assistir';
-    else if (workST) workHint.textContent = 'Role para navegar · clique para assistir';
-    else workHint.textContent = 'Arraste para o lado · clique para assistir';
-  };
-  setWorkProgress(0);
-
   /* ==========================================================================
-     Sobre: manifesto acende palavra por palavra
+     Manifesto: acende palavra por palavra
      ========================================================================== */
 
-  const manifesto = $('[data-words]');
-  if (manifesto) {
-    const highlight = new Set(['segundo', 'mensagem']);
-    const words = manifesto.textContent.trim().split(/\s+/);
-    manifesto.innerHTML = words
+  const statement = $('[data-words]');
+  if (statement) {
+    const highlight = new Set(['cortar', 'segundo', 'mensagem']);
+    const words = statement.textContent.trim().split(/\s+/);
+    statement.innerHTML = words
       .map(w => `<span class="w${highlight.has(w.replace(/[^\p{L}]/gu, '')) ? ' hl' : ''}">${esc(w)}</span>`)
       .join(' ');
-    const spans = $$('.w', manifesto);
+    const spans = $$('.w', statement);
     if (animate) {
       ScrollTrigger.create({
-        trigger: manifesto,
-        start: 'top 85%',
-        end: 'bottom 50%',
+        trigger: statement,
+        start: 'top 80%',
+        end: 'bottom 45%',
         scrub: true,
         onUpdate: self => {
           const n = Math.round(self.progress * spans.length);
@@ -598,29 +552,27 @@
     }
   }
 
-  $$('.why-card').forEach(card => {
-    card.addEventListener('pointermove', e => {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', `${e.clientX - r.left}px`);
-      card.style.setProperty('--my', `${e.clientY - r.top}px`);
-    });
-  });
+  /* ==========================================================================
+     Sobre: leve parallax no vídeo de apresentação
+     ========================================================================== */
+
+  if (animate) {
+    const portraitVideo = $('.portrait video');
+    if (portraitVideo) {
+      gsap.fromTo(portraitVideo, { yPercent: -6, scale: 1.12 }, {
+        yPercent: 6,
+        scale: 1.12,
+        ease: 'none',
+        scrollTrigger: { trigger: '.portrait', start: 'top bottom', end: 'bottom top', scrub: true }
+      });
+    }
+  }
 
   /* ==========================================================================
-     Serviços: acordeão + prévia que segue o mouse
+     Serviços: prévia em vídeo que segue o mouse
      ========================================================================== */
 
   const svcItems = $$('.svc');
-  svcItems.forEach((li, i) => {
-    const btn = $('.svc-row', li);
-    const set = open => {
-      li.classList.toggle('is-open', open);
-      btn.setAttribute('aria-expanded', String(open));
-    };
-    btn.addEventListener('click', () => { set(!li.classList.contains('is-open')); refreshLayout(); });
-    if (i === 0) set(true);
-  });
-
   const svcFloat = $('[data-svc-float]');
   const svcList = $('[data-svc-list]');
   if (svcFloat && svcList && finePointer && !reduceMotion) {
@@ -633,8 +585,8 @@
     let on = false;
     let raf = 0;
     const loop = () => {
-      fx += (tx - fx) * 0.16;
-      fy += (ty - fy) * 0.16;
+      fx += (tx - fx) * 0.14;
+      fy += (ty - fy) * 0.14;
       svcFloat.style.transform = `translate3d(${fx}px, ${fy}px, 0)`;
       raf = on || Math.abs(tx - fx) + Math.abs(ty - fy) > 0.5 ? requestAnimationFrame(loop) : 0;
     };
@@ -643,10 +595,19 @@
       ty = e.clientY;
       if (!raf) raf = requestAnimationFrame(loop);
     });
+    // Ao rolar com o mouse parado, a linha sai de baixo do cursor: esconde a prévia.
+    window.addEventListener('scroll', () => {
+      if (!on) return;
+      const under = document.elementFromPoint(tx, ty);
+      if (!under || !under.closest('.svc[data-svc-preview]')) {
+        on = false;
+        svcFloat.classList.remove('is-on');
+        fv.pause();
+      }
+    }, { passive: true });
     svcItems.forEach(li => {
       const id = li.dataset.svcPreview;
-      const row = $('.svc-row', li);
-      row.addEventListener('pointerenter', e => {
+      li.addEventListener('pointerenter', e => {
         const v = id && VIDEOS[id];
         if (!v) return;
         if (!on) { fx = tx = e.clientX; fy = ty = e.clientY; }
@@ -657,7 +618,7 @@
         safePlay(fv);
         if (!raf) raf = requestAnimationFrame(loop);
       });
-      row.addEventListener('pointerleave', () => {
+      li.addEventListener('pointerleave', () => {
         on = false;
         svcFloat.classList.remove('is-on');
         fv.pause();
@@ -666,83 +627,7 @@
   }
 
   /* ==========================================================================
-     Anatomia: o vídeo é montado camada por camada conforme a rolagem
-     ========================================================================== */
-
-  const rig = $('[data-rig]');
-  if (rig) {
-    const monitor = $('[data-monitor]', rig);
-    const stepEl = $('[data-rig-step]', rig);
-    const labelEl = $('[data-rig-label]', rig);
-    const titleEl = $('[data-rig-title]', rig);
-    const descEl = $('[data-rig-desc]', rig);
-    const tlTc = $('[data-tl-tc]', rig);
-    const tracks = $$('.tl-track', rig);
-
-    tracks.forEach(t => $$('.tl-lane i', t).forEach((clip, k) => clip.style.setProperty('--k', k)));
-
-    const stages = [{ at: 0, label: labelEl.textContent, title: titleEl.textContent, desc: descEl.textContent.trim(), el: null }]
-      .concat(
-        tracks
-          .map(t => ({ at: parseFloat(t.dataset.at), label: t.dataset.label, title: t.dataset.title, desc: t.dataset.desc, el: t }))
-          .sort((a, b) => a.at - b.at)
-      )
-      .concat([{
-        at: 0.94,
-        label: 'Finalizado',
-        title: 'Pronto pra publicar',
-        desc: 'Todas as camadas trabalhando juntas: um vídeo que prende atenção e entrega a mensagem.',
-        el: null
-      }]);
-
-    let current = -1;
-    let swapTimer;
-    const setRig = p => {
-      rig.style.setProperty('--p', p.toFixed(4));
-      if (tlTc) tlTc.textContent = shortTC(p * 30);
-      tracks.forEach(t => t.classList.toggle('is-on', p >= parseFloat(t.dataset.at)));
-      let idx = 0;
-      stages.forEach((s, i) => { if (p >= s.at) idx = i; });
-      if (idx === current) return;
-      current = idx;
-      const s = stages[idx];
-      for (let i = 1; i < stages.length; i++) monitor.classList.toggle(`s${i}`, i <= idx);
-      tracks.forEach(t => t.classList.toggle('is-current', t === s.el));
-      rig.classList.add('is-swapping');
-      clearTimeout(swapTimer);
-      swapTimer = setTimeout(() => {
-        stepEl.textContent = idx === stages.length - 1 ? '✓' : pad(idx);
-        labelEl.textContent = s.label;
-        titleEl.textContent = s.title;
-        descEl.textContent = s.desc;
-        rig.classList.remove('is-swapping');
-      }, 150);
-    };
-
-    const rigPin = $('[data-rig-pin]');
-    if (animate && rigPin) {
-      const mm = gsap.matchMedia();
-      mm.add({ tall: '(min-height: 600px)', short: '(max-height: 599.98px)' }, ctx => {
-        const fits = ctx.conditions.tall && rig.offsetHeight + 60 < window.innerHeight;
-        ScrollTrigger.create({
-          trigger: rigPin,
-          start: fits ? 'center center' : 'top 70%',
-          end: fits ? () => `+=${Math.round(window.innerHeight * 1.5)}` : 'bottom 30%',
-          pin: fits,
-          scrub: 0.5,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: self => setRig(self.progress)
-        });
-      });
-      setRig(0);
-    } else {
-      setRig(1);
-    }
-  }
-
-  /* ==========================================================================
-     Processo: linha vermelha acompanha a rolagem
+     Processo: linha dourada acompanha a rolagem
      ========================================================================== */
 
   const stepsEl = $('[data-steps]');
@@ -877,8 +762,8 @@
     let ry = -100;
     let raf = 0;
     const loop = () => {
-      rx += (mx - rx) * 0.2;
-      ry += (my - ry) * 0.2;
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
       ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
       raf = Math.abs(mx - rx) + Math.abs(my - ry) > 0.1 ? requestAnimationFrame(loop) : 0;
     };
@@ -905,8 +790,8 @@
     $$('[data-magnetic]').forEach(el => {
       el.addEventListener('pointermove', e => {
         const r = el.getBoundingClientRect();
-        const x = (e.clientX - r.left - r.width / 2) * 0.22;
-        const y = (e.clientY - r.top - r.height / 2) * 0.32;
+        const x = (e.clientX - r.left - r.width / 2) * 0.2;
+        const y = (e.clientY - r.top - r.height / 2) * 0.3;
         el.style.translate = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
       });
       el.addEventListener('pointerleave', () => { el.style.translate = ''; });
@@ -1127,23 +1012,13 @@
   }
 
   /* ==========================================================================
-     Rodapé: wordmark ocupa a largura exata
+     Ajustes finais
      ========================================================================== */
-
-  const wordmark = $('.wordmark');
-  const fitWordmark = () => {
-    if (!wordmark) return;
-    wordmark.style.fontSize = '';
-    if (wordmark.scrollWidth > wordmark.clientWidth) {
-      const fs = parseFloat(getComputedStyle(wordmark).fontSize);
-      wordmark.style.fontSize = `${(fs * (wordmark.clientWidth / wordmark.scrollWidth) * 0.98).toFixed(2)}px`;
-    }
-  };
 
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { fitWordmark(); setWorkHint(); }, 150);
+    resizeTimer = setTimeout(fitWordmark, 150);
   });
 
   if (document.fonts && document.fonts.ready) {
@@ -1151,6 +1026,5 @@
   }
 
   fitWordmark();
-  setWorkHint();
   onScroll();
 })();

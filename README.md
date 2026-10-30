@@ -4,8 +4,8 @@ Portfólio estático (HTML, CSS e JavaScript) publicado no GitHub Pages em https
 
 ## Estrutura
 
-- `index.html`: conteúdo e estrutura das seções (hero, trabalhos, sobre, serviços, anatomia, processo, FAQ, contato).
-- `style.css`: identidade visual (preto + vermelho), responsividade e animações em CSS.
+- `index.html`: conteúdo e estrutura das seções (abertura, manifesto, trabalhos, sobre, serviços, processo, FAQ, contato).
+- `style.css`: identidade visual (editorial: preto, marfim e dourado), responsividade e animações em CSS.
 - `script.js`: lista de vídeos, player, rolagem suave, animações ligadas à rolagem e briefing para o WhatsApp.
 - `analytics-config.js` / `analytics.js`: métricas enviadas ao Supabase (lidas pelo painel em `dashboard/`).
 - `og-image.png`: imagem que aparece quando o link é compartilhado (WhatsApp, Instagram, LinkedIn).
@@ -20,4 +20,4 @@ Se elas não carregarem, o site continua funcionando sem as animações.
 3. Em `script.js`, dentro de `PROJETOS`, copie um bloco e troque `id` (único), `categoria`, `titulo`,
    `formato` (`vertical` ou `horizontal`), `url` e `resumo`.
 
-O card aparece sozinho na seção Trabalhos e entra na sequência do player.
+O card aparece sozinho na grade de trabalhos e entra na sequência do player.

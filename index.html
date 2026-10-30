@@ -3,20 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0a0808" />
+    <meta name="theme-color" content="#0c0c0b" />
     <meta name="color-scheme" content="dark" />
     <meta name="author" content="Pedro Simões" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta
       name="description"
-      content="Pedro Simões, editor de vídeo. Criativos de performance, VSLs, Reels, TikTok Shop e conteúdo para negócios digitais. Assista aos trabalhos e peça seu orçamento."
+      content="Pedro Simões, editor de vídeo. Criativos de performance, VSLs, Reels, TikTok Shop e conteúdo para negócios digitais. Assista ao portfólio e peça seu orçamento."
     />
-    <meta property="og:title" content="Pedro Simões — Edição que prende atenção" />
-    <meta
-      property="og:description"
-      content="Criativos, VSLs e vídeos virais que seguram o olhar do primeiro ao último segundo. Veja o portfólio de Pedro Simões."
-    />
+    <meta property="og:title" content="Pedro Simões — Editor de vídeo" />
+    <meta property="og:description" content="Edição que prende atenção e faz sua mensagem vender. Criativos, VSLs e vídeos para redes sociais." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://phmotions.com.br/" />
     <meta property="og:site_name" content="PH Motions" />
@@ -26,23 +23,23 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Pedro Simões, editor de vídeo — Edição que prende atenção." />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pedro Simões — Editor de vídeo" />
+    <meta name="twitter:description" content="Criativos, VSLs e vídeos para redes sociais que prendem atenção." />
     <meta name="twitter:image" content="https://phmotions.com.br/og-image.png" />
-    <meta name="twitter:title" content="Pedro Simões — Edição que prende atenção" />
-    <meta name="twitter:description" content="Portfólio de edição de vídeo: criativos, VSLs, Reels, TikTok Shop e negócios digitais." />
     <link rel="canonical" href="https://phmotions.com.br/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>Pedro Simões — Editor de Vídeo | Criativos, VSL e Vídeos Virais</title>
+    <title>Pedro Simões — Editor de Vídeo | Criativos, VSL e Conteúdo</title>
 
     <script>
       (function () {
         var d = document.documentElement;
         d.classList.add('js');
         if ('scrollRestoration' in history && !location.hash) history.scrollRestoration = 'manual';
-        try { if (sessionStorage.getItem('ph_intro_seen')) d.classList.add('no-intro'); } catch (e) {}
+        try { if (sessionStorage.getItem('ps_intro_seen')) d.classList.add('no-intro'); } catch (e) {}
         if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('no-intro');
         // Rede de segurança: se algo falhar, nada fica escondido.
-        setTimeout(function () { d.classList.add('is-ready'); }, 2800);
-        setTimeout(function () { if (!window.__phBooted) d.classList.add('reveal-all'); }, 4000);
+        setTimeout(function () { d.classList.add('is-ready'); }, 3000);
+        setTimeout(function () { if (!window.__psBooted) d.classList.add('reveal-all'); }, 4000);
       })();
     </script>
 
@@ -51,10 +48,10 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="preconnect" href="https://www.dropbox.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css?v=20261029" />
+    <link rel="stylesheet" href="style.css?v=20261030" />
 
     <script type="application/ld+json">
       {
@@ -85,47 +82,35 @@
   </head>
 
   <body>
-    <!-- Ícones -->
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-      <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M7 4.5v15a1 1 0 0 0 1.52.85l12-7.5a1 1 0 0 0 0-1.7l-12-7.5A1 1 0 0 0 7 4.5Z"/></symbol>
-      <symbol id="i-pause" viewBox="0 0 24 24"><rect fill="currentColor" x="6" y="4" width="4" height="16" rx="1"/><rect fill="currentColor" x="14" y="4" width="4" height="16" rx="1"/></symbol>
-      <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M8 7h9v9"/></symbol>
-      <symbol id="i-right" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
-      <symbol id="i-chat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></symbol>
-      <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></symbol>
-      <symbol id="i-prev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6"/></symbol>
-      <symbol id="i-next" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></symbol>
-      <symbol id="i-vol" viewBox="0 0 24 24"><path fill="currentColor" d="M11 5 6 9H2v6h4l5 4V5Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></symbol>
-      <symbol id="i-mute" viewBox="0 0 24 24"><path fill="currentColor" d="M11 5 6 9H2v6h4l5 4V5Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="m22 9-6 6M16 9l6 6"/></symbol>
-      <symbol id="i-full" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></symbol>
-      <symbol id="i-copy" viewBox="0 0 24 24"><rect fill="none" stroke="currentColor" stroke-width="2" x="8" y="8" width="13" height="13" rx="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2"/></symbol>
-      <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.2v13.6a.8.8 0 0 0 1.22.68l10.9-6.8a.8.8 0 0 0 0-1.36L9.22 4.52A.8.8 0 0 0 8 5.2Z"/></symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24"><rect fill="currentColor" x="6.5" y="5" width="3.5" height="14" rx="1"/><rect fill="currentColor" x="14" y="5" width="3.5" height="14" rx="1"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M8.5 7H17v8.5"/></symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M6 13l6 6 6-6"/></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></symbol>
+      <symbol id="i-prev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6"/></symbol>
+      <symbol id="i-next" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></symbol>
+      <symbol id="i-vol" viewBox="0 0 24 24"><path fill="currentColor" d="M11 5 6 9H2v6h4l5 4V5Z"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></symbol>
+      <symbol id="i-mute" viewBox="0 0 24 24"><path fill="currentColor" d="M11 5 6 9H2v6h4l5 4V5Z"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="m22 9-6 6M16 9l6 6"/></symbol>
+      <symbol id="i-full" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect fill="none" stroke="currentColor" stroke-width="1.6" x="8" y="8" width="13" height="13" rx="2"/><path fill="none" stroke="currentColor" stroke-width="1.6" d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2"/></symbol>
     </svg>
 
-    <!-- Abertura: contagem de película -->
+    <!-- Abertura: cortina de cinema -->
     <div class="intro" data-intro aria-hidden="true">
-      <div class="intro-leader">
-        <span class="intro-cross"></span>
-        <span class="intro-circle c1"></span>
-        <span class="intro-circle c2"></span>
-        <span class="intro-sweep"></span>
-        <span class="intro-num"><b>3</b><b>2</b><b>1</b></span>
-      </div>
-      <div class="intro-meta">
-        <span><i class="rec"></i> PH MOTIONS</span>
-        <span>SEQ_2026 · PEDRO SIMÕES</span>
-      </div>
+      <span class="intro-bar intro-bar--top"></span>
+      <span class="intro-bar intro-bar--bottom"></span>
+      <p class="intro-name"><span>Pedro Simões</span><small>Portfólio de edição</small></p>
     </div>
 
     <div class="grain" aria-hidden="true"></div>
-    <div class="progress" aria-hidden="true"><span data-progress></span></div>
-
     <a class="skip" href="#conteudo">Pular para o conteúdo</a>
 
     <header class="hdr" data-header>
-      <a class="brand" href="#top" aria-label="Pedro Simões — voltar ao início">
-        <span class="brand-mark" aria-hidden="true">PH</span>
-        <span class="brand-text"><strong>Pedro Simões</strong><small>Editor de vídeo</small></span>
+      <a class="logo" href="#top" aria-label="Pedro Simões — voltar ao início">
+        <span class="logo-name">Pedro Simões</span>
+        <span class="logo-tag">PH Motions</span>
       </a>
 
       <nav class="nav" aria-label="Navegação principal">
@@ -136,14 +121,13 @@
         <a href="#faq" data-nav-link>FAQ</a>
       </nav>
 
-      <div class="hdr-tc" aria-hidden="true">
-        <i class="rec"></i><span data-timecode>00:00:00:00</span>
-      </div>
+      <a class="btn btn-light btn-sm hdr-cta" href="#contato" data-magnetic>
+        <span>Fale comigo</span><span class="btn-icon"><svg class="i"><use href="#i-arrow"/></svg></span>
+      </a>
 
-      <a class="btn btn-red btn-sm hdr-cta" href="#contato" data-magnetic>Vamos conversar</a>
-
-      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu" data-menu-btn>
-        <span></span><span></span>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-menu-btn>
+        <span class="menu-btn-label">Menu</span>
+        <span class="menu-btn-lines" aria-hidden="true"><i></i><i></i></span>
       </button>
     </header>
 
@@ -156,276 +140,200 @@
         <a href="#contato"><small>05</small>Contato</a>
       </nav>
       <div class="menu-foot">
-        <a class="btn btn-red" data-wa href="https://wa.me/5511933596263"><svg class="i"><use href="#i-chat"/></svg> Chamar no WhatsApp</a>
+        <a class="btn btn-light" data-wa href="https://wa.me/5511933596263"><span>Chamar no WhatsApp</span><span class="btn-icon"><svg class="i"><use href="#i-arrow"/></svg></span></a>
         <a class="menu-mail" href="mailto:editorpedro01@gmail.com">editorpedro01@gmail.com</a>
       </div>
     </div>
 
     <main id="conteudo">
-      <!-- ============ HERO ============ -->
-      <section class="hero" id="top" data-marker="Abertura">
-        <div class="hero-glow" aria-hidden="true"></div>
-        <div class="hero-grid-lines" aria-hidden="true"></div>
-
-        <div class="wrap hero-inner">
-          <div class="hero-copy">
-            <p class="eyebrow hero-in" style="--d:0">
-              <i class="rec"></i> Editor de vídeo <span class="sep">/</span> <span>Agenda aberta<span class="hide-sm"> para projetos</span></span>
-            </p>
-
-            <h1 class="hero-title" aria-label="Edição que prende atenção.">
-              <span class="ln" aria-hidden="true"><span style="--d:1">Edição que</span></span>
-              <span class="ln" aria-hidden="true"><span style="--d:2">prende</span></span>
-              <span class="ln" aria-hidden="true"><span style="--d:3"><em class="glitch" data-text="atenção.">atenção.</em></span></span>
-            </h1>
-
-            <p class="hero-sub hero-in" style="--d:4">E faz a sua mensagem <strong>vender.</strong></p>
-
-            <p class="hero-lead hero-in" style="--d:5">
-              Sou <strong>Pedro Simões</strong>. Transformo material bruto em criativos, VSLs e conteúdos
-              que seguram o olhar do primeiro ao último segundo — e levam quem assiste até a ação.
-            </p>
-
-            <div class="hero-ctas hero-in" style="--d:6">
-              <a class="btn btn-red btn-lg" href="#trabalhos" data-magnetic>
-                Ver trabalhos <svg class="i"><use href="#i-right"/></svg>
-              </a>
-              <button class="btn btn-ghost btn-lg" type="button" data-open-video="presentation" data-video-title="Vídeo de apresentação" data-cursor="play">
-                <span class="play-dot"><svg class="i"><use href="#i-play"/></svg></span> Assistir apresentação
+      <!-- ============ ABERTURA ============ -->
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-pin" data-hero-pin>
+          <div class="hero-media" data-hero-media>
+            <div class="hero-media-inner">
+              <video class="work-preview-video" data-preview="c1" data-eager muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+              <span class="hero-media-shade" aria-hidden="true"></span>
+            </div>
+            <div class="hero-reel" data-hero-reel>
+              <p class="hero-reel-kicker">Showreel · 2026</p>
+              <p class="hero-reel-title">Cada corte com <em>intenção.</em></p>
+              <button class="btn btn-light" type="button" data-open-video="presentation" data-video-title="Vídeo de apresentação" data-cursor="play">
+                <span class="btn-icon btn-icon--left"><svg class="i"><use href="#i-play"/></svg></span><span>Assistir apresentação</span>
               </button>
             </div>
+            <span class="hero-media-label" data-hero-label aria-hidden="true"><i class="dot"></i> Showreel — role para expandir</span>
           </div>
 
-          <div class="hero-stage hero-in" style="--d:3" data-hero-stage>
-            <button class="phone phone--l" type="button" data-open-video="d2" data-video-title="Direct Response 02" data-cursor="play" aria-label="Assistir Direct Response 02">
-              <video class="work-preview-video" data-preview="d2" data-desktop-play muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
-              <span class="phone-tag">Direct Response</span>
-            </button>
-            <button class="phone phone--r" type="button" data-open-video="d3" data-video-title="Direct Response 03" data-cursor="play" aria-label="Assistir Direct Response 03">
-              <video class="work-preview-video" data-preview="d3" data-desktop-play muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
-              <span class="phone-tag">Direct Response</span>
-            </button>
-            <button class="phone phone--c" type="button" data-open-video="v1" data-video-title="Viral 01" data-cursor="play" aria-label="Assistir Viral 01">
-              <video class="work-preview-video" data-preview="v1" data-eager muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
-              <span class="phone-tag"><i class="rec"></i> Viral</span>
-              <span class="phone-tc" data-phone-tc>00:00:00</span>
-            </button>
-            <div class="hero-badge" aria-hidden="true">
-              <svg viewBox="0 0 120 120"><defs><path id="badge-path" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs><text><textPath href="#badge-path">DÁ O PLAY · DÁ O PLAY · DÁ O PLAY · </textPath></text></svg>
-              <svg class="i"><use href="#i-play"/></svg>
+          <div class="wrap hero-content" data-hero-content>
+            <p class="eyebrow hero-in" style="--d:0"><i class="dot"></i> Editor de vídeo · Agenda aberta</p>
+            <h1 class="display hero-title" id="hero-title">
+              <span class="ln"><span style="--d:1">Edição que <em>prende</em></span></span>
+              <span class="ln"><span style="--d:2">atenção e faz sua</span></span>
+              <span class="ln"><span style="--d:3">mensagem <em>vender.</em></span></span>
+            </h1>
+            <div class="hero-bottom">
+              <p class="hero-lead hero-in" style="--d:4">
+                Sou <strong>Pedro Simões</strong>. Edito criativos, VSLs e conteúdos para quem precisa de vídeo que performa —
+                do primeiro segundo até o clique.
+              </p>
+              <div class="hero-ctas hero-in" style="--d:5">
+                <a class="btn btn-light" href="#trabalhos" data-magnetic><span>Ver trabalhos</span><span class="btn-icon"><svg class="i"><use href="#i-down"/></svg></span></a>
+                <a class="btn btn-ghost" data-wa href="https://wa.me/5511933596263" target="_blank" rel="noopener noreferrer"><span>Falar no WhatsApp</span></a>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="wrap hero-foot hero-in" style="--d:7">
-          <a class="scroll-cue" href="#trabalhos"><span class="scroll-cue-line"></span>Role para assistir</a>
-          <p class="hero-skills">Criativos · VSL · Reels &amp; TikTok · TikTok Shop · Motion</p>
         </div>
       </section>
 
-      <!-- ============ FAIXAS ============ -->
-      <div class="bands" aria-hidden="true">
-        <div class="band band--red">
-          <div class="band-track" data-marquee>
-            <div class="band-group">
-              <span>Criativos de performance</span><i>✦</i><span>VSL</span><i>✦</i><span>Reels</span><i>✦</i><span>TikTok Shop</span><i>✦</i><span>YouTube Shorts</span><i>✦</i><span>Motion graphics</span><i>✦</i><span>Sound design</span><i>✦</i><span>Color grading</span><i>✦</i>
-            </div>
-            <div class="band-group">
-              <span>Criativos de performance</span><i>✦</i><span>VSL</span><i>✦</i><span>Reels</span><i>✦</i><span>TikTok Shop</span><i>✦</i><span>YouTube Shorts</span><i>✦</i><span>Motion graphics</span><i>✦</i><span>Sound design</span><i>✦</i><span>Color grading</span><i>✦</i>
-            </div>
+      <!-- ============ FAIXA ============ -->
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker-track" data-marquee>
+          <div class="ticker-group">
+            <span>Criativos de performance</span><i>✦</i><span><em>VSL</em></span><i>✦</i><span>Reels &amp; TikTok</span><i>✦</i><span><em>TikTok Shop</em></span><i>✦</i><span>YouTube</span><i>✦</i><span><em>Motion design</em></span><i>✦</i><span>Sound design</span><i>✦</i><span><em>Color grading</em></span><i>✦</i>
           </div>
-        </div>
-        <div class="band band--dark">
-          <div class="band-track band-track--rev" data-marquee>
-            <div class="band-group">
-              <span>Ritmo</span><i>●</i><span>Retenção</span><i>●</i><span>Narrativa</span><i>●</i><span>Conversão</span><i>●</i><span>Atenção</span><i>●</i><span>Ritmo</span><i>●</i><span>Retenção</span><i>●</i><span>Narrativa</span><i>●</i><span>Conversão</span><i>●</i><span>Atenção</span><i>●</i>
-            </div>
-            <div class="band-group">
-              <span>Ritmo</span><i>●</i><span>Retenção</span><i>●</i><span>Narrativa</span><i>●</i><span>Conversão</span><i>●</i><span>Atenção</span><i>●</i><span>Ritmo</span><i>●</i><span>Retenção</span><i>●</i><span>Narrativa</span><i>●</i><span>Conversão</span><i>●</i><span>Atenção</span><i>●</i>
-            </div>
+          <div class="ticker-group">
+            <span>Criativos de performance</span><i>✦</i><span><em>VSL</em></span><i>✦</i><span>Reels &amp; TikTok</span><i>✦</i><span><em>TikTok Shop</em></span><i>✦</i><span>YouTube</span><i>✦</i><span><em>Motion design</em></span><i>✦</i><span>Sound design</span><i>✦</i><span><em>Color grading</em></span><i>✦</i>
           </div>
         </div>
       </div>
 
-      <!-- ============ TRABALHOS ============ -->
-      <section class="work" id="trabalhos" data-marker="Trabalhos" aria-labelledby="work-title">
-        <div class="wrap work-head">
-          <p class="kicker" data-reveal><b>01</b> Trabalhos selecionados</p>
-          <h2 class="h2" id="work-title" data-reveal-lines>
-            <span class="ln"><span>Não precisa</span></span>
-            <span class="ln"><span>acreditar em mim.</span></span>
-            <span class="ln"><span class="accent">Dá o play.</span></span>
-          </h2>
-          <p class="lead work-lead" data-reveal>
-            Criativos de performance, VSL e vídeos virais editados por mim.
-            <span class="only-fine">Passe o mouse para ver em movimento e clique para assistir com som.</span>
-            <span class="only-touch">Deslize para o lado e toque para assistir com som.</span>
+      <!-- ============ MANIFESTO ============ -->
+      <section class="statement" aria-label="Manifesto">
+        <div class="wrap statement-inner">
+          <p class="label" data-reveal><b>(00)</b> Manifesto</p>
+          <p class="statement-text" data-words>
+            Edição não é só cortar. É decidir o que o seu público vê, sente e entende em cada segundo — pra ele não ir embora antes da mensagem chegar.
           </p>
+          <p class="statement-sign" data-reveal>— Pedro Simões</p>
         </div>
+      </section>
 
-        <div class="work-pin" data-work-pin>
-          <div class="work-viewport" data-work-viewport>
-            <div class="work-track" data-work-track>
-              <!-- Os cards são gerados a partir da lista PROJETOS em script.js -->
-            </div>
+      <!-- ============ TRABALHOS ============ -->
+      <section class="work" id="trabalhos" aria-labelledby="work-title">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="label" data-reveal><b>(01)</b> Portfólio</p>
+            <h2 class="h2" id="work-title" data-reveal-lines>
+              <span class="ln"><span>Trabalhos</span></span>
+              <span class="ln"><span><em>selecionados</em></span></span>
+            </h2>
+            <p class="lead sec-lead" data-reveal>
+              Criativos de performance, VSL e vídeos virais.
+              <span class="only-fine">Passe o mouse para ver em movimento e clique para assistir com som.</span>
+              <span class="only-touch">Toque em qualquer vídeo para assistir com som.</span>
+            </p>
           </div>
-          <div class="wrap work-ruler" aria-hidden="true">
-            <div class="ruler">
-              <span class="ruler-fill" data-work-fill></span>
-              <span class="ruler-head" data-work-head></span>
-            </div>
-            <div class="ruler-meta"><span data-work-count>01 / 06</span><span>Arraste · role · clique</span></div>
+
+          <div class="grid" data-work-grid>
+            <!-- Cards gerados a partir da lista PROJETOS em script.js -->
           </div>
         </div>
       </section>
 
       <!-- ============ SOBRE ============ -->
-      <section class="about" id="sobre" data-marker="Sobre" aria-labelledby="about-title">
+      <section class="about sheet" id="sobre" aria-labelledby="about-title">
         <div class="wrap">
-          <p class="kicker" data-reveal><b>02</b> Sobre mim</p>
-
           <div class="about-grid">
-            <div class="about-copy">
-              <h2 class="h2" id="about-title" data-reveal-lines>
-                <span class="ln"><span>Prazer,</span></span>
-                <span class="ln"><span>eu sou o <span class="accent">Pedro.</span></span></span>
-              </h2>
-
-              <p class="manifesto" data-words>
-                Edição não é só cortar. É decidir o que o seu público vê, sente e entende em cada segundo — pra ele não ir embora antes da mensagem chegar.
-              </p>
-
-              <div class="about-text" data-reveal>
-                <p>
-                  Sou editor de vídeo e trabalho com o tipo de conteúdo que precisa dar resultado:
-                  criativos para anúncios, VSLs, vídeos para redes sociais, e-commerce e TikTok Shop.
-                </p>
-                <p>
-                  Meu trabalho começa antes do primeiro corte — entendendo objetivo, público e onde o vídeo vai rodar.
-                  Depois, ritmo, storytelling, motion e sound design entram para transformar material bruto
-                  numa mensagem clara, que prende e faz agir.
-                </p>
-              </div>
+            <div class="about-media" data-reveal>
+              <button class="portrait" type="button" data-open-video="presentation" data-video-title="Vídeo de apresentação" data-cursor="play" aria-label="Assistir vídeo de apresentação do Pedro">
+                <video class="work-preview-video" data-preview="presentation" data-poster-only muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+                <span class="portrait-shade" aria-hidden="true"></span>
+                <span class="portrait-play" aria-hidden="true"><svg class="i"><use href="#i-play"/></svg></span>
+                <span class="portrait-caption"><small>Vídeo de apresentação</small><strong>Me conheça em poucos minutos</strong></span>
+              </button>
             </div>
 
-            <div class="about-media" data-reveal>
-              <button class="reel" type="button" data-open-video="presentation" data-video-title="Vídeo de apresentação" data-cursor="play" aria-label="Assistir vídeo de apresentação do Pedro">
-                <video class="work-preview-video" data-preview="presentation" data-poster-only muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
-                <span class="reel-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-                <span class="reel-top" aria-hidden="true"><span><i class="rec"></i> REC</span><span>Apresentação</span></span>
-                <span class="reel-play" aria-hidden="true"><svg class="i"><use href="#i-play"/></svg></span>
-                <span class="reel-caption">
-                  <small>Vídeo de apresentação</small>
-                  <strong>Aperte o play e veja como eu penso cada corte.</strong>
-                </span>
-              </button>
-
-              <div class="for-who">
-                <p class="for-who-title">Pra quem eu edito</p>
-                <ul>
-                  <li>Criadores de conteúdo</li>
-                  <li>Infoprodutores</li>
-                  <li>E-commerce &amp; TikTok Shop</li>
-                  <li>Marcas e negócios digitais</li>
-                </ul>
+            <div class="about-copy">
+              <p class="label" data-reveal><b>(02)</b> Sobre</p>
+              <h2 class="h2" id="about-title" data-reveal-lines>
+                <span class="ln"><span>Prazer, eu</span></span>
+                <span class="ln"><span>sou o <em>Pedro.</em></span></span>
+              </h2>
+              <div class="about-text" data-reveal>
+                <p class="about-lead">Editor de vídeo focado no tipo de conteúdo que precisa dar resultado.</p>
+                <p>
+                  Trabalho com criativos para anúncios, VSLs, vídeos para redes sociais, e-commerce e TikTok Shop —
+                  para infoprodutores, criadores, marcas e negócios digitais.
+                </p>
+                <p>
+                  Meu trabalho começa antes do primeiro corte: entender o objetivo, o público e onde o vídeo vai rodar.
+                  Depois, ritmo, storytelling, motion e sound design transformam material bruto numa mensagem clara —
+                  que prende e faz agir.
+                </p>
               </div>
+
+              <dl class="facts" data-reveal>
+                <div><dt>Especialidade</dt><dd>Criativos, VSL e short-form</dd></div>
+                <div><dt>Para quem</dt><dd>Infoprodutores, e-commerce, criadores e marcas</dd></div>
+                <div><dt>Entrega</dt><dd>Vertical, horizontal ou quadrado — pronto para Meta, TikTok, Reels e YouTube</dd></div>
+                <div><dt>Status</dt><dd><i class="dot dot--dark"></i> Agenda aberta para novos projetos</dd></div>
+              </dl>
             </div>
           </div>
 
-          <div class="why">
-            <h3 class="why-title" data-reveal>Por que trabalhar comigo</h3>
-            <div class="why-grid">
-              <article class="why-card" data-reveal>
-                <span class="why-num">01</span>
-                <h4>Visão de performance</h4>
-                <p>Cada corte tem um porquê: ritmo, hierarquia visual e retenção pensados para o objetivo da peça.</p>
-              </article>
-              <article class="why-card" data-reveal>
-                <span class="why-num">02</span>
-                <h4>Edição a favor da mensagem</h4>
-                <p>Texto, B-roll, motion e som reforçam o argumento — nunca competem com ele.</p>
-              </article>
-              <article class="why-card" data-reveal>
-                <span class="why-num">03</span>
-                <h4>Comunicação direta</h4>
-                <p>Briefing claro, referências alinhadas e você sabendo o que está acontecendo em cada etapa.</p>
-              </article>
-              <article class="why-card" data-reveal>
-                <span class="why-num">04</span>
-                <h4>Versatilidade</h4>
-                <p>Do criativo de 15 segundos à VSL: linguagens diferentes, o mesmo padrão de acabamento.</p>
-              </article>
-            </div>
+          <div class="principles">
+            <h3 class="principles-title" data-reveal>Como eu trabalho</h3>
+            <ol class="principles-list">
+              <li data-reveal><span>01</span><h4>Visão de performance</h4><p>Cada corte tem um porquê: ritmo, hierarquia visual e retenção pensados para o objetivo da peça.</p></li>
+              <li data-reveal><span>02</span><h4>Edição a favor da mensagem</h4><p>Texto, B-roll, motion e som reforçam o argumento — nunca competem com ele.</p></li>
+              <li data-reveal><span>03</span><h4>Comunicação direta</h4><p>Briefing claro, referências alinhadas e você sabendo o que acontece em cada etapa.</p></li>
+              <li data-reveal><span>04</span><h4>Acabamento consistente</h4><p>Do criativo de 15 segundos à VSL: linguagens diferentes, o mesmo padrão de qualidade.</p></li>
+            </ol>
           </div>
         </div>
       </section>
 
       <!-- ============ SERVIÇOS ============ -->
-      <section class="services" id="servicos" data-marker="Serviços" aria-labelledby="services-title">
+      <section class="services" id="servicos" aria-labelledby="services-title">
         <div class="wrap">
-          <div class="services-head">
-            <p class="kicker" data-reveal><b>03</b> Serviços</p>
+          <div class="sec-head">
+            <p class="label" data-reveal><b>(03)</b> Serviços</p>
             <h2 class="h2" id="services-title" data-reveal-lines>
               <span class="ln"><span>O que eu posso</span></span>
-              <span class="ln"><span>editar <span class="accent">pra você.</span></span></span>
+              <span class="ln"><span>editar <em>para você</em></span></span>
             </h2>
           </div>
 
           <ul class="svc-list" data-svc-list>
             <li class="svc" data-reveal data-svc-preview="d1">
-              <button class="svc-row" type="button" aria-expanded="false">
-                <span class="svc-num">01</span>
-                <span class="svc-name">Criativos de performance</span>
-                <span class="svc-plus" aria-hidden="true"></span>
-              </button>
-              <div class="svc-body"><div>
+              <span class="svc-num">01</span>
+              <h3 class="svc-name">Criativos de performance</h3>
+              <div class="svc-body">
                 <p>Anúncios para Meta, TikTok e YouTube que param o scroll nos primeiros segundos e levam até o clique. Também para e-commerce e TikTok Shop.</p>
                 <ul class="tags"><li>Meta Ads</li><li>TikTok Ads</li><li>TikTok Shop</li><li>E-commerce</li></ul>
-              </div></div>
+              </div>
             </li>
             <li class="svc" data-reveal data-svc-preview="c1">
-              <button class="svc-row" type="button" aria-expanded="false">
-                <span class="svc-num">02</span>
-                <span class="svc-name">Edição de VSL</span>
-                <span class="svc-plus" aria-hidden="true"></span>
-              </button>
-              <div class="svc-body"><div>
+              <span class="svc-num">02</span>
+              <h3 class="svc-name">Edição de VSL</h3>
+              <div class="svc-body">
                 <p>Vídeos de vendas com ritmo que segura até a oferta. Texto na tela, B-roll e sound design acompanhando cada argumento.</p>
                 <ul class="tags"><li>VSL</li><li>Lançamentos</li><li>Infoprodutos</li></ul>
-              </div></div>
+              </div>
             </li>
             <li class="svc" data-reveal data-svc-preview="v1">
-              <button class="svc-row" type="button" aria-expanded="false">
-                <span class="svc-num">03</span>
-                <span class="svc-name">Vídeos virais &amp; short-form</span>
-                <span class="svc-plus" aria-hidden="true"></span>
-              </button>
-              <div class="svc-body"><div>
+              <span class="svc-num">03</span>
+              <h3 class="svc-name">Vídeos virais &amp; short-form</h3>
+              <div class="svc-body">
                 <p>Reels, TikTok e Shorts com cortes rápidos, legendas dinâmicas e retenção do primeiro ao último segundo.</p>
                 <ul class="tags"><li>Reels</li><li>TikTok</li><li>Shorts</li></ul>
-              </div></div>
+              </div>
             </li>
             <li class="svc" data-reveal data-svc-preview="c1">
-              <button class="svc-row" type="button" aria-expanded="false">
-                <span class="svc-num">04</span>
-                <span class="svc-name">Cinematic &amp; marca</span>
-                <span class="svc-plus" aria-hidden="true"></span>
-              </button>
-              <div class="svc-body"><div>
+              <span class="svc-num">04</span>
+              <h3 class="svc-name">Cinematic &amp; marca</h3>
+              <div class="svc-body">
                 <p>Narrativa, atmosfera, color grading e desenho de som para marcas que querem ser lembradas — não só vistas.</p>
                 <ul class="tags"><li>Storytelling</li><li>Color grading</li><li>Institucional</li></ul>
-              </div></div>
+              </div>
             </li>
             <li class="svc" data-reveal>
-              <button class="svc-row" type="button" aria-expanded="false">
-                <span class="svc-num">05</span>
-                <span class="svc-name">Vídeos longos &amp; YouTube</span>
-                <span class="svc-plus" aria-hidden="true"></span>
-              </button>
-              <div class="svc-body"><div>
+              <span class="svc-num">05</span>
+              <h3 class="svc-name">Vídeos longos &amp; YouTube</h3>
+              <div class="svc-body">
                 <p>Conteúdo longo editado com ritmo, ganchos e organização para manter o público assistindo até o fim.</p>
                 <ul class="tags"><li>YouTube</li><li>Conteúdo longo</li><li>Aulas</li></ul>
-              </div></div>
+              </div>
             </li>
           </ul>
         </div>
@@ -434,91 +342,22 @@
         </div>
       </section>
 
-      <!-- ============ ANATOMIA DA EDIÇÃO ============ -->
-      <section class="anatomy" id="anatomia" data-marker="Anatomia" aria-labelledby="anatomy-title">
-        <div class="wrap">
-          <div class="anatomy-head">
-            <p class="kicker" data-reveal><b>04</b> Anatomia de uma edição</p>
-            <h2 class="h2" id="anatomy-title" data-reveal-lines>
-              <span class="ln"><span>Cada camada</span></span>
-              <span class="ln"><span>trabalha a favor</span></span>
-              <span class="ln"><span>da <span class="accent">mensagem.</span></span></span>
-            </h2>
-            <p class="lead" data-reveal>
-              Não é efeito pelo efeito. Role e veja um vídeo sendo montado camada por camada — do bruto até o pronto para publicar.
-            </p>
-          </div>
-        </div>
-
-        <div class="rig-pin" data-rig-pin>
-          <div class="wrap rig" data-rig>
-            <div class="rig-monitor">
-              <div class="monitor" data-monitor>
-                <video class="work-preview-video" data-preview="v1" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
-                <span class="monitor-caption" aria-hidden="true">Presta atenção<br>nisso aqui</span>
-                <span class="monitor-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-                <span class="monitor-safe" aria-hidden="true"></span>
-              </div>
-              <div class="rig-status" aria-live="polite">
-                <span class="rig-step" data-rig-step>00</span>
-                <div>
-                  <small data-rig-label>Material bruto</small>
-                  <strong data-rig-title>Começa aqui</strong>
-                </div>
-              </div>
-              <p class="rig-desc" data-rig-desc>Arquivos soltos, sem ritmo, sem cor, sem som. É assim que quase todo vídeo chega até mim.</p>
-            </div>
-
-            <div class="rig-timeline" data-timeline>
-              <div class="tl-ruler" aria-hidden="true">
-                <span>00:00</span><span>00:05</span><span>00:10</span><span>00:15</span><span>00:20</span><span>00:25</span><span>00:30</span>
-              </div>
-              <div class="tl-tracks">
-                <div class="tl-track" data-at="0.80" data-label="FX · Cor" data-title="Color grading" data-desc="Tratamento e consistência visual entre todas as cenas. É o que dá cara de produção — e de marca.">
-                  <span class="tl-name"><b>FX</b> Cor</span>
-                  <span class="tl-lane"><i style="--s:0;--w:100"></i></span>
-                </div>
-                <div class="tl-track" data-at="0.38" data-label="V3 · Motion" data-title="Motion &amp; legendas" data-desc="Textos, animações e legendas que guiam o olhar e seguram quem assiste sem som.">
-                  <span class="tl-name"><b>V3</b> Motion</span>
-                  <span class="tl-lane"><i style="--s:4;--w:14"></i><i style="--s:24;--w:10"></i><i style="--s:40;--w:18"></i><i style="--s:64;--w:12"></i><i style="--s:82;--w:14"></i></span>
-                </div>
-                <div class="tl-track" data-at="0.20" data-label="V2 · B-roll" data-title="B-roll" data-desc="Imagens de apoio que ilustram cada argumento e mantêm o ritmo visual vivo.">
-                  <span class="tl-name"><b>V2</b> B-roll</span>
-                  <span class="tl-lane"><i style="--s:10;--w:12"></i><i style="--s:30;--w:16"></i><i style="--s:55;--w:9"></i><i style="--s:70;--w:20"></i></span>
-                </div>
-                <div class="tl-track" data-at="0.04" data-label="V1 · Corte" data-title="Corte &amp; ritmo" data-desc="A espinha do vídeo: gancho, estrutura, storytelling e o tempo exato de cada fala.">
-                  <span class="tl-name"><b>V1</b> Corte</span>
-                  <span class="tl-lane"><i style="--s:0;--w:9"></i><i style="--s:9.5;--w:14"></i><i style="--s:24;--w:7"></i><i style="--s:31.5;--w:18"></i><i style="--s:50;--w:11"></i><i style="--s:61.5;--w:16"></i><i style="--s:78;--w:22"></i></span>
-                </div>
-                <div class="tl-track tl-track--a" data-at="0.54" data-label="A1 · Sound design" data-title="Sound design" data-desc="Efeitos sonoros que dão peso, impacto e ritmo a cada transição. O que a pessoa sente sem perceber.">
-                  <span class="tl-name"><b>A1</b> SFX</span>
-                  <span class="tl-lane"><i style="--s:2;--w:5"></i><i style="--s:14;--w:4"></i><i style="--s:23;--w:6"></i><i style="--s:38;--w:4"></i><i style="--s:49;--w:7"></i><i style="--s:63;--w:5"></i><i style="--s:77;--w:4"></i><i style="--s:90;--w:6"></i></span>
-                </div>
-                <div class="tl-track tl-track--a" data-at="0.66" data-label="A2 · Trilha" data-title="Trilha" data-desc="Música escolhida para o clima e para o tempo de cada cena — o ritmo que conduz tudo.">
-                  <span class="tl-name"><b>A2</b> Trilha</span>
-                  <span class="tl-lane"><i style="--s:0;--w:100"></i></span>
-                </div>
-              </div>
-              <div class="tl-playhead" data-playhead aria-hidden="true"><span data-tl-tc>00:00:00</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- ============ PROCESSO ============ -->
-      <section class="process" id="processo" data-marker="Processo" aria-labelledby="process-title">
+      <section class="process" id="processo" aria-labelledby="process-title">
         <div class="wrap">
-          <p class="kicker" data-reveal><b>05</b> Como funciona</p>
-          <h2 class="h2" id="process-title" data-reveal-lines>
-            <span class="ln"><span>Do bruto</span></span>
-            <span class="ln"><span>ao <span class="accent">publicado.</span></span></span>
-          </h2>
+          <div class="sec-head">
+            <p class="label" data-reveal><b>(04)</b> Processo</p>
+            <h2 class="h2" id="process-title" data-reveal-lines>
+              <span class="ln"><span>Do bruto ao</span></span>
+              <span class="ln"><span><em>publicado</em></span></span>
+            </h2>
+          </div>
 
           <ol class="steps" data-steps>
             <li class="step" data-reveal>
               <span class="step-num">01</span>
               <h3>Briefing</h3>
-              <p>Você me conta objetivo, público, plataforma e referências. Se algo não estiver definido, a gente alinha junto.</p>
+              <p>Você me conta objetivo, público, plataforma e referências. O que não estiver definido, a gente alinha junto.</p>
             </li>
             <li class="step" data-reveal>
               <span class="step-num">02</span>
@@ -533,7 +372,7 @@
             <li class="step" data-reveal>
               <span class="step-num">04</span>
               <h3>Ajustes &amp; entrega</h3>
-              <p>Ajustes combinados e arquivo final no formato certo para cada plataforma: vertical, horizontal ou quadrado.</p>
+              <p>Ajustes combinados e arquivo final no formato certo para cada plataforma.</p>
             </li>
             <li class="steps-line" aria-hidden="true"><span data-steps-fill></span></li>
           </ol>
@@ -541,36 +380,36 @@
       </section>
 
       <!-- ============ FAQ ============ -->
-      <section class="faq" id="faq" data-marker="FAQ" aria-labelledby="faq-title">
+      <section class="faq" id="faq" aria-labelledby="faq-title">
         <div class="wrap faq-grid">
-          <div>
-            <p class="kicker" data-reveal><b>06</b> Antes de começar</p>
-            <h2 class="h2 h2--sm" id="faq-title" data-reveal-lines>
+          <div class="faq-head">
+            <p class="label" data-reveal><b>(05)</b> Dúvidas</p>
+            <h2 class="h2" id="faq-title" data-reveal-lines>
               <span class="ln"><span>Perguntas</span></span>
-              <span class="ln"><span>frequentes</span></span>
+              <span class="ln"><span><em>frequentes</em></span></span>
             </h2>
-            <p class="lead" data-reveal>Ficou alguma dúvida que não está aqui? <a class="link" href="#contato">Me chama</a> — respondo pessoalmente.</p>
+            <p class="lead" data-reveal>Ficou alguma dúvida? <a class="link" href="#contato">Me chama</a> — respondo pessoalmente.</p>
           </div>
 
-          <div class="faq-list" data-faq>
+          <div class="faq-list">
             <div class="qa" data-reveal>
-              <button class="qa-q" type="button" aria-expanded="false">Quais tipos de vídeo você edita?<span class="svc-plus" aria-hidden="true"></span></button>
+              <button class="qa-q" type="button" aria-expanded="false"><span>Quais tipos de vídeo você edita?</span><i class="plus" aria-hidden="true"></i></button>
               <div class="qa-a"><div><p>Conteúdos curtos e longos, criativos de performance, VSLs, vídeos para e-commerce e TikTok Shop, Reels, Shorts e materiais para negócios digitais.</p></div></div>
             </div>
             <div class="qa" data-reveal>
-              <button class="qa-q" type="button" aria-expanded="false">O que você precisa para começar?<span class="svc-plus" aria-hidden="true"></span></button>
+              <button class="qa-q" type="button" aria-expanded="false"><span>O que você precisa para começar?</span><i class="plus" aria-hidden="true"></i></button>
               <div class="qa-a"><div><p>Material bruto, objetivo do vídeo, referências e informações sobre público, formato e plataforma. Se algo ainda não estiver definido, alinhamos no briefing.</p></div></div>
             </div>
             <div class="qa" data-reveal>
-              <button class="qa-q" type="button" aria-expanded="false">Como funcionam prazo e revisões?<span class="svc-plus" aria-hidden="true"></span></button>
+              <button class="qa-q" type="button" aria-expanded="false"><span>Como funcionam prazo e revisões?</span><i class="plus" aria-hidden="true"></i></button>
               <div class="qa-a"><div><p>Prazo e quantidade de ajustes são combinados antes do início, de acordo com formato, duração e complexidade de cada projeto. Sem surpresa no meio do caminho.</p></div></div>
             </div>
             <div class="qa" data-reveal>
-              <button class="qa-q" type="button" aria-expanded="false">Você adapta o vídeo para diferentes plataformas?<span class="svc-plus" aria-hidden="true"></span></button>
+              <button class="qa-q" type="button" aria-expanded="false"><span>Você adapta o vídeo para diferentes plataformas?</span><i class="plus" aria-hidden="true"></i></button>
               <div class="qa-a"><div><p>Sim. A entrega pode ser vertical, horizontal ou quadrada, conforme as plataformas definidas no briefing.</p></div></div>
             </div>
             <div class="qa" data-reveal>
-              <button class="qa-q" type="button" aria-expanded="false">Como peço um orçamento?<span class="svc-plus" aria-hidden="true"></span></button>
+              <button class="qa-q" type="button" aria-expanded="false"><span>Como peço um orçamento?</span><i class="plus" aria-hidden="true"></i></button>
               <div class="qa-a"><div><p>Use o briefing rápido logo abaixo — ele chega pronto no meu WhatsApp — ou me mande um e-mail. Com o escopo em mãos, preparo uma proposta sob medida.</p></div></div>
             </div>
           </div>
@@ -578,77 +417,71 @@
       </section>
 
       <!-- ============ CONTATO ============ -->
-      <section class="contact" id="contato" data-marker="Contato" aria-labelledby="contact-title">
-        <div class="wrap">
-          <p class="kicker kicker--dark" data-reveal><i class="rec rec--dark"></i> Agenda aberta para novos projetos</p>
-          <h2 class="mega" id="contact-title" data-reveal-lines>
-            <span class="ln"><span>Vamos tirar</span></span>
-            <span class="ln"><span>seu projeto</span></span>
-            <span class="ln"><span>do bruto?</span></span>
-          </h2>
+      <section class="contact" id="contato" aria-labelledby="contact-title">
+        <div class="wrap contact-grid">
+          <div class="contact-copy">
+            <p class="label" data-reveal><i class="dot"></i> Agenda aberta para novos projetos</p>
+            <h2 class="display contact-title" id="contact-title" data-reveal-lines>
+              <span class="ln"><span>Vamos tirar seu</span></span>
+              <span class="ln"><span>projeto do <em>bruto?</em></span></span>
+            </h2>
+            <p class="lead" data-reveal>Me conta o que você precisa. Em 3 cliques você monta um briefing que chega pronto no meu WhatsApp.</p>
 
-          <div class="contact-grid">
-            <form class="brief" data-brief data-reveal novalidate>
-              <p class="brief-intro">
-                <strong>Briefing em 3 cliques.</strong> Escolha as opções e a mensagem chega pronta no meu WhatsApp — sem formulário chato.
-              </p>
-
-              <fieldset>
-                <legend><b>1</b> O que você precisa?</legend>
-                <div class="chips">
-                  <label><input type="radio" name="tipo" value="Criativos para anúncio" /><span>Criativos para anúncio</span></label>
-                  <label><input type="radio" name="tipo" value="VSL" /><span>VSL</span></label>
-                  <label><input type="radio" name="tipo" value="Vídeos virais / Reels" /><span>Vídeos virais / Reels</span></label>
-                  <label><input type="radio" name="tipo" value="Vídeo cinematic / de marca" /><span>Cinematic / marca</span></label>
-                  <label><input type="radio" name="tipo" value="Vídeo longo / YouTube" /><span>Longo / YouTube</span></label>
-                  <label><input type="radio" name="tipo" value="Outro tipo de vídeo" /><span>Outro</span></label>
-                </div>
-              </fieldset>
-
-              <fieldset>
-                <legend><b>2</b> Quantos vídeos?</legend>
-                <div class="chips">
-                  <label><input type="radio" name="volume" value="1 vídeo" /><span>1 vídeo</span></label>
-                  <label><input type="radio" name="volume" value="2 a 5 vídeos" /><span>2 a 5</span></label>
-                  <label><input type="radio" name="volume" value="6 a 10 vídeos" /><span>6 a 10</span></label>
-                  <label><input type="radio" name="volume" value="Demanda recorrente" /><span>Recorrente</span></label>
-                </div>
-              </fieldset>
-
-              <fieldset>
-                <legend><b>3</b> Pra quando?</legend>
-                <div class="chips">
-                  <label><input type="radio" name="prazo" value="Urgente (esta semana)" /><span>Esta semana</span></label>
-                  <label><input type="radio" name="prazo" value="Próximas 2 semanas" /><span>Até 15 dias</span></label>
-                  <label><input type="radio" name="prazo" value="Sem prazo definido" /><span>Sem pressa</span></label>
-                </div>
-              </fieldset>
-
-              <label class="brief-note">
-                <span>Algo mais? <em>(opcional)</em></span>
-                <textarea name="nota" rows="2" maxlength="400" placeholder="Ex.: já tenho o material gravado e quero algo no estilo do Viral 01."></textarea>
-              </label>
-
-              <a class="btn btn-black btn-lg brief-send" data-brief-send data-magnetic href="https://wa.me/5511933596263" target="_blank" rel="noopener noreferrer">
-                <svg class="i"><use href="#i-chat"/></svg> Enviar briefing no WhatsApp <svg class="i"><use href="#i-arrow"/></svg>
-              </a>
-            </form>
-
-            <div class="contact-alt" data-reveal>
-              <p class="contact-alt-title">Prefere ir direto?</p>
-              <a class="contact-line" data-wa href="https://wa.me/5511933596263" target="_blank" rel="noopener noreferrer">
+            <div class="direct" data-reveal>
+              <a class="direct-line" data-wa href="https://wa.me/5511933596263" target="_blank" rel="noopener noreferrer">
                 <span><small>WhatsApp</small><strong>(11) 93359-6263</strong></span>
                 <svg class="i"><use href="#i-arrow"/></svg>
               </a>
-              <div class="contact-line contact-line--mail">
+              <div class="direct-line">
                 <a href="mailto:editorpedro01@gmail.com"><small>E-mail</small><strong>editorpedro01<wbr>@gmail.com</strong></a>
-                <button class="copy-btn" type="button" data-copy="editorpedro01@gmail.com" aria-label="Copiar e-mail">
-                  <svg class="i"><use href="#i-copy"/></svg><span>Copiar</span>
-                </button>
+                <button class="copy-btn" type="button" data-copy="editorpedro01@gmail.com" aria-label="Copiar e-mail"><svg class="i"><use href="#i-copy"/></svg><span>Copiar</span></button>
               </div>
-              <p class="contact-note">Respondo pessoalmente. Sem robô, sem enrolação.</p>
             </div>
           </div>
+
+          <form class="brief" data-brief data-reveal novalidate>
+            <p class="brief-title">Briefing rápido</p>
+
+            <fieldset>
+              <legend><b>1</b> O que você precisa?</legend>
+              <div class="chips">
+                <label><input type="radio" name="tipo" value="Criativos para anúncio" /><span>Criativos para anúncio</span></label>
+                <label><input type="radio" name="tipo" value="VSL" /><span>VSL</span></label>
+                <label><input type="radio" name="tipo" value="Vídeos virais / Reels" /><span>Vídeos virais / Reels</span></label>
+                <label><input type="radio" name="tipo" value="Vídeo cinematic / de marca" /><span>Cinematic / marca</span></label>
+                <label><input type="radio" name="tipo" value="Vídeo longo / YouTube" /><span>Longo / YouTube</span></label>
+                <label><input type="radio" name="tipo" value="Outro tipo de vídeo" /><span>Outro</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend><b>2</b> Quantos vídeos?</legend>
+              <div class="chips">
+                <label><input type="radio" name="volume" value="1 vídeo" /><span>1 vídeo</span></label>
+                <label><input type="radio" name="volume" value="2 a 5 vídeos" /><span>2 a 5</span></label>
+                <label><input type="radio" name="volume" value="6 a 10 vídeos" /><span>6 a 10</span></label>
+                <label><input type="radio" name="volume" value="Demanda recorrente" /><span>Recorrente</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend><b>3</b> Para quando?</legend>
+              <div class="chips">
+                <label><input type="radio" name="prazo" value="Urgente (esta semana)" /><span>Esta semana</span></label>
+                <label><input type="radio" name="prazo" value="Próximas 2 semanas" /><span>Até 15 dias</span></label>
+                <label><input type="radio" name="prazo" value="Sem prazo definido" /><span>Sem pressa</span></label>
+              </div>
+            </fieldset>
+
+            <label class="brief-note">
+              <span>Algo mais? <em>(opcional)</em></span>
+              <textarea name="nota" rows="2" maxlength="400" placeholder="Ex.: já tenho o material gravado e quero algo no estilo do vídeo X."></textarea>
+            </label>
+
+            <a class="btn btn-dark brief-send" data-brief-send data-magnetic href="https://wa.me/5511933596263" target="_blank" rel="noopener noreferrer">
+              <span>Enviar briefing no WhatsApp</span><span class="btn-icon"><svg class="i"><use href="#i-arrow"/></svg></span>
+            </a>
+          </form>
         </div>
       </section>
     </main>
@@ -656,10 +489,7 @@
     <footer class="footer">
       <div class="wrap">
         <div class="footer-top">
-          <div>
-            <p class="footer-name">Pedro Simões</p>
-            <p class="footer-role">Editor de vídeo · Criativos, VSL, short-form &amp; motion</p>
-          </div>
+          <p class="footer-claim">Edição que prende <em>atenção.</em></p>
           <nav class="footer-nav" aria-label="Rodapé">
             <a href="#trabalhos">Trabalhos</a>
             <a href="#sobre">Sobre</a>
@@ -667,19 +497,19 @@
             <a href="#processo">Processo</a>
             <a href="#contato">Contato</a>
           </nav>
-          <a class="to-top" href="#top">Voltar ao topo <span aria-hidden="true">↑</span></a>
+          <div class="footer-contact">
+            <a data-wa href="https://wa.me/5511933596263" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a href="mailto:editorpedro01@gmail.com">editorpedro01@gmail.com</a>
+          </div>
         </div>
-        <p class="wordmark" aria-hidden="true">
-          <span>P</span><span>H</span><span>&nbsp;</span><span>M</span><span>O</span><span>T</span><span>I</span><span>O</span><span>N</span><span>S</span>
-        </p>
+        <p class="wordmark" data-wordmark aria-hidden="true">Pedro Simões</p>
         <div class="footer-bottom">
-          <span>© <span data-year>2026</span> PH Motions</span>
-          <span>Feito pra prender atenção.</span>
+          <span>© <span data-year>2026</span> PH Motions · Pedro Simões</span>
+          <a class="to-top" href="#top">Voltar ao topo ↑</a>
         </div>
       </div>
     </footer>
 
-    <!-- CTA fixo no celular -->
     <a class="dock" data-dock data-wa href="https://wa.me/5511933596263" target="_blank" rel="noopener noreferrer">
       <span class="dock-icon"><svg class="i"><use href="#i-chat"/></svg></span>
       <span class="dock-text"><strong>Falar com o Pedro</strong><small>Orçamento pelo WhatsApp</small></span>
@@ -720,7 +550,7 @@
 
         <footer class="pl-foot">
           <p data-pl-desc></p>
-          <a class="btn btn-red btn-sm" data-pl-cta href="https://wa.me/5511933596263" target="_blank" rel="noopener noreferrer">Quero um vídeo assim <svg class="i"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-light btn-sm" data-pl-cta href="https://wa.me/5511933596263" target="_blank" rel="noopener noreferrer"><span>Quero um vídeo assim</span><span class="btn-icon"><svg class="i"><use href="#i-arrow"/></svg></span></a>
         </footer>
       </div>
     </dialog>
@@ -735,8 +565,8 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-    <script src="script.js?v=20261029" defer></script>
+    <script src="script.js?v=20261030" defer></script>
     <script src="analytics-config.js?v=20261029" defer></script>
-    <script src="analytics.js?v=20261029" defer></script>
+    <script src="analytics.js?v=20261030" defer></script>
   </body>
 </html>
