@@ -530,7 +530,7 @@
 
   const statement = $('[data-words]');
   if (statement) {
-    const highlight = new Set(['atenção', 'segundos', 'ignorado']);
+    const highlight = new Set(['cortar', 'segundo', 'mensagem']);
     const words = statement.textContent.trim().split(/\s+/);
     statement.innerHTML = words
       .map(w => `<span class="w${highlight.has(w.replace(/[^\p{L}]/gu, '')) ? ' hl' : ''}">${esc(w)}</span>`)

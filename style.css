@@ -2557,7 +2557,7 @@ body {
 
 .hero-title {
   max-width: none;
-  font-size: clamp(2.8rem, 5.4vw, 6rem);
+  font-size: clamp(2.6rem, 4.1vw, 5rem);
 }
 
 
@@ -3371,5 +3371,30 @@ body {
 
   .ticker-track {
     animation: none !important;
+  }
+}
+
+/* Acentos em maiúsculas (Õ) não podem ser cortados pela máscara */
+.wordmark {
+  line-height: 1;
+}
+
+.wordmark-mask {
+  padding-top: 0.14em;
+}
+
+.display .ln,
+.h2 .ln {
+  padding-top: 0.18em;
+  margin-top: -0.18em;
+}
+
+.footer-contact a {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  .display {
+    line-height: 0.98;
   }
 }
