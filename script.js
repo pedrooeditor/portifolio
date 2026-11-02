@@ -530,7 +530,7 @@
 
   const statement = $('[data-words]');
   if (statement) {
-    const highlight = new Set(['cortar', 'segundo', 'mensagem']);
+    const highlight = new Set(['atenção', 'segundos', 'ignorado']);
     const words = statement.textContent.trim().split(/\s+/);
     statement.innerHTML = words
       .map(w => `<span class="w${highlight.has(w.replace(/[^\p{L}]/gu, '')) ? ' hl' : ''}">${esc(w)}</span>`)
@@ -747,44 +747,8 @@
   });
 
   /* ==========================================================================
-     Cursor personalizado e botões magnéticos (só mouse)
+     Botões magnéticos (só mouse)
      ========================================================================== */
-
-  const cursor = $('[data-cursor-el]');
-  if (cursor && finePointer && !reduceMotion) {
-    root.classList.add('has-cursor');
-    cursor.classList.add('is-hidden');
-    const dot = $('.cursor-dot', cursor);
-    const ring = $('.cursor-ring', cursor);
-    let mx = -100;
-    let my = -100;
-    let rx = -100;
-    let ry = -100;
-    let raf = 0;
-    const loop = () => {
-      rx += (mx - rx) * 0.18;
-      ry += (my - ry) * 0.18;
-      ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-      raf = Math.abs(mx - rx) + Math.abs(my - ry) > 0.1 ? requestAnimationFrame(loop) : 0;
-    };
-    window.addEventListener('pointermove', e => {
-      if (e.pointerType !== 'mouse') return;
-      mx = e.clientX;
-      my = e.clientY;
-      dot.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
-      cursor.classList.remove('is-hidden');
-      if (!raf) raf = requestAnimationFrame(loop);
-    }, { passive: true });
-    document.addEventListener('pointerover', e => {
-      const t = e.target;
-      if (!t || !t.closest) return;
-      const play = t.closest('[data-cursor="play"]');
-      const link = !play && t.closest('a, button, label, input, textarea, select');
-      cursor.classList.toggle('is-play', Boolean(play));
-      cursor.classList.toggle('is-link', Boolean(link));
-    });
-    document.addEventListener('mouseout', e => { if (!e.relatedTarget) cursor.classList.add('is-hidden'); });
-  }
 
   if (finePointer && !reduceMotion) {
     $$('[data-magnetic]').forEach(el => {

@@ -1,34 +1,40 @@
 /* ==========================================================================
    Pedro Simões — Editor de vídeo (PH Motions)
-   Identidade: editorial de cinema. Preto quente, marfim e dourado champanhe.
+   Identidade: preto profundo, aço escovado e luz azul neon.
    ========================================================================== */
 
 :root {
   /* Paleta: trocar estes valores muda a cor do site inteiro */
-  --bg: #0c0c0b;
-  --bg-rgb: 12 12 11;
-  --bg-2: #121211;
-  --surface: #181816;
-  --surface-2: #201f1c;
-  --ink: #ece6da;
-  --ink-rgb: 236 230 218;
-  --muted: #9d978b;
-  --dim: #67635b;
+  --bg: #05070b;
+  --bg-rgb: 5 7 11;
+  --bg-2: #0a0e15;
+  --surface: #0e131b;
+  --surface-2: #151b26;
+  --ink: #e9eef5;
+  --ink-rgb: 233 238 245;
+  --muted: #8f9aab;
+  --dim: #556072;
   --line: rgb(var(--ink-rgb) / 0.1);
   --line-2: rgb(var(--ink-rgb) / 0.2);
 
-  --gold: #c8a46a;
-  --gold-rgb: 200 164 106;
-  --gold-soft: #dcc28f;
-  --gold-deep: #8a6a36;
+  /* "gold" = azul neon (nomes mantidos para não quebrar referências) */
+  --gold: #2d8cff;
+  --gold-rgb: 45 140 255;
+  --gold-soft: #7cc6ff;
+  --gold-deep: #1a5fe0;
+  --steel: linear-gradient(180deg, #ffffff 0%, #dfe6ef 38%, #9aa7ba 72%, #6c798d 100%);
+  --neon: linear-gradient(180deg, #b9e3ff 0%, #5cb2ff 45%, #1f6fff 100%);
+  --glow: 0 0 0 1px rgb(var(--gold-rgb) / 0.45), 0 10px 44px -8px rgb(var(--gold-rgb) / 0.75);
 
-  --paper: #ece6da;
-  --paper-2: #e3dccd;
-  --paper-ink: #151412;
-  --paper-muted: #5d584f;
-  --paper-line: rgb(21 20 18 / 0.14);
+  /* Painéis (antes claros, agora aço escuro) */
+  --paper: #0c1118;
+  --paper-2: #111823;
+  --paper-ink: #e9eef5;
+  --paper-muted: #8f9aab;
+  --paper-line: rgb(233 238 245 / 0.1);
 
-  --serif: "Instrument Serif", "Times New Roman", Georgia, serif;
+  --serif: "Archivo", "Arial Black", Arial, sans-serif;
+  --logo: "Instrument Serif", "Times New Roman", Georgia, serif;
   --sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -37,7 +43,7 @@
   --gutter: clamp(18px, 4vw, 56px);
   --maxw: 1440px;
   --hdr: 76px;
-  --radius: 18px;
+  --radius: 10px;
 }
 
 /* ---------- Base ---------- */
@@ -92,7 +98,7 @@ a {
 }
 
 em {
-  font-style: italic;
+  font-style: normal;
 }
 
 ::selection {
@@ -184,18 +190,19 @@ html.lenis body {
 .h2 {
   margin: 0;
   font-family: var(--serif);
-  font-weight: 400;
-  letter-spacing: -0.015em;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
 }
 
 .display {
-  font-size: clamp(3rem, 6.6vw, 7rem);
-  line-height: 0.95;
+  font-size: clamp(2.8rem, 6vw, 6.4rem);
+  line-height: 0.92;
 }
 
 .h2 {
-  font-size: clamp(2.7rem, 5.4vw, 5.6rem);
-  line-height: 0.96;
+  font-size: clamp(2.3rem, 4.6vw, 4.8rem);
+  line-height: 0.94;
 }
 
 .display em,
@@ -439,7 +446,7 @@ html.lenis body {
   left: 0;
   right: 0;
   height: 50.5%;
-  background: #070706;
+  background: #020306;
   animation: 1s var(--ease-io) 0.95s forwards;
 }
 
@@ -480,7 +487,7 @@ html.lenis body {
 }
 
 .intro-name span {
-  font: italic 400 clamp(2.4rem, 5vw, 4rem) / 1 var(--serif);
+  font: 800 clamp(2.4rem, 5vw, 4rem) / 1 var(--serif);
   color: var(--ink);
 }
 
@@ -558,7 +565,7 @@ html.lenis body {
 }
 
 .logo-name {
-  font: 400 1.6rem/1 var(--serif);
+  font: 400 1.6rem/1 var(--logo);
   letter-spacing: -0.01em;
 }
 
@@ -687,7 +694,7 @@ html.lenis body {
   padding: 10px 0;
   border-bottom: 1px solid var(--line);
   color: var(--ink);
-  font: 400 clamp(2.6rem, 12vw, 4.2rem) / 1 var(--serif);
+  font: 800 clamp(2.6rem, 12vw, 4.2rem) / 1 var(--serif);
   text-decoration: none;
   opacity: 0;
   transform: translateY(30px);
@@ -830,7 +837,7 @@ html.lenis body {
 
 .hero-reel-title {
   margin: 0 0 6px;
-  font: 400 clamp(2.6rem, 6vw, 6rem) / 0.95 var(--serif);
+  font: 800 clamp(2.6rem, 6vw, 6rem) / 0.95 var(--serif);
 }
 
 .hero-reel-title em {
@@ -937,7 +944,7 @@ html.lenis body {
   align-items: center;
   gap: clamp(22px, 3vw, 44px);
   padding-right: clamp(22px, 3vw, 44px);
-  font: 400 clamp(1.8rem, 3.6vw, 3.4rem) / 1 var(--serif);
+  font: 800 clamp(1.8rem, 3.6vw, 3.4rem) / 1 var(--serif);
 }
 
 .ticker-group em {
@@ -968,7 +975,7 @@ html.lenis body {
 
 .statement-text {
   margin: 0;
-  font: 400 clamp(2rem, 4.4vw, 4.5rem) / 1.08 var(--serif);
+  font: 800 clamp(2rem, 4.4vw, 4.5rem) / 1.08 var(--serif);
   letter-spacing: -0.01em;
 }
 
@@ -996,7 +1003,7 @@ html.lenis body {
 .statement-sign {
   margin: 36px 0 0;
   color: var(--gold);
-  font: italic 400 1.5rem/1 var(--serif);
+  font: 800 1.5rem/1 var(--serif);
 }
 
 /* ==========================================================================
@@ -1093,7 +1100,7 @@ html.lenis body {
   place-items: center;
   padding: 24px;
   color: rgb(var(--ink-rgb) / 0.14);
-  font: italic 400 clamp(1.8rem, 2.6vw, 2.6rem) / 1 var(--serif);
+  font: 800 clamp(1.8rem, 2.6vw, 2.6rem) / 1 var(--serif);
   text-align: center;
 }
 
@@ -1167,9 +1174,6 @@ html.lenis body {
     transform: translate(-50%, -50%) scale(1);
   }
 
-  .has-cursor .card-play {
-    display: none;
-  }
 }
 
 @media (hover: none), (pointer: coarse) {
@@ -1206,7 +1210,7 @@ html.lenis body {
 
 .card-title {
   margin: 0 0 6px;
-  font: 400 clamp(1.45rem, 1.9vw, 1.9rem) / 1.05 var(--serif);
+  font: 800 clamp(1.45rem, 1.9vw, 1.9rem) / 1.05 var(--serif);
 }
 
 .card-cat {
@@ -1259,7 +1263,7 @@ html.lenis body {
   aspect-ratio: 1;
   border: 1px solid var(--paper-line);
   border-radius: 50%;
-  box-shadow: 0 0 0 46px rgb(21 20 18 / 0.03), 0 0 0 92px rgb(21 20 18 / 0.02);
+  box-shadow: 0 0 0 46px rgb(var(--gold-rgb) / 0.05), 0 0 0 92px rgb(var(--gold-rgb) / 0.03);
 }
 
 .card-cta small {
@@ -1271,7 +1275,7 @@ html.lenis body {
 
 .card-cta strong {
   max-width: 14ch;
-  font: 400 clamp(2.2rem, 3.8vw, 3.8rem) / 0.98 var(--serif);
+  font: 800 clamp(2.2rem, 3.8vw, 3.8rem) / 0.98 var(--serif);
 }
 
 .card-cta strong em {
@@ -1343,7 +1347,7 @@ html.lenis body {
   overflow: hidden;
   border: 0;
   border-radius: var(--radius);
-  background: #1b1a17;
+  background: #0b0f16;
   color: var(--ink);
   text-align: left;
   cursor: pointer;
@@ -1365,7 +1369,7 @@ html.lenis body {
 .portrait-shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 45%, rgb(12 12 11 / 0.85));
+  background: linear-gradient(180deg, transparent 45%, rgb(var(--bg-rgb) / 0.88));
 }
 
 .portrait-play {
@@ -1424,7 +1428,7 @@ html.lenis body {
 }
 
 .portrait-caption strong {
-  font: 400 clamp(1.5rem, 2.2vw, 2rem) / 1.05 var(--serif);
+  font: 800 clamp(1.5rem, 2.2vw, 2rem) / 1.05 var(--serif);
 }
 
 .about-text {
@@ -1441,7 +1445,7 @@ html.lenis body {
 .about-text .about-lead {
   margin-bottom: 22px;
   color: var(--paper-ink);
-  font: 400 clamp(1.6rem, 2.4vw, 2.2rem) / 1.15 var(--serif);
+  font: 800 clamp(1.6rem, 2.4vw, 2.2rem) / 1.15 var(--serif);
 }
 
 .facts {
@@ -1481,7 +1485,7 @@ html.lenis body {
 
 .principles-title {
   margin: 0 0 clamp(28px, 4vw, 48px);
-  font: 400 clamp(2rem, 3.4vw, 3.2rem) / 1 var(--serif);
+  font: 800 clamp(2rem, 3.4vw, 3.2rem) / 1 var(--serif);
 }
 
 .principles-list {
@@ -1497,7 +1501,7 @@ html.lenis body {
   display: block;
   margin-bottom: 18px;
   color: var(--gold-deep);
-  font: italic 400 2.2rem/1 var(--serif);
+  font: 800 2.2rem/1 var(--serif);
 }
 
 .principles-list h4 {
@@ -1558,7 +1562,7 @@ html.lenis body {
 
 .svc-name {
   margin: 0;
-  font: 400 clamp(2rem, 3.8vw, 3.8rem) / 1 var(--serif);
+  font: 800 clamp(2rem, 3.8vw, 3.8rem) / 1 var(--serif);
   transition: transform 0.7s var(--ease), color 0.4s;
 }
 
@@ -1677,7 +1681,7 @@ html.lenis body {
   display: block;
   margin-bottom: 16px;
   color: var(--dim);
-  font: italic 400 3.2rem/1 var(--serif);
+  font: 800 3.2rem/1 var(--serif);
   transition: color 0.5s var(--ease);
 }
 
@@ -1755,7 +1759,7 @@ html.lenis body {
   padding: 26px 0;
   border: 0;
   background: none;
-  font: 400 clamp(1.35rem, 2vw, 1.75rem) / 1.2 var(--serif);
+  font: 800 clamp(1.35rem, 2vw, 1.75rem) / 1.2 var(--serif);
   text-align: left;
   cursor: pointer;
   transition: color 0.3s;
@@ -1879,7 +1883,7 @@ a.direct-line:hover {
 
 .direct-line strong {
   display: block;
-  font: 400 clamp(1.4rem, 2vw, 1.75rem) / 1.1 var(--serif);
+  font: 800 clamp(1.4rem, 2vw, 1.75rem) / 1.1 var(--serif);
   overflow-wrap: break-word;
 }
 
@@ -1939,7 +1943,7 @@ a.direct-line:hover {
 
 .brief-title {
   margin: 0 0 26px;
-  font: 400 clamp(1.8rem, 2.6vw, 2.4rem) / 1 var(--serif);
+  font: 800 clamp(1.8rem, 2.6vw, 2.4rem) / 1 var(--serif);
 }
 
 .brief fieldset {
@@ -1992,7 +1996,7 @@ a.direct-line:hover {
   align-items: center;
   min-height: 42px;
   padding: 0 16px;
-  border: 1px solid rgb(21 20 18 / 0.28);
+  border: 1px solid rgb(233 238 245 / 0.18);
   border-radius: 999px;
   font-size: 0.9rem;
   font-weight: 500;
@@ -2036,9 +2040,9 @@ a.direct-line:hover {
   display: block;
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid rgb(21 20 18 / 0.28);
+  border: 1px solid rgb(233 238 245 / 0.18);
   border-radius: 14px;
-  background: rgb(255 255 255 / 0.35);
+  background: rgb(233 238 245 / 0.04);
   color: var(--paper-ink);
   font: inherit;
   font-size: 1rem;
@@ -2047,12 +2051,12 @@ a.direct-line:hover {
 }
 
 .brief textarea::placeholder {
-  color: rgb(21 20 18 / 0.45);
+  color: rgb(233 238 245 / 0.35);
 }
 
 .brief textarea:focus {
   border-color: var(--paper-ink);
-  background: rgb(255 255 255 / 0.6);
+  background: rgb(233 238 245 / 0.07);
   outline: none;
 }
 
@@ -2084,7 +2088,7 @@ a.direct-line:hover {
 .footer-claim {
   max-width: 14ch;
   margin: 0;
-  font: 400 clamp(2rem, 3vw, 2.8rem) / 1 var(--serif);
+  font: 800 clamp(2rem, 3vw, 2.8rem) / 1 var(--serif);
 }
 
 .footer-claim em {
@@ -2112,7 +2116,7 @@ a.direct-line:hover {
 .wordmark {
   margin: clamp(56px, 8vw, 110px) 0 18px;
   color: var(--ink);
-  font: 400 clamp(3.5rem, 15vw, 17rem) / 0.85 var(--serif);
+  font: 800 clamp(3.5rem, 15vw, 17rem) / 0.85 var(--serif);
   letter-spacing: -0.03em;
   white-space: nowrap;
   user-select: none;
@@ -2235,7 +2239,7 @@ body.player-open {
 .ph-video-title-copy strong {
   display: block;
   overflow: hidden;
-  font: 400 clamp(1.3rem, 2vw, 1.7rem) / 1.1 var(--serif);
+  font: 800 clamp(1.3rem, 2vw, 1.7rem) / 1.1 var(--serif);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -2513,93 +2517,509 @@ body.player-open {
   transform: translate(-50%, 0);
 }
 
-/* ---------- Cursor ---------- */
+/* ==========================================================================
+   Identidade "aço + neon": acabamento metálico e luz azul
+   ========================================================================== */
 
-.cursor {
-  display: none;
+body {
+  font-variation-settings: "wdth" 110;
+}
+
+/* Títulos em aço escovado; destaques em azul neon */
+.display .ln > span,
+.h2 .ln > span,
+.hero-reel-title,
+.card-cta strong,
+.footer-claim,
+.intro-name span {
+  background: var(--steel);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.display em,
+.h2 em,
+.sheet .h2 em,
+.hero-reel-title em,
+.card-cta strong em,
+.footer-claim em,
+.ticker-group em {
+  background: var(--neon);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-reel-title em {
+  filter: drop-shadow(0 0 22px rgb(var(--gold-rgb) / 0.55));
+}
+
+.hero-title {
+  max-width: none;
+  font-size: clamp(2.8rem, 5.4vw, 6rem);
+}
+
+
+.label b {
+  text-shadow: 0 0 12px rgb(var(--gold-rgb) / 0.6);
+}
+
+.dot {
+  box-shadow: 0 0 10px rgb(var(--gold-rgb) / 0.9);
+}
+
+/* Botões: mais retos, azul com brilho */
+.btn {
+  border-radius: 10px;
+}
+
+.btn-icon {
+  border-radius: 7px;
+}
+
+.btn-light,
+.btn-dark {
+  background: linear-gradient(180deg, #3d9bff 0%, #1764f0 100%);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.28), var(--glow);
+}
+
+.btn-light .btn-icon,
+.btn-dark .btn-icon {
+  background: #04070d;
+  color: #fff;
+}
+
+.btn-light:hover,
+.btn-dark:hover {
+  background: linear-gradient(180deg, #5cb0ff 0%, #2275ff 100%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 0 0 1px rgb(var(--gold-rgb) / 0.7), 0 14px 60px -6px rgb(var(--gold-rgb) / 0.95);
+}
+
+.btn-dark:hover .btn-icon {
+  background: #04070d;
+}
+
+.btn-ghost {
+  background: rgb(var(--ink-rgb) / 0.03);
+}
+
+.btn-ghost:hover {
+  border-color: rgb(var(--gold-rgb) / 0.8);
+  background: rgb(var(--gold-rgb) / 0.08);
+}
+
+.nav a.is-active {
+  background: rgb(var(--gold-rgb) / 0.16);
+  box-shadow: inset 0 0 0 1px rgb(var(--gold-rgb) / 0.35);
+}
+
+.menu-btn-lines {
+  border-radius: 8px;
+  background: var(--gold);
+}
+
+.menu-btn-lines i {
+  background: #fff;
+}
+
+.menu-nav a {
+  font-size: clamp(2rem, 10vw, 3.6rem);
+  text-transform: uppercase;
+}
+
+/* Abertura: linha de luz azul que abre a tela */
+.intro::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  z-index: 1;
+  height: 2px;
+  margin-top: -1px;
+  background: #7cc6ff;
+  box-shadow: 0 0 18px 3px rgb(var(--gold-rgb) / 0.9), 0 0 70px 14px rgb(var(--gold-rgb) / 0.45);
+  transform: scaleX(0);
+  animation: seam-in 0.75s var(--ease) 0.1s forwards, seam-out 0.35s ease 0.95s forwards;
+}
+
+@keyframes seam-in {
+  to { transform: scaleX(1); }
+}
+
+@keyframes seam-out {
+  to { opacity: 0; }
+}
+
+.intro-name span {
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  text-transform: uppercase;
+}
+
+/* Hero: luz azul atrás da janela do vídeo */
+.hero-pin::before {
+  content: "";
+  position: absolute;
+  right: -8%;
+  bottom: -18%;
+  z-index: 0;
+  width: 72%;
+  height: 90%;
+  background: radial-gradient(closest-side, rgb(var(--gold-rgb) / 0.42), rgb(var(--gold-rgb) / 0.1) 55%, transparent);
+  pointer-events: none;
+}
+
+.hero-pin::after {
+  content: "";
+  position: absolute;
+  left: -20%;
+  top: -30%;
+  z-index: 0;
+  width: 60%;
+  height: 70%;
+  background: radial-gradient(closest-side, rgb(var(--gold-rgb) / 0.12), transparent);
+  pointer-events: none;
+}
+
+.hero-media {
+  background: #070b12;
+}
+
+.hero-media-label {
+  border: 1px solid rgb(var(--gold-rgb) / 0.35);
+}
+
+/* Faixa */
+.ticker {
+  background: linear-gradient(90deg, transparent, rgb(var(--gold-rgb) / 0.07), transparent);
+}
+
+.ticker-group {
+  font-size: clamp(1.3rem, 2.6vw, 2.4rem);
+  text-transform: uppercase;
+}
+
+.ticker i {
+  text-shadow: 0 0 12px rgb(var(--gold-rgb) / 0.9);
+}
+
+/* Manifesto */
+.statement-text {
+  font-weight: 700;
+  font-size: clamp(1.7rem, 3.5vw, 3.7rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.statement-text .w.hl {
+  font-style: normal;
+}
+
+.statement-text .w.hl.on {
+  color: var(--gold-soft);
+  text-shadow: 0 0 26px rgb(var(--gold-rgb) / 0.7);
+}
+
+.statement-sign {
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Cards de trabalho */
+.card-media {
+  background:
+    radial-gradient(circle at 50% 40%, rgb(var(--gold-rgb) / 0.16), transparent 62%),
+    var(--surface);
+}
+
+.card-media::after {
+  box-shadow: inset 0 0 0 1px rgb(var(--ink-rgb) / 0.08);
+  border-radius: inherit;
+  transition: box-shadow 0.5s var(--ease);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .has-cursor .cursor {
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 300;
-    display: block;
-    pointer-events: none;
-  }
-
-  .has-cursor [data-cursor="play"],
-  .has-cursor [data-cursor="play"] * {
-    cursor: none;
+  .card-media:hover::after {
+    box-shadow: inset 0 0 0 1px rgb(var(--gold-rgb) / 0.75), inset 0 0 60px rgb(var(--gold-rgb) / 0.3);
   }
 }
 
-.cursor-dot,
-.cursor-ring {
-  position: absolute;
-  left: 0;
-  top: 0;
-  border-radius: 50%;
-  will-change: transform;
+.card-tag {
+  border: 1px solid rgb(var(--ink-rgb) / 0.12);
+  border-radius: 6px;
 }
 
-.cursor-dot {
-  width: 6px;
-  height: 6px;
-  margin: -3px 0 0 -3px;
-  background: var(--ink);
-  mix-blend-mode: difference;
-  transition: opacity 0.3s;
+.card-play,
+.pl-big {
+  background: linear-gradient(180deg, #3d9bff, #1764f0);
+  color: #fff;
+  box-shadow: 0 0 0 1px rgb(var(--gold-rgb) / 0.6), 0 0 40px rgb(var(--gold-rgb) / 0.7);
 }
 
-.cursor-ring {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  margin: -17px 0 0 -17px;
-  border: 1px solid rgb(var(--ink-rgb) / 0.35);
-  transition: width 0.5s var(--ease), height 0.5s var(--ease), margin 0.5s var(--ease),
-    background-color 0.35s, border-color 0.35s, opacity 0.3s;
-}
-
-.cursor-ring em {
-  color: var(--bg);
-  font: 600 11px/1 var(--sans);
-  font-style: normal;
-  letter-spacing: 0.14em;
+.card-title {
+  font-size: clamp(1.15rem, 1.5vw, 1.45rem);
   text-transform: uppercase;
-  opacity: 0;
-  transition: opacity 0.25s;
+  letter-spacing: -0.01em;
 }
 
-.cursor.is-link .cursor-ring {
-  width: 54px;
-  height: 54px;
-  margin: -27px 0 0 -27px;
+.card-arrow {
+  border-radius: 8px;
+}
+
+.card:hover .card-arrow {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #fff;
+  box-shadow: 0 0 24px rgb(var(--gold-rgb) / 0.7);
+}
+
+.card--cta .card-cta {
+  border: 1px solid rgb(var(--gold-rgb) / 0.25);
+  background:
+    radial-gradient(80% 90% at 100% 100%, rgb(var(--gold-rgb) / 0.32), transparent 60%),
+    linear-gradient(180deg, #0d131c, #070a10);
+}
+
+.card-cta::after {
+  border-color: rgb(var(--gold-rgb) / 0.3);
+}
+
+.card-cta strong {
+  text-transform: uppercase;
+  font-size: clamp(1.9rem, 3.2vw, 3.2rem);
+}
+
+/* Painéis que eram claros: agora aço escuro com luz azul */
+.sheet,
+.brief {
+  border: 1px solid rgb(var(--ink-rgb) / 0.08);
+  background:
+    radial-gradient(70% 45% at 12% 0%, rgb(var(--gold-rgb) / 0.16), transparent 70%),
+    linear-gradient(180deg, #0c1118 0%, #070a0f 100%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+.sheet ::selection,
+.brief ::selection {
+  background: var(--gold);
+  color: #fff;
+}
+
+.sheet :focus-visible,
+.brief :focus-visible {
+  outline-color: var(--gold);
+}
+
+.sheet .label b {
+  color: var(--gold);
+}
+
+.about-text .about-lead {
+  font-weight: 700;
+  font-size: clamp(1.4rem, 2.1vw, 1.9rem);
+  line-height: 1.2;
+}
+
+.principles-list span {
+  color: var(--gold);
+  text-shadow: 0 0 20px rgb(var(--gold-rgb) / 0.6);
+}
+
+.portrait {
+  box-shadow: 0 0 0 1px rgb(var(--gold-rgb) / 0.3), 0 30px 90px -30px rgb(var(--gold-rgb) / 0.6);
+}
+
+.portrait-play {
+  background: linear-gradient(180deg, #3d9bff, #1764f0);
+  color: #fff;
+  box-shadow: 0 0 40px rgb(var(--gold-rgb) / 0.8);
+}
+
+.portrait-play::before {
+  border-color: rgb(var(--gold-rgb) / 0.7);
+}
+
+/* Serviços */
+.svc::before {
+  box-shadow: 0 0 12px 1px rgb(var(--gold-rgb) / 0.8);
+}
+
+.svc-name {
+  font-size: clamp(1.6rem, 3vw, 3rem);
+  text-transform: uppercase;
+}
+
+.tags li,
+.chips span {
+  border-radius: 8px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .svc:hover .svc-name {
+    font-style: normal;
+    text-shadow: 0 0 30px rgb(var(--gold-rgb) / 0.55);
+  }
+}
+
+.svc-float video {
+  box-shadow: 0 0 0 1px rgb(var(--gold-rgb) / 0.5), 0 30px 80px -20px rgb(var(--gold-rgb) / 0.6);
+}
+
+/* Processo */
+.step.is-on::before {
+  box-shadow: 0 0 0 5px rgb(var(--gold-rgb) / 0.18), 0 0 18px rgb(var(--gold-rgb) / 0.9);
+}
+
+.step.is-on .step-num {
+  text-shadow: 0 0 26px rgb(var(--gold-rgb) / 0.65);
+}
+
+.steps-line span {
+  box-shadow: 0 0 12px rgb(var(--gold-rgb) / 0.9);
+}
+
+/* FAQ */
+.qa-q {
+  font-weight: 700;
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  letter-spacing: -0.01em;
+}
+
+.plus {
+  border-radius: 8px;
+}
+
+/* Contato */
+.contact {
+  background:
+    radial-gradient(55% 50% at 85% 15%, rgb(var(--gold-rgb) / 0.16), transparent 70%),
+    var(--bg);
+}
+
+.direct-line {
+  border-radius: 10px;
+}
+
+.direct-line strong {
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+}
+
+.brief {
+  border-color: rgb(var(--gold-rgb) / 0.22);
+}
+
+.brief-title {
+  text-transform: uppercase;
+  font-size: clamp(1.4rem, 2vw, 1.9rem);
+}
+
+.brief legend b {
+  border-radius: 6px;
+  background: var(--gold);
+  color: #fff;
+}
+
+.chips input:checked + span {
+  border-color: var(--gold);
+  background: rgb(var(--gold-rgb) / 0.2);
+  color: #fff;
+  box-shadow: 0 0 20px -4px rgb(var(--gold-rgb) / 0.8);
+}
+
+.chips label:hover span {
+  border-color: rgb(var(--gold-rgb) / 0.7);
+}
+
+.brief textarea {
+  border-radius: 10px;
+  color: var(--ink);
+}
+
+.brief textarea:focus {
   border-color: var(--gold);
 }
 
-.cursor.is-play .cursor-ring {
-  width: 92px;
-  height: 92px;
-  margin: -46px 0 0 -46px;
-  border-color: transparent;
-  background: var(--ink);
+/* Rodapé: nome em aço com luz azul por baixo */
+.footer {
+  background:
+    radial-gradient(60% 45% at 50% 100%, rgb(var(--gold-rgb) / 0.24), transparent 70%),
+    var(--bg);
 }
 
-.cursor.is-play .cursor-ring em {
-  opacity: 1;
+.footer-claim {
+  text-transform: uppercase;
+  font-size: clamp(1.6rem, 2.4vw, 2.3rem);
 }
 
-.cursor.is-play .cursor-dot {
-  opacity: 0;
+.wordmark {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
 }
 
-.cursor.is-hidden .cursor-dot,
-.cursor.is-hidden .cursor-ring {
-  opacity: 0;
+.wordmark .wl {
+  background: var(--steel);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Player */
+.pl-stage {
+  box-shadow: 0 0 0 1px rgb(var(--gold-rgb) / 0.3), 0 0 90px -20px rgb(var(--gold-rgb) / 0.6);
+}
+
+.ph-video-title-copy strong {
+  text-transform: uppercase;
+  font-size: clamp(1.05rem, 1.6vw, 1.4rem);
+}
+
+.pl-close,
+.pl-nav {
+  border-radius: 10px;
+}
+
+.pl-close:hover,
+.pl-nav:hover {
+  border-color: var(--gold);
+  background: rgb(var(--gold-rgb) / 0.15);
+}
+
+.toast {
+  border-radius: 10px;
+  background: var(--gold);
+  color: #fff;
+  box-shadow: var(--glow);
+}
+
+/* CTA fixo no celular: "Falar com o Pedro" */
+@media (max-width: 900px) {
+  .dock {
+    border-radius: 14px;
+    background: linear-gradient(180deg, #3d9bff 0%, #1764f0 100%);
+    color: #fff;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 0 0 1px rgb(var(--gold-rgb) / 0.6), 0 14px 50px -6px rgb(var(--gold-rgb) / 0.9);
+  }
+
+  .dock-icon {
+    border-radius: 10px;
+    background: #04070d;
+    color: #fff;
+  }
+
+  .dock-text small {
+    color: rgb(255 255 255 / 0.78);
+  }
+
+  .hero-pin::before {
+    right: -30%;
+    bottom: -10%;
+    width: 130%;
+    height: 70%;
+  }
 }
 
 /* ==========================================================================
@@ -2694,7 +3114,7 @@ body.player-open {
   }
 
   .hero-title {
-    font-size: clamp(2.9rem, 12.6vw, 5.2rem);
+    font-size: clamp(2.5rem, 11.5vw, 4.6rem);
   }
 
   .hero-bottom {
