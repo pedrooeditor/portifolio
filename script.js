@@ -18,7 +18,9 @@
     categoria: 'Pedro Simões',
     titulo: 'Vídeo de Apresentação',
     formato: 'horizontal',
-    url: 'https://www.dropbox.com/scl/fi/ytdskddlhxg5edqeaqqyc/Video-de-Apresentacao-Novo-Web.mp4?rlkey=c05uyqobm09iqyzb4ail5m89z&raw=1',
+    url: 'videos/apresentacao.mp4',
+    preview: 'videos/apresentacao-preview.mp4',
+    poster: 'videos/apresentacao.jpg',
     resumo: 'Quem eu sou, como eu penso cada corte e o que posso fazer pelo seu vídeo.'
   };
 
@@ -36,6 +38,7 @@
       titulo: 'Bastidores com Renato Cariani',
       formato: 'vertical',
       url: 'videos/bastidores.mp4',
+      preview: 'videos/bastidores-preview.mp4',
       poster: 'videos/bastidores.jpg',
       resumo: 'Bastidores gravados no dia a dia e transformados em história: ritmo, trilha e cortes que fazem o público se sentir lá dentro.'
     },
@@ -45,6 +48,7 @@
       titulo: 'A luta por trás da luta',
       formato: 'vertical',
       url: 'videos/edu-grimaldi.mp4',
+      preview: 'videos/edu-grimaldi-preview.mp4',
       poster: 'videos/edu-grimaldi.jpg',
       resumo: 'Storytelling para um grande nome: do tatame aos negócios, com legendas dinâmicas, B-roll e tensão do começo ao fim.'
     },
@@ -54,6 +58,7 @@
       titulo: 'Clóvis de Barros Filho',
       formato: 'vertical',
       url: 'videos/clovis-editado.mp4',
+      preview: 'videos/clovis-editado-preview.mp4',
       poster: 'videos/clovis-editado.jpg',
       resumo: 'Um trecho de podcast horizontal virou um corte vertical pronto para o feed: enquadramento, legenda e ritmo pensados para reter.'
     }
@@ -67,6 +72,7 @@
       titulo: 'Podcast original, sem edição',
       formato: 'horizontal',
       url: 'videos/clovis-bruto.mp4',
+      preview: 'videos/clovis-bruto-preview.mp4',
       poster: 'videos/clovis-bruto.jpg',
       resumo: 'Assim o material chegou. Compare com o corte final logo ao lado.'
     }
@@ -175,8 +181,11 @@
     if (!data) return;
     v.dataset.loaded = '1';
     if (data.poster && !v.poster) v.poster = data.poster;
+    // Só a capa: não baixa vídeo nenhum.
+    if (v.hasAttribute('data-poster-only') && data.poster) return;
+    // Prévias mudas usam um trecho curto e leve; o vídeo inteiro só abre no player.
     v.preload = 'metadata';
-    v.src = `${data.url}#t=${v.hasAttribute('data-poster-only') ? 3 : 0.1}`;
+    v.src = `${data.preview || data.url}#t=${v.hasAttribute('data-poster-only') ? 3 : 0.1}`;
   };
 
   const shouldAutoplay = v => canAutoplay && !v.hasAttribute('data-poster-only');
@@ -605,7 +614,7 @@
         const v = id && VIDEOS[id];
         if (!v) return;
         if (!on) { fx = tx = e.clientX; fy = ty = e.clientY; }
-        if (fv.dataset.id !== id) { fv.dataset.id = id; fv.src = v.url; }
+        if (fv.dataset.id !== id) { fv.dataset.id = id; fv.src = v.preview || v.url; }
         svcFloat.classList.toggle('is-h', v.formato === 'horizontal');
         svcFloat.classList.add('is-on');
         on = true;

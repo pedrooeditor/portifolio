@@ -2551,9 +2551,6 @@ body {
   color: transparent;
 }
 
-.hero-reel-title em {
-  filter: drop-shadow(0 0 22px rgb(var(--gold-rgb) / 0.55));
-}
 
 .hero-title {
   max-width: none;
@@ -3576,4 +3573,28 @@ body {
   .ba-arrow {
     transform: rotate(90deg);
   }
+}
+
+/* Desempenho: grão estático e sem desfoque de fundo em selos pequenos */
+.grain {
+  inset: 0;
+  animation: none;
+}
+
+.card-tag,
+.ba-tag,
+.hero-media-label,
+.nav {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.card-tag,
+.ba-tag,
+.hero-media-label {
+  background: rgb(var(--bg-rgb) / 0.78);
+}
+
+.nav {
+  background: rgb(var(--bg-rgb) / 0.7);
 }
