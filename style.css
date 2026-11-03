@@ -3598,3 +3598,43 @@ body {
 .nav {
   background: rgb(var(--bg-rgb) / 0.7);
 }
+
+/* Player leve: sem desfoque sobre o vídeo e nada animando por trás */
+.ph-video-hub {
+  background: rgb(3 5 9 / 0.97);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.ph-video-hub::backdrop {
+  background: #020306;
+}
+
+.pl-controls {
+  background: rgb(3 5 9 / 0.82);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.pl-stage {
+  box-shadow: 0 0 0 1px rgb(var(--gold-rgb) / 0.35);
+}
+
+.pl-nav {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+body.player-open .ticker-track,
+body.player-open .dot,
+body.player-open .portrait-play::before {
+  animation-play-state: paused;
+}
+
+body.player-open .grain,
+body.player-open main,
+body.player-open .footer,
+body.player-open .hdr,
+body.player-open .dock {
+  visibility: hidden;
+}
