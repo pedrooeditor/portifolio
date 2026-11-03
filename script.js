@@ -5,8 +5,8 @@
 
   /* ==========================================================================
      CONFIGURAÇÃO
-     Para adicionar um trabalho novo: copie um bloco dentro de PROJETOS e troque
-     id, textos e o link do vídeo (Dropbox com &raw=1 no final). O card aparece
+     Para adicionar um trabalho novo: coloque o vídeo em /videos, copie um bloco
+     dentro de PROJETOS e troque id, textos, url e poster. O card aparece
      sozinho na grade de trabalhos e entra na sequência do player.
      ========================================================================== */
 
@@ -28,54 +28,47 @@
     viral: 'Conteúdo vertical feito para segurar no feed: cortes rápidos, legendas dinâmicas e ritmo do primeiro ao último segundo.'
   };
 
+  // Vídeos ficam na pasta /videos do próprio site (comprimidos para web).
   const PROJETOS = [
     {
-      id: 'c1',
-      categoria: 'Cinematic · VSL',
-      titulo: 'VSL cinematográfica',
+      id: 'bastidores',
+      categoria: 'Bastidores · Renato Cariani',
+      titulo: 'Bastidores com Renato Cariani',
+      formato: 'vertical',
+      url: 'videos/bastidores.mp4',
+      poster: 'videos/bastidores.jpg',
+      resumo: 'Bastidores gravados no dia a dia e transformados em história: ritmo, trilha e cortes que fazem o público se sentir lá dentro.'
+    },
+    {
+      id: 'edu',
+      categoria: 'Edu Grimaldi',
+      titulo: 'A luta por trás da luta',
+      formato: 'vertical',
+      url: 'videos/edu-grimaldi.mp4',
+      poster: 'videos/edu-grimaldi.jpg',
+      resumo: 'Storytelling para um grande nome: do tatame aos negócios, com legendas dinâmicas, B-roll e tensão do começo ao fim.'
+    },
+    {
+      id: 'clovis',
+      categoria: 'Corte de podcast · Market Makers',
+      titulo: 'Clóvis de Barros Filho',
+      formato: 'vertical',
+      url: 'videos/clovis-editado.mp4',
+      poster: 'videos/clovis-editado.jpg',
+      resumo: 'Um trecho de podcast horizontal virou um corte vertical pronto para o feed: enquadramento, legenda e ritmo pensados para reter.'
+    }
+  ];
+
+  // Material bruto usado na comparação "antes e depois" (fora da grade).
+  const EXTRAS = [
+    {
+      id: 'clovis-bruto',
+      categoria: 'Antes · Material bruto',
+      titulo: 'Podcast original, sem edição',
       formato: 'horizontal',
-      url: 'https://www.dropbox.com/scl/fi/ic49a7r85ud19artfd06r/Cinematic-VSL-Exemplo-1-Web.mp4?rlkey=atxvz8gmehizt38su5uxv6eso&raw=1',
-      resumo: RESUMO.vsl
-    },
-    {
-      id: 'd1',
-      categoria: 'Direct Response',
-      titulo: 'Criativo de conversão 01',
-      formato: 'vertical',
-      url: 'https://www.dropbox.com/scl/fi/sf2043sqqgcw2akk8wg6p/Direct-Response-Exemplo-1-Web.mp4?rlkey=z3i60dr04yi77l6r7egb74p6z&raw=1',
-      resumo: RESUMO.direct
-    },
-    {
-      id: 'v1',
-      categoria: 'Vídeo viral',
-      titulo: 'Retenção no feed 01',
-      formato: 'vertical',
-      url: 'https://www.dropbox.com/scl/fi/y8ap64v3cre4yjwry1i83/Videos-Virais-Exemplo-1-Web.mp4?rlkey=pktpmp18fpjb6ujke97i0qhnw&raw=1',
-      resumo: RESUMO.viral
-    },
-    {
-      id: 'd2',
-      categoria: 'Direct Response',
-      titulo: 'Criativo de conversão 02',
-      formato: 'vertical',
-      url: 'https://www.dropbox.com/scl/fi/23xptelf3enkvrfssn8gi/Direct-Response-Exemplo-2-Web.mp4?rlkey=pl43hn30ljsnf788aqz2chzie&raw=1',
-      resumo: RESUMO.direct
-    },
-    {
-      id: 'v2',
-      categoria: 'Vídeo viral',
-      titulo: 'Retenção no feed 02',
-      formato: 'vertical',
-      url: 'https://www.dropbox.com/scl/fi/8260dz00wbam6s0p8gx3r/Videos-Virais-Exemplo-2-Web.mp4?rlkey=gunb25ajjqf4rk132bd85vc7u&raw=1',
-      resumo: RESUMO.viral
-    },
-    {
-      id: 'd3',
-      categoria: 'Direct Response',
-      titulo: 'Criativo de conversão 03',
-      formato: 'vertical',
-      url: 'https://www.dropbox.com/scl/fi/q6dss5lhec5p3wllr94o2/Direct-Response-Exemplo-3-Web.mp4?rlkey=hwc3y6oahtw6evcw9rjjlq46o&raw=1',
-      resumo: RESUMO.direct
+      url: 'videos/clovis-bruto.mp4',
+      poster: 'videos/clovis-bruto.jpg',
+      resumo: 'Assim o material chegou. Compare com o corte final logo ao lado.'
     }
   ];
 
@@ -102,7 +95,7 @@
   const safePlay = v => { try { const p = v.play(); if (p && p.catch) p.catch(() => {}); } catch (_) {} };
 
   const VIDEOS = { [APRESENTACAO.id]: APRESENTACAO };
-  PROJETOS.forEach(p => { VIDEOS[p.id] = p; });
+  PROJETOS.concat(EXTRAS).forEach(p => { VIDEOS[p.id] = p; });
 
   // Seções fixadas (pin) ficam estáveis quando a página sempre recarrega do topo.
   if ('scrollRestoration' in history && !location.hash) {
@@ -181,6 +174,7 @@
     const data = VIDEOS[v.dataset.preview];
     if (!data) return;
     v.dataset.loaded = '1';
+    if (data.poster && !v.poster) v.poster = data.poster;
     v.preload = 'metadata';
     v.src = `${data.url}#t=${v.hasAttribute('data-poster-only') ? 3 : 0.1}`;
   };
