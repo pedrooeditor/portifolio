@@ -75,7 +75,18 @@
       preview: 'videos/clovis-bruto-preview.mp4',
       poster: 'videos/clovis-bruto.jpg',
       resumo: 'Assim o material chegou. Compare com o corte final logo ao lado.'
-    }
+    },
+    // Fundo do início: começo do vídeo de apresentação, sem som (no celular em pé, recorte vertical mais leve).
+    {
+      id: 'hero-fundo',
+      categoria: '',
+      titulo: '',
+      formato: 'horizontal',
+      preview: window.matchMedia('(max-width: 900px) and (orientation: portrait)').matches ? 'videos/apresentacao-fundo-vertical.mp4' : 'videos/apresentacao-fundo.mp4',
+      poster: 'videos/apresentacao-fundo.jpg'
+    },
+    // Seção "antes e depois": bruto cortado, edição e faixa sem legenda num único vídeo (ver BA_LAYOUT).
+    { id: 'ba-processo', categoria: '', titulo: '', formato: 'horizontal', preview: 'videos/ba-processo.mp4', poster: 'videos/ba-processo.jpg' }
   ];
 
   /* ==========================================================================
@@ -377,7 +388,7 @@
       dockBlocked = visible.size > 0;
       updateDock();
     });
-    $$('#contato, .footer').forEach(b => dockIO.observe(b));
+    $$('#contato, .footer, .ba-pin').forEach(b => dockIO.observe(b));
 
     const navLinks = $$('[data-nav-link]');
     const navIO = new IntersectionObserver(entries => {
@@ -480,50 +491,300 @@
   }
 
   /* ==========================================================================
-     Hero: a janela do showreel se expande até ocupar a tela
+     Hero: vídeo em tela cheia no fundo, devagar; sobe com a página ao rolar
      ========================================================================== */
 
-  const heroPin = $('[data-hero-pin]');
+  const HERO_VELOCIDADE = 0.8;
   const heroMedia = $('[data-hero-media]');
-  if (animate && heroPin && heroMedia) {
-    const mm = gsap.matchMedia();
-    mm.add('(min-width: 901px) and (min-height: 600px)', () => {
-      const content = $('[data-hero-content]');
-      const reel = $('[data-hero-reel]');
-      const label = $('[data-hero-label]');
-      gsap.set(heroMedia, { '--shade': 0.15 });
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: heroPin,
-          start: 'top top',
-          end: '+=120%',
-          pin: true,
-          scrub: 0.8,
-          anticipatePin: 1,
-          invalidateOnRefresh: true
-        }
-      });
-      tl.fromTo(heroMedia,
-        { clipPath: 'inset(50% 3.5% 7% 56% round 20px)' },
-        { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'power2.inOut', duration: 1 }, 0)
-        .to(content, { yPercent: -10, autoAlpha: 0, ease: 'power1.in', duration: 0.5 }, 0)
-        .to(label, { autoAlpha: 0, duration: 0.15 }, 0)
-        .to(heroMedia, { '--shade': 0.5, ease: 'none', duration: 1 }, 0)
-        .fromTo(reel, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.3 }, 0.72);
+  if (heroMedia) {
+    const video = $('video', heroMedia);
+    const slow = () => { video.playbackRate = HERO_VELOCIDADE; };
+    video.addEventListener('loadedmetadata', slow);
+    video.addEventListener('play', slow);
 
-      if (finePointer) {
-        const video = $('video', heroMedia);
-        gsap.set(video, { scale: 1.08 });
-        const qx = gsap.quickTo(video, 'x', { duration: 1.2, ease: 'power3' });
-        const qy = gsap.quickTo(video, 'y', { duration: 1.2, ease: 'power3' });
-        const move = e => {
-          qx((e.clientX / window.innerWidth - 0.5) * -24);
-          qy((e.clientY / window.innerHeight - 0.5) * -16);
-        };
-        window.addEventListener('pointermove', move, { passive: true });
-        return () => window.removeEventListener('pointermove', move);
+    if (animate && finePointer) {
+      gsap.set(video, { scale: 1.06 });
+      const qx = gsap.quickTo(video, 'x', { duration: 1.2, ease: 'power3' });
+      const qy = gsap.quickTo(video, 'y', { duration: 1.2, ease: 'power3' });
+      window.addEventListener('pointermove', e => {
+        if (window.scrollY > window.innerHeight) return;
+        qx((e.clientX / window.innerWidth - 0.5) * -24);
+        qy((e.clientY / window.innerHeight - 0.5) * -16);
+      }, { passive: true });
+    }
+  }
+
+  /* ==========================================================================
+     Antes e depois: a rolagem aplica a edição sobre o material bruto
+     Um único vídeo traz as camadas, então elas nunca dessincronizam:
+       bruto (já cortado) em cima; edição e faixa sem legenda embaixo.
+       Áudio: canal esquerdo = voz do bruto; canal direito = voz + trilha da edição.
+     ========================================================================== */
+
+  const BA_LAYOUT = {
+    raw: { w: 1280, h: 720 },
+    edit: { x: 3, y: 728, w: 634, h: 641 },                       // quadrado da edição dentro do vídeo
+    clean: { x: 640, y: 720, w: 508, h: 88, ox: 63, oy: 526 },    // faixa sem legenda e onde ela encaixa no quadrado
+    box: { x: 45 / 720, y: 320 / 1280, w: 634 / 720, h: 641 / 1280 }, // quadrado dentro do quadro 9:16
+    crops: [{ until: 3.2667, sx: 107, sy: 31 }, { until: Infinity, sx: 651, sy: 41 }], // corte da edição em cada plano
+    cropW: 472,
+    cropH: 477.2
+  };
+  // Energia da trilha, 15 valores por segundo (0–z), medida na própria edição.
+  const BA_TRILHA = '7gqzyzvzzuurrpnrrnrljggedbbbaehiddbehfceea9656435afkqpoolkiijiijtzqrrsvlboiibdokjklkggkjjintqkgfccaa9aca87656876554gmljcclpj9hh75gqrxxyrrupmmljkjhgilhcitqjfeyhfgedfgfddhoqmgkntnlllnkggegmnmgfiqryvklhekomchgjjgtytvzxwvtqoppqqsspnkkjikjgghhhggginrwyyorsrmhillmjhhihjlkkkljifkjzmjhfipkifhhkgimhllkkiglohgggeefejotzvtrilqzzznjllmmjnhlnrrig';
+
+  const baPin = $('[data-ba-pin]');
+  if (baPin && !(animate && canAutoplay)) root.classList.add('ba-static');
+  if (baPin && animate && canAutoplay) {
+    const L = BA_LAYOUT;
+    const video = $('video', baPin);
+    const stage = $('[data-ba-stage]', baPin);
+    const cv = $('[data-ba-canvas]', baPin);
+    const g = cv.getContext('2d');
+    const frameEl = $('[data-ba-frame]', baPin);
+    const tag = $('[data-ba-tag]', baPin);
+    const hint = $('[data-ba-hint]', baPin);
+    const soundBtn = $('[data-ba-sound]', baPin);
+    const stepsEl = $('[data-ba-steps]', baPin);
+    const stepEls = $$('.ba-step', baPin);
+    const edit = document.createElement('canvas');
+    edit.width = L.edit.w;
+    edit.height = L.edit.h;
+    const eg = edit.getContext('2d');
+    const poster = new Image();
+    poster.src = VIDEOS['ba-processo'].poster;
+
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const smooth = t => t * t * (3 - 2 * t);
+    const TRANSICOES = 5;                                        // vertical, quadrado, cor, legenda, trilha
+    const inicio = i => 0.05 + i * 0.185;
+    const fases = new Array(TRANSICOES).fill(0);
+
+    let u = 0;
+    let t = 0;
+    let dpr = 1;
+    let SW = 0;
+    let SH = 0;
+    let raf = 0;
+    let ac = null;
+    let gVoz = null;
+    let gMix = null;
+    let atual = 0;
+
+    const fit = (ar, reserva) => {
+      const maxW = SW;
+      const maxH = SH - reserva;
+      const w = Math.min(maxW, maxH * ar);
+      return { w, h: w / ar };
+    };
+
+    const rounded = (x, y, w, h, r) => {
+      g.beginPath();
+      if (g.roundRect) g.roundRect(x, y, w, h, r);
+      else g.rect(x, y, w, h);
+    };
+
+    const draw = () => {
+      if (!SW || !SH) return;
+      const [vVertical, vQuadro, vCor, vLegenda, vTrilha] = fases;
+      const pronto = video.readyState >= 2;
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      g.clearRect(0, 0, SW, SH);
+
+      const A = fit(16 / 9, 96);
+      const B = fit(9 / 16, 0);
+      const fw = lerp(A.w, B.w, vVertical);
+      const fh = lerp(A.h, B.h, vVertical);
+      const fx = (SW - fw) / 2;
+      const fy = (SH - fh) / 2;
+      const ix = fx + fw * L.box.x;
+      const iy = fy + fh * L.box.y;
+      const iw = fw * L.box.w;
+      const ih = fh * L.box.h;
+      const wx = lerp(fx, ix, vQuadro);
+      const wy = lerp(fy, iy, vQuadro);
+      const ww = lerp(fw, iw, vQuadro);
+      const wh = lerp(fh, ih, vQuadro);
+
+      const crop = L.crops.find(c => t < c.until);
+      const cropCx = crop.sx + L.cropW / 2;
+      const cropCy = crop.sy + L.cropH / 2;
+      const s0 = L.raw.w / A.w;
+      const s1 = L.raw.h / B.h;
+      const s2 = L.cropW / (B.w * L.box.w);
+      const escala = Math.min(vQuadro > 0 ? lerp(s1, s2, vQuadro) : lerp(s0, s1, vVertical), L.raw.w / ww, L.raw.h / wh);
+      const cx = lerp(L.raw.w / 2, cropCx, vVertical);
+      const cy = lerp(L.raw.h / 2, cropCy, vQuadro);
+      const sw = ww * escala;
+      const sh = wh * escala;
+      const sx = clamp(cx - sw / 2, 0, L.raw.w - sw);
+      const sy = clamp(cy - sh / 2, 0, L.raw.h - sh);
+
+      // Quadro preto (como na entrega) e a imagem dentro da janela.
+      const rFrame = 14;
+      const rJanela = lerp(rFrame, ww * 0.045, vQuadro);
+      rounded(fx, fy, fw, fh, rFrame);
+      g.fillStyle = '#000';
+      g.fill();
+      g.save();
+      rounded(wx, wy, ww, wh, rJanela);
+      g.clip();
+      if (pronto) {
+        g.drawImage(video, sx, sy, sw, sh, wx, wy, ww, wh);
+      } else if (poster.complete && poster.naturalWidth) {
+        const k = poster.naturalWidth / L.raw.w;
+        g.drawImage(poster, sx * k, sy * k, sw * k, sh * k, wx, wy, ww, wh);
       }
-      return undefined;
+      if (pronto && vCor > 0) {
+        eg.globalAlpha = 1;
+        eg.drawImage(video, L.edit.x, L.edit.y, L.edit.w, L.edit.h, 0, 0, L.edit.w, L.edit.h);
+        if (vLegenda < 1) {
+          eg.globalAlpha = 1 - vLegenda;
+          eg.drawImage(video, L.clean.x, L.clean.y, L.clean.w, L.clean.h, L.clean.ox, L.clean.oy, L.clean.w, L.clean.h);
+        }
+        g.globalAlpha = vCor;
+        g.drawImage(edit, wx, wy, ww, wh);
+        g.globalAlpha = 1;
+      }
+      g.restore();
+
+      // Trilha: barras com a energia real da música, na faixa preta abaixo do quadrado.
+      if (vTrilha > 0) {
+        const faixaY = iy + ih;
+        const faixaH = fy + fh - faixaY;
+        const n = 31;
+        const larg = iw * 0.72;
+        const passo = larg / n;
+        const meio = faixaY + faixaH * 0.42;
+        g.fillStyle = `rgba(90,175,255,${0.95 * vTrilha})`;
+        for (let i = 0; i < n; i++) {
+          const pos = Math.floor(t * 15) + i - (n >> 1);
+          const ch = BA_TRILHA[((pos % BA_TRILHA.length) + BA_TRILHA.length) % BA_TRILHA.length];
+          const val = parseInt(ch, 36) / 35;
+          const janela = 1 - Math.abs(i - n / 2) / (n / 2) * 0.55;
+          const alt = Math.max(2, val * janela * faixaH * 0.5 * vTrilha);
+          rounded(ix + (iw - larg) / 2 + i * passo, meio - alt / 2, Math.max(1.5, passo * 0.5), alt, 2);
+          g.fill();
+        }
+      }
+
+      // Peças de interface que acompanham o quadro.
+      frameEl.style.width = `${fw}px`;
+      frameEl.style.height = `${fh}px`;
+      frameEl.style.transform = `translate(${fx}px, ${fy}px)`;
+      frameEl.style.opacity = String(vVertical);
+      tag.style.transform = `translate(${fx + 12}px, ${fy + 12}px)`;
+      hint.style.opacity = String(1 - clamp(u / 0.04, 0, 1));
+    };
+
+    const ativaEtapa = () => {
+      const n = fases.reduce((s, v) => s + (v >= 0.5 ? 1 : 0), 0);
+      stepsEl.style.setProperty('--p', clamp(u / (inicio(TRANSICOES - 1) + 0.12), 0, 1).toFixed(3));
+      if (gVoz) {
+        const now = ac.currentTime;
+        gVoz.gain.setTargetAtTime(1 - fases[4], now, 0.08);
+        gMix.gain.setTargetAtTime(fases[4], now, 0.08);
+      }
+      soundBtn.classList.toggle('is-nudge', fases[4] > 0.3 && video.muted);
+      if (n === atual) return;
+      atual = n;
+      stepEls.forEach((el, i) => {
+        el.classList.toggle('is-on', i <= n);
+        el.classList.toggle('is-cur', i === n);
+      });
+      tag.textContent = n === 0 ? 'Antes' : n === TRANSICOES ? 'Depois' : 'Editando';
+      tag.classList.toggle('ba-tag--on', n === TRANSICOES);
+    };
+
+    const paint = () => {
+      raf = 0;
+      for (let i = 0; i < TRANSICOES; i++) fases[i] = smooth(clamp((u - inicio(i)) / 0.12, 0, 1));
+      draw();
+      ativaEtapa();
+    };
+    const queue = () => { if (!raf) raf = requestAnimationFrame(paint); };
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const r = stage.getBoundingClientRect();
+      SW = r.width;
+      SH = r.height;
+      cv.width = Math.round(SW * dpr);
+      cv.height = Math.round(SH * dpr);
+      queue();
+    };
+    new ResizeObserver(resize).observe(stage);
+
+    // Cada quadro novo do vídeo redesenha; sem suporte a isso, um laço simples enquanto toca.
+    if ('requestVideoFrameCallback' in video) {
+      const onFrame = (_, meta) => {
+        t = meta.mediaTime;
+        queue();
+        video.requestVideoFrameCallback(onFrame);
+      };
+      video.requestVideoFrameCallback(onFrame);
+    } else {
+      const loop = () => {
+        if (!video.paused) { t = video.currentTime; queue(); }
+        requestAnimationFrame(loop);
+      };
+      requestAnimationFrame(loop);
+    }
+    video.addEventListener('loadeddata', queue);
+    poster.addEventListener('load', queue);
+
+    // Começa a baixar uma tela antes de a seção aparecer.
+    if ('IntersectionObserver' in window) {
+      const warm = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return;
+        loadPreview(video);
+        video.preload = 'auto';
+        warm.disconnect();
+      }, { rootMargin: '100% 0px' });
+      warm.observe(baPin);
+    }
+
+    ScrollTrigger.create({
+      trigger: baPin.parentElement,
+      start: 'top top',
+      end: 'bottom bottom',
+      onUpdate: self => { u = self.progress; queue(); }
+    });
+
+    // O navegador só libera áudio depois de um clique, por isso o botão.
+    const syncSound = () => {
+      const on = !video.muted;
+      soundBtn.classList.toggle('is-on', on);
+      soundBtn.setAttribute('aria-pressed', String(on));
+      $('use', soundBtn).setAttribute('href', on ? '#i-vol' : '#i-mute');
+      $('span', soundBtn).textContent = on ? 'Som ligado' : 'Ativar som';
+      ativaEtapa();
+    };
+    soundBtn.addEventListener('click', () => {
+      if (video.muted) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!ac && AC) {
+          ac = new AC();
+          const src = ac.createMediaElementSource(video);
+          const split = ac.createChannelSplitter(2);
+          gVoz = ac.createGain();
+          gMix = ac.createGain();
+          src.connect(split);
+          split.connect(gVoz, 0);
+          split.connect(gMix, 1);
+          gVoz.connect(ac.destination);
+          gMix.connect(ac.destination);
+          gVoz.gain.value = 1 - fases[4];
+          gMix.gain.value = fases[4];
+        }
+        if (ac) ac.resume();
+        video.muted = false;
+        safePlay(video);
+      } else {
+        video.muted = true;
+      }
+      syncSound();
     });
   }
 
@@ -552,22 +813,6 @@
       });
     } else {
       spans.forEach(s => s.classList.add('on'));
-    }
-  }
-
-  /* ==========================================================================
-     Sobre: leve parallax no vídeo de apresentação
-     ========================================================================== */
-
-  if (animate) {
-    const portraitVideo = $('.portrait video');
-    if (portraitVideo) {
-      gsap.fromTo(portraitVideo, { yPercent: -6, scale: 1.12 }, {
-        yPercent: 6,
-        scale: 1.12,
-        ease: 'none',
-        scrollTrigger: { trigger: '.portrait', start: 'top bottom', end: 'bottom top', scrub: true }
-      });
     }
   }
 
@@ -763,6 +1008,52 @@
       });
       el.addEventListener('pointerleave', () => { el.style.translate = ''; });
     });
+  }
+
+  /* ==========================================================================
+     Brilho azul sob o cursor em botões e caixas clicáveis (só mouse)
+     ========================================================================== */
+
+  if (finePointer && !reduceMotion) {
+    const GLOW = '.btn, .hero-watch, .ba-sound, .card-media, .card-cta, .ba-media, .portrait, .svc, .qa-q, .direct-line, .copy-btn, .chips label, .dock, .to-top';
+    let alvo = null;
+    let px = 0;
+    let py = 0;
+    let glowRaf = 0;
+    const pinta = () => {
+      glowRaf = 0;
+      if (!alvo) return;
+      const r = alvo.getBoundingClientRect();
+      alvo.style.setProperty('--mx', `${(px - r.left).toFixed(0)}px`);
+      alvo.style.setProperty('--my', `${(py - r.top).toFixed(0)}px`);
+    };
+    const define = el => {
+      if (el === alvo) return;
+      if (alvo) alvo.classList.remove('glow-on');
+      alvo = el;
+      if (!el) return;
+      if (!el.querySelector(':scope > .glow')) {
+        const i = document.createElement('i');
+        i.className = 'glow';
+        i.setAttribute('aria-hidden', 'true');
+        if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+        el.appendChild(i);
+      }
+      el.classList.add('glow-on');
+    };
+    document.addEventListener('pointermove', e => {
+      define(e.target.closest ? e.target.closest(GLOW) : null);
+      px = e.clientX;
+      py = e.clientY;
+      if (alvo && !glowRaf) glowRaf = requestAnimationFrame(pinta);
+    }, { passive: true });
+    window.addEventListener('scroll', () => {
+      const sob = document.elementFromPoint(px, py);
+      define(sob && sob.closest ? sob.closest(GLOW) : null);
+      if (alvo && !glowRaf) glowRaf = requestAnimationFrame(pinta);
+    }, { passive: true });
+    root.addEventListener('pointerleave', () => define(null));
+    window.addEventListener('blur', () => define(null));
   }
 
   /* ==========================================================================

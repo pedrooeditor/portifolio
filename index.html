@@ -51,7 +51,7 @@
       href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Instrument+Serif&family=Manrope:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css?v=20261103c" />
+    <link rel="stylesheet" href="style.css?v=20261104a" />
 
     <script type="application/ld+json">
       {
@@ -148,23 +148,15 @@
     <main id="conteudo">
       <!-- ============ ABERTURA ============ -->
       <section class="hero" id="top" aria-labelledby="hero-title">
-        <div class="hero-pin" data-hero-pin>
+        <div class="hero-pin">
           <div class="hero-media" data-hero-media>
             <div class="hero-media-inner">
-              <video class="work-preview-video" data-preview="presentation" data-eager muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+              <video class="work-preview-video" data-preview="hero-fundo" data-eager muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
               <span class="hero-media-shade" aria-hidden="true"></span>
             </div>
-            <div class="hero-reel" data-hero-reel>
-              <p class="hero-reel-kicker">Showreel · 2026</p>
-              <p class="hero-reel-title">Cada corte com <em>intenção.</em></p>
-              <button class="btn btn-light" type="button" data-open-video="presentation" data-video-title="Vídeo de apresentação" data-cursor="play">
-                <span class="btn-icon btn-icon--left"><svg class="i"><use href="#i-play"/></svg></span><span>Assistir apresentação</span>
-              </button>
-            </div>
-            <span class="hero-media-label" data-hero-label aria-hidden="true"><i class="dot"></i> Showreel — role para expandir</span>
           </div>
 
-          <div class="wrap hero-content" data-hero-content>
+          <div class="wrap hero-content">
             <p class="eyebrow hero-in" style="--d:0"><i class="dot"></i> Editor de vídeo · Agenda aberta</p>
             <h1 class="display hero-title" id="hero-title">
               <span class="ln"><span style="--d:1">Edição que <em>prende</em></span></span>
@@ -180,6 +172,9 @@
                 <a class="btn btn-light" href="#trabalhos" data-magnetic><span>Ver trabalhos</span><span class="btn-icon"><svg class="i"><use href="#i-down"/></svg></span></a>
                 <a class="btn btn-ghost" data-wa href="https://wa.me/5511933596263" target="_blank" rel="noopener noreferrer"><span>Falar no WhatsApp</span></a>
               </div>
+              <button class="hero-watch hero-in" style="--d:6" type="button" data-open-video="presentation" data-video-title="Vídeo de apresentação" data-cursor="play">
+                <span class="hero-watch-icon"><svg class="i"><use href="#i-play"/></svg></span><span>Assistir com som</span>
+              </button>
             </div>
           </div>
         </div>
@@ -239,12 +234,16 @@
               <span class="ln"><span>O mesmo material,</span></span>
               <span class="ln"><span><em>outro vídeo.</em></span></span>
             </h2>
-            <p class="lead sec-lead" data-reveal>
+            <p class="lead sec-lead ba-lead-scroll" data-reveal>
+              Continue rolando e veja a edição acontecer em cima do material bruto, uma etapa de cada vez.
+            </p>
+            <p class="lead sec-lead ba-lead-static" data-reveal>
               À esquerda, o material como chegou: podcast horizontal, sem legenda, quase 2 minutos.
               À direita, o corte que eu entreguei — vertical, com ritmo, legenda e enquadramento feitos para o feed.
             </p>
           </div>
 
+          <!-- Comparação simples para quem desativou animações ou economiza dados -->
           <div class="ba-grid">
             <figure class="ba-item ba-before" data-reveal>
               <button class="ba-media" type="button" data-open-video="clovis-bruto" data-video-title="Antes — Material bruto" aria-label="Assistir o material bruto com som">
@@ -266,8 +265,36 @@
               <figcaption><strong>Editado por mim</strong><span>Vertical · legenda · cortes e cor · 1:14</span></figcaption>
             </figure>
           </div>
+        </div>
 
+        <!-- A rolagem aplica a edição sobre o bruto: js em "Antes e depois" no script.js -->
+        <div class="ba-track" data-ba-track>
+        <div class="ba-pin" data-ba-pin>
+          <div class="wrap ba-layout">
+            <ol class="ba-steps" data-ba-steps>
+              <li class="ba-step is-on is-cur"><span class="ba-step-n">01</span><div><strong>Material bruto</strong><p>Assim o podcast chegou: horizontal, sem cor e sem legenda. Aqui, só com os cortes já feitos.</p></div></li>
+              <li class="ba-step"><span class="ba-step-n">02</span><div><strong>Vertical</strong><p>O quadro sai do horizontal e vira vertical, no formato do feed.</p></div></li>
+              <li class="ba-step"><span class="ba-step-n">03</span><div><strong>Enquadramento</strong><p>A tela fecha no quadrado e a atenção vai para quem está falando.</p></div></li>
+              <li class="ba-step"><span class="ba-step-n">04</span><div><strong>Cor</strong><p>O fundo recua e o rosto ganha destaque.</p></div></li>
+              <li class="ba-step"><span class="ba-step-n">05</span><div><strong>Legenda</strong><p>A fala aparece na tela para quem assiste sem som.</p></div></li>
+              <li class="ba-step"><span class="ba-step-n">06</span><div><strong>Trilha</strong><p>A música entra por baixo da voz e fecha o corte.</p></div></li>
+            </ol>
+            <div class="ba-stage" data-ba-stage>
+              <video class="ba-source" data-preview="ba-processo" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+              <span class="ba-frame" data-ba-frame aria-hidden="true"></span>
+              <canvas class="ba-canvas" data-ba-canvas role="img" aria-label="Trecho de podcast sendo editado etapa por etapa conforme a página rola"></canvas>
+              <span class="ba-tag" data-ba-tag aria-hidden="true">Antes</span>
+              <button class="ba-sound" type="button" data-ba-sound aria-pressed="false"><svg class="i"><use href="#i-mute"/></svg><span>Ativar som</span></button>
+              <span class="ba-hint" data-ba-hint aria-hidden="true">Role para editar <svg class="i"><use href="#i-down"/></svg></span>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div class="wrap">
           <div class="ba-cta" data-reveal>
+            <button class="btn btn-ghost" type="button" data-open-video="clovis-bruto" data-video-title="Antes — Material bruto"><span>Ver o bruto inteiro</span></button>
+            <button class="btn btn-ghost" type="button" data-open-video="clovis" data-video-title="Depois — Corte Clóvis de Barros Filho"><span>Ver o corte inteiro</span></button>
             <a class="btn btn-light" href="#contato" data-magnetic><span>Quero isso no meu vídeo</span><span class="btn-icon"><svg class="i"><use href="#i-arrow"/></svg></span></a>
           </div>
         </div>
@@ -278,11 +305,15 @@
         <div class="wrap">
           <div class="about-grid">
             <div class="about-media" data-reveal>
-              <button class="portrait" type="button" data-open-video="presentation" data-video-title="Vídeo de apresentação" data-cursor="play" aria-label="Assistir vídeo de apresentação do Pedro">
-                <video class="work-preview-video" data-preview="presentation" data-poster-only muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
-                <span class="portrait-shade" aria-hidden="true"></span>
-                <span class="portrait-play" aria-hidden="true"><svg class="i"><use href="#i-play"/></svg></span>
-                <span class="portrait-caption"><small>Vídeo de apresentação</small><strong>Me conheça em poucos minutos</strong></span>
+              <button class="portrait" type="button" data-open-video="presentation" data-video-title="Vídeo de apresentação" data-cursor="play" aria-label="Assistir vídeo de apresentação do Pedro, 2 minutos e 16 segundos">
+                <span class="cover-orb" aria-hidden="true"></span>
+                <span class="cover-top" aria-hidden="true"><span><i class="dot"></i> Vídeo de apresentação</span><b>2:16</b></span>
+                <span class="cover-title" aria-hidden="true">Eu não edito pensando só em deixar um vídeo <em>bonito.</em></span>
+                <span class="cover-sub" aria-hidden="true">Eu edito pensando em atenção, ritmo, percepção e retenção.</span>
+                <span class="cover-bar" aria-hidden="true">
+                  <span class="portrait-play"><svg class="i"><use href="#i-play"/></svg></span>
+                  <span class="cover-bar-text"><strong>Me conheça em poucos minutos</strong><small>Pedro Simões · PH Motions</small></span>
+                </span>
               </button>
             </div>
 
@@ -603,7 +634,7 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-    <script src="script.js?v=20261103b" defer></script>
+    <script src="script.js?v=20261104a" defer></script>
     <script src="analytics-config.js?v=20261029" defer></script>
     <script src="analytics.js?v=20261030" defer></script>
   </body>
